@@ -1,16 +1,33 @@
 package com.depromeet.sulsul.domain.member.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-  @Id
+  @Id @Column(name = "member_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+  private Long id;
+
+  @OneToMany(mappedBy = "member")
+  private List<Record> records = new ArrayList<>();
+
+  @OneToMany(mappedBy = "member")
+  private List<Review> reviews = new ArrayList<>();
+
+
+  private String email;
+  private String name;
+  private String profileUrl;
+  private String phoneNumber;
+
 }
