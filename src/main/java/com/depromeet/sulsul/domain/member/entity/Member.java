@@ -2,6 +2,8 @@ package com.depromeet.sulsul.domain.member.entity;
 
 import javax.persistence.*;
 
+import com.depromeet.sulsul.domain.record.entity.Record;
+import com.depromeet.sulsul.domain.review.entity.Review;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,6 @@ public class Member {
 
   @OneToMany(mappedBy = "member")
   private List<Review> reviews = new ArrayList<>();
-
 
   private String email;
   private String name;

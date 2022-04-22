@@ -1,4 +1,4 @@
-package com.depromeet.sulsul.domain.member.entity;
+package com.depromeet.sulsul.domain.flavor.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
