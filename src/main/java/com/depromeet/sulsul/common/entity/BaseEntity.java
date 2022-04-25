@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
+  private Boolean isDeleted = false;
+
   @CreatedDate
   private LocalDateTime createdDate;
 
