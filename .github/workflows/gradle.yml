@@ -67,7 +67,9 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       
     # Build Docker Container
-    - name: Building Docker Image
-      run: docker build -t $REPO:latest -t $REPO:${GITHUB_RUN_ID} .
-    - name: Publish Docker Image
-      run: docker push $REPO
+    - name: Docker image build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: sulsul/app:latest
