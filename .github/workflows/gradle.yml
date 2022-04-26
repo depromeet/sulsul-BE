@@ -30,8 +30,8 @@ jobs:
         distribution: 'temurin'
     - name: Build with Gradle
       run: chmod +x gradlew
-    - name: Test with Gradle # test application build
-      run: ./gradlew test
+#     - name: Test with Gradle # test application build
+#       run: ./gradlew test
     - name: Build with Gradle
       run: ./gradlew build -x test
     - name: Temporarily save build artifact
