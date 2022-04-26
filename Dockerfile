@@ -10,5 +10,5 @@ RUN cp ${JAR_FILE} /app.jar
 # run
 FROM openjdk:11 
 LABEL topic="docker-test"
-ADD --from=build /app.jar /app.jar  # 빌드 결과물에서 /app.jar를 /app.jar로 추가한다.
+ADD build /app.jar /app.jar  # 빌드 결과물에서 /app.jar를 /app.jar로 추가한다.
 ENTRYPOINT ["java", "-jar", "/app.jar"]
