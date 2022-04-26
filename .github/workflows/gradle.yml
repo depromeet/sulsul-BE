@@ -54,8 +54,12 @@ jobs:
       with:
         name: build-artifact
         path: build
+        
+    # Login DockerHub
     - name: Docker Hub Sign-in
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+    # Build Docker Container
     - name: Building Docker Image
       run: docker build -t $REPO:latest -t $REPO:${GITHUB_RUN_ID} .
     - name: Publish Docker Image
