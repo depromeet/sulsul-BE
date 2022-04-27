@@ -35,8 +35,8 @@ jobs:
     # Modify Permission
     - name: Build with Gradle
       run: chmod +x gradlew
-#     - name: Test with Gradle # test application build
-#       run: ./gradlew test
+    - name: Test with Gradle # test application build
+      run: ./gradlew test
 
     # Build Gradle
     - name: Build with Gradle
