@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.continent.dto;
 
+import com.depromeet.sulsul.domain.continent.entity.Continent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,10 @@ public class ContinentDto {
         this.id = id;
         this.name = name;
     }
+
+    public ContinentDto(Continent continent) {
+        this.id = continent.getId();
+        this.name = continent.getName();
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.depromeet.sulsul.util;
 
-public class PropertyUtil {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-    public static int PAGINATION_SIZE = 20;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class PropertyUtil {
 }
