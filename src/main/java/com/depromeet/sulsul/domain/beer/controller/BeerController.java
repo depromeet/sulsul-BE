@@ -4,23 +4,18 @@ import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
-import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class BeerController {
 
     private final BeerService beerService;
-
-    public BeerController(BeerService beerService) {
-        this.beerService = beerService;
-    }
 
     @GetMapping("/v1/beers")
     public ResponseDto<PageableResponse<BeerDto>> findAll(@RequestParam("beerId") Long beerId) {

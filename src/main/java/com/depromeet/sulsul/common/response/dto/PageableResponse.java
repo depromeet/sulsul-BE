@@ -9,8 +9,8 @@ import java.util.List;
 @Setter
 public class PageableResponse<T> {
 
-    Boolean hasNext;
-    List<T> contents;
+    private Boolean hasNext;
+    private List<T> contents;
 
     public PageableResponse(Boolean hasNext, List<T> contents) {
         this.hasNext = hasNext;
