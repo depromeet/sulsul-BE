@@ -28,4 +28,20 @@ public class Review {
 
     private String content;
 
+    private Boolean isDeleted = false;
+
+    public Review(String content, Member member, Beer beer) {
+        this.content = content;
+        this.member = member;
+        this.beer = beer;
+    }
+
+    public Review(Long id, String content, Boolean isDeleted, Member member, Beer beer) {
+        this.id = id;
+        this.content = content;
+        this.isDeleted = isDeleted;
+        this.member = member;
+        this.beer = beer;
+    }
+
 }
