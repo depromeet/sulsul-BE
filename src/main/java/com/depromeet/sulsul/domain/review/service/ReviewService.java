@@ -24,6 +24,7 @@ public class ReviewService {
     private final BeerRepository beerRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void save(ReviewRequest reviewRequest){
         reviewRepository.save(new Review(
             reviewRequest.getContent()
@@ -32,6 +33,7 @@ public class ReviewService {
         ));
     }
 
+    @Transactional
     public void update(ReviewUpdateRequest reviewUpdateRequest){
         Review targetReview = reviewRepository.getById(reviewUpdateRequest.getId());
         targetReview = new Review(
@@ -43,6 +45,7 @@ public class ReviewService {
         );
     }
 
+    @Transactional
     public void delete(ReviewDeleteRequest reviewDeleteRequest){
         Review targetReview = reviewRepository.getById(reviewDeleteRequest.getId());
         targetReview = new Review(
