@@ -31,11 +31,6 @@ public class BeerServiceImplV1 implements BeerService {
     }
 
     @Override
-    public PageableResponse<BeerDto> findAll(Long beerId) {
-        return null;
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public PageableResponse<BeerDto> findAll(Long memberId, Long beerId) {
 

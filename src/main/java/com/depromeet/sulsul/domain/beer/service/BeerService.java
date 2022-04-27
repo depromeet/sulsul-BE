@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BeerService {
-    PageableResponse<BeerDto> findAll(Long beerId);
     PageableResponse<BeerDto> findAll(Long memberId, Long beerId);
     void save(BeerRequest beerRequest);
 }
