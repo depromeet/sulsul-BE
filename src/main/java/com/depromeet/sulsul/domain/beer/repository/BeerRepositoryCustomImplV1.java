@@ -27,7 +27,7 @@ public class BeerRepositoryCustomImplV1 implements BeerRepositoryCustom {
         return queryFactory.select(new QBeerDto(country, beer, record.feel, memberBeer))
                 .from(beer)
                 .leftJoin(record).on(beer.eq(record.beer))
-                .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))) //
+                .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
                 .innerJoin(country).on(beer.country.eq(country))
                 .fetchJoin()
                 .where(beer.id.goe(beerId))
