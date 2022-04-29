@@ -1,7 +1,5 @@
 package com.depromeet.sulsul.domain.review.controller;
 
-import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.review.dto.ReviewDeleteRequest;
 import com.depromeet.sulsul.domain.review.dto.ReviewRequest;
 import com.depromeet.sulsul.domain.review.dto.ReviewUpdateRequest;
 import com.depromeet.sulsul.domain.review.service.ReviewService;
@@ -9,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.http.HttpResponse;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,8 +27,8 @@ public class ReviewController {
     }
 
     @DeleteMapping("/review")
-    public ResponseEntity<Object> delete(@RequestBody ReviewDeleteRequest reviewDeleteRequest){
-        reviewService.delete(reviewDeleteRequest);
+    public ResponseEntity<Object> delete(@RequestParam Long reviewId){
+        reviewService.delete(reviewId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

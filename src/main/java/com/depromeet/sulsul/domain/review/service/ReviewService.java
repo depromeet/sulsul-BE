@@ -1,13 +1,8 @@
 package com.depromeet.sulsul.domain.review.service;
 
 
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
-import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
-import com.depromeet.sulsul.domain.review.dto.ReviewDeleteRequest;
-import com.depromeet.sulsul.domain.review.dto.ReviewDto;
 import com.depromeet.sulsul.domain.review.dto.ReviewRequest;
 import com.depromeet.sulsul.domain.review.dto.ReviewUpdateRequest;
 import com.depromeet.sulsul.domain.review.entity.Review;
@@ -27,34 +22,22 @@ public class ReviewService {
     @Transactional
     public void save(ReviewRequest reviewRequest){
         reviewRepository.save(new Review(
-            reviewRequest.getContent()
-            , memberRepository.getById(reviewRequest.getMemberId())
-            , beerRepository.getById(reviewRequest.getBeerId())
+                reviewRequest.getContent()
+                , memberRepository.getById(reviewRequest.getMemberId())
+                , beerRepository.getById(reviewRequest.getBeerId())
         ));
     }
 
     @Transactional
     public void update(ReviewUpdateRequest reviewUpdateRequest){
-        Review targetReview = reviewRepository.getById(reviewUpdateRequest.getId());
-        targetReview = new Review(
-                targetReview.getId()
-                , reviewUpdateRequest.getContent()
-                , targetReview.getIsDeleted()
-                , targetReview.getMember()
-                , targetReview.getBeer()
-        );
+        final Review targetReview = reviewRepository.getById(reviewUpdateRequest.getId());
+        targetReview.updateReview(reviewUpdateRequest.getContent());
     }
 
     @Transactional
-    public void delete(ReviewDeleteRequest reviewDeleteRequest){
-        Review targetReview = reviewRepository.getById(reviewDeleteRequest.getId());
-        targetReview = new Review(
-                targetReview.getId()
-                , targetReview.getContent()
-                , true
-                , targetReview.getMember()
-                , targetReview.getBeer()
-        );
+    public void delete(Long reviewId){
+        final Review targetReview = reviewRepository.getById(reviewId);
+        targetReview.deleteReview();
     }
 
 }
