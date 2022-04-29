@@ -3,6 +3,7 @@ package com.depromeet.sulsul.domain.review.entity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,14 @@ public class Review {
         this.isDeleted = isDeleted;
         this.member = member;
         this.beer = beer;
+    }
+
+    public void updateReview(String content) {
+        this.content = content;
+    }
+
+    public void deleteReview(){
+        this.isDeleted = true;
     }
 
 }
