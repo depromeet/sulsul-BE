@@ -12,12 +12,13 @@ import com.depromeet.sulsul.domain.continent.entity.Continent;
 import com.depromeet.sulsul.domain.country.dto.CountryDto;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
-import com.depromeet.sulsul.util.PropertyUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.depromeet.sulsul.util.PaginationUtil.*;
 
 @Service
 public class BeerService {
@@ -52,7 +53,7 @@ public class BeerService {
 
         PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>(false, null);
         if (isOverPaginationSize(beerDtosWithPageable)) {
-            beerDtosWithPageable.remove(PropertyUtil.PAGINATION_SIZE);
+            beerDtosWithPageable.remove(PAGINATION_SIZE);
             beerPageableResponse.setHasNext(true);
         }
 
@@ -67,9 +68,5 @@ public class BeerService {
         beerRepository.save(new Beer(
                 countryRepository.getById(beerRequest.getCountryId()),
                 beerRequest));
-    }
-
-    private boolean isOverPaginationSize(List<BeerDto> beersWithPageable) {
-        return beersWithPageable.size() == PropertyUtil.PAGINATION_SIZE + 1;
     }
 }
