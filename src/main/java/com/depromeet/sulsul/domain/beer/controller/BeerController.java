@@ -31,9 +31,10 @@ public class BeerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //TODO: 업데이트 적용 내용 변경 가능
     @PutMapping("/v1/beers")
     public ResponseEntity<Object> update(@RequestBody BeerUpdateRequest beerUpdateRequest){
-        beerService.updateByUser(beerUpdateRequest);
+        beerService.update(beerUpdateRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
