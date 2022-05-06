@@ -7,7 +7,6 @@ import com.depromeet.sulsul.domain.beer.dto.BeerUpdateRequest;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustom;
-import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustomImpl;
 import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
 import com.depromeet.sulsul.domain.continent.entity.Continent;
 import com.depromeet.sulsul.domain.country.dto.CountryDto;
@@ -66,9 +65,10 @@ public class BeerService {
     }
 
     @Transactional
-    public void updateByUser(BeerUpdateRequest beerUpdateRequest){
+    public void update(BeerUpdateRequest beerUpdateRequest){
         final Beer targetBeer = beerRepository.getById(beerUpdateRequest.getId());
-        targetBeer.updateByUser(beerUpdateRequest.getContent());
+        targetBeer.update(countryRepository.getById(beerUpdateRequest.getCountryId()),
+                beerUpdateRequest);
     }
 
     @Transactional
@@ -76,6 +76,4 @@ public class BeerService {
         final Beer targetBeer = beerRepository.getById(beerId);
         targetBeer.deleteBeer();
     }
-
-
 }
