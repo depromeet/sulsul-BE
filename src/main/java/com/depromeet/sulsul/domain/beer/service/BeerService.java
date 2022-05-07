@@ -18,6 +18,8 @@ import java.util.List;
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
+import static com.depromeet.sulsul.util.PaginationUtil.*;
+
 @Service
 @Transactional
 public class BeerService {
