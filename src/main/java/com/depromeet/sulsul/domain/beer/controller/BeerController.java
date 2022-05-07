@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.beer.controller;
 
+import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
@@ -40,6 +41,11 @@ public class BeerController {
     public ResponseDto<BeerDetail> findById(@PathVariable("beerId") Long beerId) {
         Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
         return ResponseDto.of(beerService.findById(memberId, beerId));
+    }
+
+    @GetMapping("/types")
+    public ResponseDto<List<EnumValue>> findTypes() {
+        return ResponseDto.of(beerService.findTypes());
     }
 
     //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)

@@ -1,11 +1,12 @@
 package com.depromeet.sulsul.domain.beer.entity;
 
+import com.depromeet.sulsul.common.dto.EnumModel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum BeerType {
+public enum BeerType implements EnumModel {
     //COMMENT: 임시 종류
     LIGHT_ALE("라이트 에일"),
     IPA("인디아 페일 에일"),
@@ -18,4 +19,13 @@ public enum BeerType {
 
     private final String korean;
 
+    @Override
+    public String getKey() {
+        return name();
+    }
+
+    @Override
+    public String getValue() {
+        return korean;
+    }
 }
