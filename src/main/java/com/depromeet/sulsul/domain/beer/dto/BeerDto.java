@@ -4,7 +4,7 @@ import com.depromeet.sulsul.domain.MemberBeer;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
-import com.depromeet.sulsul.domain.country.dto.CountryDto;
+import com.depromeet.sulsul.domain.country.dto.CountryDetail;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.Setter;
 public class BeerDto {
 
     private Long id;
-    private CountryDto country;
+    private CountryDetail country;
     private BeerType type;
     private String name;
     private String pictureUrl;
@@ -37,7 +37,7 @@ public class BeerDto {
     @QueryProjection
     public BeerDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
         this.id = beer.getId();
-        this.country = new CountryDto(country.getId(), country.getName(), new ContinentDto(country.getContinent()));
+        this.country = new CountryDetail(country.getId(), country.getName(), new ContinentDto(country.getContinent()));
         this.type = beer.getType();
         this.name = beer.getName();
         this.pictureUrl = beer.getPictureUrl();
