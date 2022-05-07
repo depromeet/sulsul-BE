@@ -1,6 +1,5 @@
 package com.depromeet.sulsul.domain.beer.dto;
 
-import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
