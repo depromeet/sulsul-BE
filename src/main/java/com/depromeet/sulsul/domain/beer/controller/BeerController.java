@@ -10,6 +10,7 @@ import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/beers")
 public class BeerController {
 
     private final BeerService beerService;
-
-    public BeerController(BeerService beerService) {
-        this.beerService = beerService;
-    }
 
     @GetMapping("")
     public ResponseDto<PageableResponse<BeerDto>> findPageWithFilterRequest(@RequestParam("beerId") Long beerId,

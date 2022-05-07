@@ -2,7 +2,6 @@ package com.depromeet.sulsul.domain.beer.service;
 
 import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
-import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
@@ -14,31 +13,24 @@ import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustom;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustomImpl;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
 import com.depromeet.sulsul.util.PropertyUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
-import static com.depromeet.sulsul.util.PaginationUtil.*;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BeerService {
 
     private final BeerRepository beerRepository;
     private final BeerRepositoryCustom beerRepositoryCustom;
     private final CountryRepository countryRepository;
-
-    public BeerService(BeerRepository beerRepository, BeerRepositoryCustomImpl beerRepositoryCustom, CountryRepository countryRepository) {
-        this.beerRepository = beerRepository;
-        this.beerRepositoryCustom = beerRepositoryCustom;
-        this.countryRepository = countryRepository;
-    }
 
     @Transactional(readOnly = true)
     public PageableResponse<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId, BeerFilterSortRequest beerFilterSortRequest) {
