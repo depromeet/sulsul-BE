@@ -10,13 +10,12 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeerDto {
+public class BeerDetail {
 
     private Long id;
     private CountryDetail country;
@@ -28,14 +27,11 @@ public class BeerDto {
     private Integer price;
     private Integer volume;
 
-    //COMMENT: RECORD로 부터 얻는 정보
-    private Integer feel;
-
     //COMMENT: MEMBER_BEER로 부터 얻는 정보
     private Boolean isLiked = false;
 
     @QueryProjection
-    public BeerDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
+    public BeerDetail(Country country, Beer beer, MemberBeer memberBeer) {
         this.id = beer.getId();
         this.country = new CountryDetail(country.getId(), country.getName(), new ContinentDto(country.getContinent()));
         this.type = beer.getType();
@@ -45,7 +41,6 @@ public class BeerDto {
         this.alcohol = beer.getAlcohol();
         this.price = beer.getPrice();
         this.volume = beer.getVolume();
-        this.feel = feel;
         if (memberBeer != null) {
             this.isLiked = true;
         }
