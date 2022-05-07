@@ -10,7 +10,6 @@ import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustom;
-import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustomImpl;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
 import com.depromeet.sulsul.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +52,7 @@ public class BeerService {
                 beerRequest));
     }
 
+    @Transactional(readOnly = true)
     public BeerDetail findById(Long memberId, Long beerId) {
         return beerRepositoryCustom.findById(memberId, beerId);
     }
