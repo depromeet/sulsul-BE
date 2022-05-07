@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
+import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
 import org.springframework.stereotype.Repository;
@@ -10,4 +11,5 @@ import java.util.List;
 public interface BeerRepositoryCustom {
 
     List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId, BeerFilterSortRequest beerFilterSortRequest);
+    BeerDetail findById(Long memberId, Long beerId);
 }

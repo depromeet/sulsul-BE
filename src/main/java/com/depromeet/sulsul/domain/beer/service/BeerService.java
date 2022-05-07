@@ -1,6 +1,7 @@
 package com.depromeet.sulsul.domain.beer.service;
 
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
@@ -50,5 +51,9 @@ public class BeerService {
         beerRepository.save(new Beer(
                 countryRepository.getById(beerRequest.getCountryId()),
                 beerRequest));
+    }
+
+    public BeerDetail findById(Long memberId, Long beerId) {
+        return beerRepositoryCustom.findById(memberId, beerId);
     }
 }

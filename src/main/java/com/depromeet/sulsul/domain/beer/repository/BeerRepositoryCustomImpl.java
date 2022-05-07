@@ -1,8 +1,6 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
-import com.depromeet.sulsul.domain.beer.dto.QBeerDto;
+import com.depromeet.sulsul.domain.beer.dto.*;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -61,5 +59,15 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
         }
 
         return jpaQuery.fetch();
+    }
+
+    @Override
+    public BeerDetail findById(Long memberId, Long beerId) {
+        return queryFactory.select(new QBeerDetail(country, beer, memberBeer))
+                .from(beer)
+                .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+                .innerJoin(country).on(beer.country.eq(country))
+                .where(beer.id.eq(beerId))
+                .fetchOne();
     }
 }
