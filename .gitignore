@@ -38,3 +38,7 @@ out/
 
 ### application-secrets ###
 **/application-secrets.yml
+
+id_rsa
+id_rsa.pub
+.DS_Store
