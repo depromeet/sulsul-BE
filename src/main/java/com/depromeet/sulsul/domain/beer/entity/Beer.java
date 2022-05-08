@@ -4,7 +4,7 @@ import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.review.entity.Review;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Beer {
 
     @Id
@@ -58,4 +60,19 @@ public class Beer {
         this.price = beerRequest.getPrice();
         this.volume = beerRequest.getVolume();
     }
+
+
+    public Beer(Long id, Country country, BeerType type, String name, String pictureUrl, String content, Float alcohol, Integer price, Integer volume) {
+        this.id = id;
+        this.country = country;
+        this.reviews = reviews;
+        this.type = type;
+        this.name = name;
+        this.pictureUrl = pictureUrl;
+        this.content = content;
+        this.alcohol = alcohol;
+        this.price = price;
+        this.volume = volume;
+    }
+
 }
