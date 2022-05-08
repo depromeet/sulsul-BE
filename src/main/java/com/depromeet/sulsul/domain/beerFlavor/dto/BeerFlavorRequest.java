@@ -1,17 +1,18 @@
-package com.depromeet.sulsul.domain.review.dto;
+package com.depromeet.sulsul.domain.beerFlavor.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewUpdateRequest {
-    private Long id;
-    private String content;
-    private Long memberId;
+public class BeerFlavorRequest {
     private Long beerId;
+    private List<Long> flavorIds = new ArrayList<>();
 }
