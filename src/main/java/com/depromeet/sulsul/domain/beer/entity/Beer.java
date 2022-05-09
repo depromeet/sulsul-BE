@@ -5,7 +5,6 @@ import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerUpdateRequest;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.review.entity.Review;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,20 +60,5 @@ public class Beer {
         this.alcohol = beerRequest.getAlcohol();
         this.price = beerRequest.getPrice();
         this.volume = beerRequest.getVolume();
-    }
-
-    public void update(Country country, BeerUpdateRequest beerUpdateRequest){
-        this.country = country;
-        this.type = beerUpdateRequest.getType();
-        this.name = beerUpdateRequest.getName();
-        this.pictureUrl = beerUpdateRequest.getPictureUrl();
-        this.content = beerUpdateRequest.getContent();
-        this.alcohol = beerUpdateRequest.getAlcohol();
-        this.price = beerUpdateRequest.getPrice();
-        this.volume = beerUpdateRequest.getVolume();
-    }
-
-    public void deleteBeer(){
-        this.isDeleted = true;
     }
 }
