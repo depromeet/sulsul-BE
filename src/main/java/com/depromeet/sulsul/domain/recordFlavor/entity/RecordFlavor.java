@@ -10,8 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecordFlavor {
     @Id
     @Column(name = "beer_flavor_id")
@@ -21,7 +20,7 @@ public class RecordFlavor {
     @ManyToOne(fetch = FetchType.LAZY)
     private Record record;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flavor_id")
     private Flavor flavor;
 
