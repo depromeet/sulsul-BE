@@ -4,6 +4,7 @@ import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerUpdateRequest;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,19 @@ public class BeerController {
     @PostMapping("/v1/beers")
     public ResponseEntity<Object> save(@RequestBody BeerRequest beerRequest) {
         beerService.save(beerRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //TODO: 업데이트 적용 내용 변경 가능
+    @PutMapping("/v1/beers")
+    public ResponseEntity<Object> update(@RequestBody BeerUpdateRequest beerUpdateRequest){
+        beerService.update(beerUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/v1/beers")
+    public ResponseEntity<Object> delete(@PathVariable("beerId") Long beerId){
+        beerService.delete(beerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
