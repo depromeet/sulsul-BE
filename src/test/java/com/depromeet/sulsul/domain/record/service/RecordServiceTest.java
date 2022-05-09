@@ -1,5 +1,7 @@
 package com.depromeet.sulsul.domain.record.service;
 
+import com.depromeet.sulsul.common.response.dto.PageableResponse;
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
@@ -31,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -132,21 +136,19 @@ class RecordServiceTest {
         entityManager.flush();
         entityManager.clear();
 
-        List<RecordDto> recordDtos = recordService.findAllRecordsWithPageable(1L, 0L);
-        List<String> changer = recordDtos.stream().map(RecordDto::getFlavor).collect(Collectors.toList());
-//        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-//        for (RecordDto recordDto : recordDtos) {
-//            System.out.println(recordDto.getContent());
-//        }
-//        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        for (String s : changer) {
-            System.out.println(s);
-        }
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        ResponseDto<PageableResponse<RecordDto>> allRecordsWithPageable = recordController.findAllRecordsWithPageable(1L, 0L);
+        List<RecordDto> data = (List<RecordDto>) allRecordsWithPageable.getData();
 
-        entityManager.flush();
-        entityManager.clear();
+        for (RecordDto datum : data) {
+            System.out.println(datum.getContent());
+            System.out.println(datum.getFeel());
+            System.out.println(datum.getScore());
+            System.out.println(datum.getMemberName());
+            System.out.println(datum.getMemberProfileurl());
+            for (Flavor flavor1 : datum.getFlavor()) {
+                System.out.println(flavor1.getContent());
+            }
+        }
 
 
     }

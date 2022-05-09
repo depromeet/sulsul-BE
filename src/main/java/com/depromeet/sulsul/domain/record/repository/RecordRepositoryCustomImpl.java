@@ -30,29 +30,13 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     }
 
     @Override
-    public List<RecordDto> findAllRecordsWithPageable(Long beerId, Long recordId){
-//        JPAQuery<RecordDto> jpaQuery = queryFactory.select(new QRecordDto(record.content, record.member, record.feel, record.score, flavor.content))
-//                .from(record)
-////                .distinct()
-//                .leftJoin(recordFlavor).on(record.eq(recordFlavor.record))
-//                .innerJoin(flavor).on(flavor.eq(recordFlavor.flavor))
-//                .fetchJoin()
-//                .where(record.id.goe(recordId)).distinct()
-//                .limit(PaginationUtil.PAGINATION_SIZE+1);
-//        return jpaQuery.fetch();
-
-        List<RecordDto> recordDtos = queryFactory.select(new QRecordDto(record.content, record.feel, record.score))
+    public List<Record> findAllRecordsWithPageable(Long beerId, Long recordId){
+        List<Record> recordDtos = queryFactory.select(record)
                 .from(record)
                 .where(record.id.goe(recordId))
                 .limit(PaginationUtil.PAGINATION_SIZE+1)
                 .fetch();
         return recordDtos;
-
-
-//        recordDtos.stream().map(RecordDto::getContent).forEach(Hibernate::initialize);
-//                .leftJoin(recordFlavor).on(record.eq(recordFlavor.record))
-//        return recordDtos;
     }
-
 
 }
