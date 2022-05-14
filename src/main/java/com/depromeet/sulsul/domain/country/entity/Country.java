@@ -22,4 +22,5 @@ public class Country {
     private Continent continent;
 
     private String name;
+    private String imageUrl;
 }

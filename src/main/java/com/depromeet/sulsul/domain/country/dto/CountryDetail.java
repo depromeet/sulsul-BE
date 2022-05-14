@@ -10,6 +10,7 @@ public class CountryDetail {
 
     private Long id;
     private String name;
+    private String imageUrl;
     private ContinentDto continent;
 
 }
