@@ -30,8 +30,9 @@ public class Beer {
     private List<Review> reviews = new ArrayList<>();
 
     private BeerType type;
-    private String name;
-    private String pictureUrl;
+    private String nameKor;
+    private String nameEng;
+    private String imageUrl;
     private String content;
     private Float alcohol;
     private Integer price;
@@ -40,8 +41,9 @@ public class Beer {
     public Beer(Country country, BeerDto beerDto) {
         this.country = country;
         this.type = beerDto.getType();
-        this.name = beerDto.getName();
-        this.pictureUrl = beerDto.getPictureUrl();
+        this.nameKor = beerDto.getNameKor();
+        this.nameEng = beerDto.getNameEng();
+        this.imageUrl = beerDto.getImageUrl();
         this.content = beerDto.getContent();
         this.alcohol = beerDto.getAlcohol();
         this.price = beerDto.getPrice();
@@ -51,8 +53,9 @@ public class Beer {
     public Beer(Country country, BeerRequest beerRequest) {
         this.country = country;
         this.type = beerRequest.getType();
-        this.name = beerRequest.getName();
-        this.pictureUrl = beerRequest.getPictureUrl();
+        this.nameKor = beerRequest.getNameKor();
+        this.nameEng = beerRequest.getNameEng();
+        this.imageUrl = beerRequest.getImageUrl();
         this.content = beerRequest.getContent();
         this.alcohol = beerRequest.getAlcohol();
         this.price = beerRequest.getPrice();

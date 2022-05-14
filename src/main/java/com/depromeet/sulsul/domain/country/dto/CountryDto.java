@@ -12,6 +12,7 @@ public class CountryDto {
 
     private Long id;
     private String name;
+    private String imageUrl;
 
     public CountryDto(Country country) {
         this.id = country.getId();
