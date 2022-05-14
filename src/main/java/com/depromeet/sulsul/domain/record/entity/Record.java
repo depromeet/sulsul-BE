@@ -1,17 +1,12 @@
 package com.depromeet.sulsul.domain.record.entity;
 
 import com.depromeet.sulsul.domain.beer.entity.Beer;
-import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import com.depromeet.sulsul.domain.member.entity.Member;
-import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,20 +25,8 @@ public class Record {
     @JoinColumn(name = "beer_id")
     private Beer beer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "record")
-    private List<RecordFlavor> recordFlavors = new ArrayList<>();
-
     private String content;
-    private Boolean isPublic = false;
+    private Boolean isPublic;
     private Integer feel;
     private Integer score;
-    private Boolean isDeleted = false;
-
-    public Record(String content, Integer feel, Integer score, Member member, Beer beer) {
-        this.content = content;
-        this.feel = feel;
-        this.score = score;
-        this.member = member;
-        this.beer = beer;
-    }
 }
