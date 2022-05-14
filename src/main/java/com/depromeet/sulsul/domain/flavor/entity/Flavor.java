@@ -17,9 +17,4 @@ public class Flavor {
     private Long id;
 
     private String content;
-
-    public Flavor(Long id, String content) {
-        this.id = id;
-        this.content = content;
-    }
 }
