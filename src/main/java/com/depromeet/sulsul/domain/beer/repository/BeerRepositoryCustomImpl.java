@@ -48,7 +48,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
         switch (beerFilterSortRequest.getSortType()) {
             case NAME:
-                jpaQuery = jpaQuery.orderBy(beer.name.asc());
+                jpaQuery = jpaQuery.orderBy(beer.nameKor.asc());
                 break;
             case ALCOHOL:
                 jpaQuery = jpaQuery.orderBy(beer.alcohol.asc());

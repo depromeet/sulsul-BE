@@ -20,8 +20,9 @@ public class BeerDetail {
     private Long id;
     private CountryDetail country;
     private BeerType type;
-    private String name;
-    private String pictureUrl;
+    private String nameKor;
+    private String nameEng;
+    private String imageUrl;
     private String content;
     private Float alcohol;
     private Integer price;
@@ -33,10 +34,13 @@ public class BeerDetail {
     @QueryProjection
     public BeerDetail(Country country, Beer beer, MemberBeer memberBeer) {
         this.id = beer.getId();
-        this.country = new CountryDetail(country.getId(), country.getName(), new ContinentDto(country.getContinent()));
+        this.country = new CountryDetail(country.getId(),
+                country.getName(), country.getImageUrl(),
+                new ContinentDto(country.getContinent()));
         this.type = beer.getType();
-        this.name = beer.getName();
-        this.pictureUrl = beer.getPictureUrl();
+        this.nameKor = beer.getNameKor();
+        this.nameEng = beer.getNameEng();
+        this.imageUrl = beer.getImageUrl();
         this.content = beer.getContent();
         this.alcohol = beer.getAlcohol();
         this.price = beer.getPrice();
