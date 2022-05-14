@@ -52,4 +52,17 @@ public class BeerController {
         beerService.save(beerRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    //TODO: 업데이트 적용 내용 변경 가능
+    @PutMapping("/v1/beers")
+    public ResponseEntity<Object> update(@RequestBody BeerUpdateRequest beerUpdateRequest){
+        beerService.update(beerUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/v1/beers")
+    public ResponseEntity<Object> delete(@PathVariable("beerId") Long beerId){
+        beerService.delete(beerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
