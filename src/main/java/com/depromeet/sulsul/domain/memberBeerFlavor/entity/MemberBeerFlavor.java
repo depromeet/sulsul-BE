@@ -1,6 +1,6 @@
-package com.depromeet.sulsul.domain.record.entity;
+package com.depromeet.sulsul.domain.memberBeerFlavor.entity;
 
-import com.depromeet.sulsul.domain.beer.entity.Beer;
+import com.depromeet.sulsul.domain.beerFlavor.entity.BeerFlavor;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,9 +11,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Record {
+public class MemberBeerFlavor {
 
-    @Id @Column(name = "record_id")
+    @Id
+    @Column(name = "member_beer_flavor_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -22,11 +23,6 @@ public class Record {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "beer_id")
-    private Beer beer;
-
-    private String content;
-    private Boolean isPublic;
-    private Integer feel;
-    private Integer score;
+    @JoinColumn(name = "beer_flavor_id")
+    private BeerFlavor beerFlavor;
 }
