@@ -1,20 +1,16 @@
 package com.depromeet.sulsul.domain.continent.dto;
 
 import com.depromeet.sulsul.domain.continent.entity.Continent;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+@AllArgsConstructor
 public class ContinentDto {
 
     private Long id;
     private String name;
-
-    public ContinentDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public ContinentDto(Continent continent) {
         this.id = continent.getId();

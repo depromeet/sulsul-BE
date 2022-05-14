@@ -1,9 +1,21 @@
 package com.depromeet.sulsul.util;
 
+import com.depromeet.sulsul.common.dto.EnumModel;
+import com.depromeet.sulsul.common.dto.EnumValue;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyUtil {
+    public static List<EnumValue> toEnumValues(Class<? extends EnumModel> e){
+        return Arrays
+                .stream(e.getEnumConstants())
+                .map(EnumValue::new)
+                .collect(Collectors.toList());
+    }
     public static final long PAGINATION_SIZE = 10;
 }
