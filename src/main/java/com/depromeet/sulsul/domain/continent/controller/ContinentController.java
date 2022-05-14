@@ -1,0 +1,24 @@
+package com.depromeet.sulsul.domain.continent.controller;
+
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
+import com.depromeet.sulsul.domain.continent.service.ContinentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/continents")
+public class ContinentController {
+
+    private final ContinentService continentService;
+
+    @GetMapping("")
+    public ResponseDto<List<ContinentDto>> findAll() {
+        return ResponseDto.of(continentService.findAll());
+    }
+}

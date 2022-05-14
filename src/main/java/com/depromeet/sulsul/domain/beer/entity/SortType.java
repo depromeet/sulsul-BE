@@ -6,16 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum BeerType implements EnumModel {
-    //COMMENT: 임시 종류
-    LIGHT_ALE("라이트 에일"),
-    IPA("인디아 페일 에일"),
-    PALE_ALE("페일 에일"),
-    BROWN_ALE("브라운 에일"),
-    LARGER("라거"),
-    PORTER("포터"),
-    WEIZEN("바이젠"),
-    Pilsner("필스너");
+public enum SortType implements EnumModel {
+    REVIEW("리뷰 많은 순"), NAME("이름 순"), ALCOHOL("알코올 도수 순");
 
     private final String korean;
 
