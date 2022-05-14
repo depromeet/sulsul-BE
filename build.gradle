@@ -18,6 +18,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
+
+    // Image Scaling
+    implementation group: 'com.mortennobel', name: 'java-image-scaling', version: '0.8.6'
+
+    // AWS Library
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+
+    // Utility Class Package
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
     runtimeOnly 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
