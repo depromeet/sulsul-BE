@@ -8,7 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Flavor {
 
     @Id
@@ -17,4 +18,9 @@ public class Flavor {
     private Long id;
 
     private String content;
+
+    public Flavor(Long id, String content) {
+        this.id = id;
+        this.content = content;
+    }
 }
