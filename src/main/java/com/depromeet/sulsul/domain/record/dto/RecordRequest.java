@@ -1,4 +1,4 @@
-package com.depromeet.sulsul.domain.review.dto;
+package com.depromeet.sulsul.domain.record.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewUpdateRequest {
-    private Long id;
+public class RecordRequest {
     private String content;
     private Long memberId;
     private Long beerId;
+    private Integer feel;
+    private Integer score;
 }
