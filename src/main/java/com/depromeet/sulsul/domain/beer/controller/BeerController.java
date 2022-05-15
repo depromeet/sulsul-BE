@@ -5,7 +5,7 @@ import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
@@ -28,11 +28,13 @@ public class BeerController {
     public ResponseDto<PageableResponse<BeerDto>> findPageWithFilterRequest(@RequestParam("beerId") Long beerId,
                                                                             @RequestParam(required = false) List<BeerType> beerTypes,
                                                                             @RequestParam(required = false) List<Long> countryIds,
-                                                                            @RequestParam(required = false) SortType sortType
+                                                                            @RequestParam(required = false) SortType sortType,
+                                                                            @RequestParam(value = "keyword", required = false) String searchKeyword
                                                             ) {
         Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
-        BeerFilterSortRequest beerFilterSortRequest = new BeerFilterSortRequest(beerTypes, countryIds, sortType);
-        return ResponseDto.of(beerService.findPageWithFilterRequest(memberId, beerId, beerFilterSortRequest));
+        BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(beerTypes, countryIds, sortType, searchKeyword);
+        System.out.println(searchKeyword);
+        return ResponseDto.of(beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest));
     }
 
     @GetMapping("/{beerId}")

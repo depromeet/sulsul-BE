@@ -9,10 +9,11 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public final class BeerFilterSortRequest {
+public final class BeerSearchConditionRequest {
 
     private List<BeerType> beerTypes;
     private List<Long> countryIds;
     private SortType sortType;
+    private String searchKeyword;
 
 }

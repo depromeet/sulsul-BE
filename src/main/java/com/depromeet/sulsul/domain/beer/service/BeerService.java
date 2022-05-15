@@ -4,7 +4,7 @@ import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
@@ -32,8 +32,8 @@ public class BeerService {
     private final CountryRepository countryRepository;
 
     @Transactional(readOnly = true)
-    public PageableResponse<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId, BeerFilterSortRequest beerFilterSortRequest) {
-        List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(memberId, beerId, beerFilterSortRequest);
+    public PageableResponse<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId, BeerSearchConditionRequest beerSearchConditionRequest) {
+        List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(memberId, beerId, beerSearchConditionRequest);
 
         PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>();
         if (isOverPaginationSize(beerDtosWithPageable)) {

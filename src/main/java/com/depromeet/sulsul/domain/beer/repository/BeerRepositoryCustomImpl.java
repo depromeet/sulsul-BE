@@ -2,6 +2,7 @@ package com.depromeet.sulsul.domain.beer.repository;
 
 import com.depromeet.sulsul.domain.beer.dto.*;
 import com.depromeet.sulsul.util.PaginationUtil;
+import com.depromeet.sulsul.util.PropertyUtil;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     }
     
     @Override
-    public List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId, BeerFilterSortRequest beerFilterSortRequest) {
+    public List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId, BeerSearchConditionRequest beerSearchConditionRequest) {
         JPAQuery<BeerDto> jpaQuery = queryFactory.select(new QBeerDto(country, beer, record.feel, memberBeer))
                 .from(beer)
                 .leftJoin(record).on(beer.eq(record.beer))
@@ -34,19 +35,28 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
                 .where(beer.id.goe(beerId))
                 .limit(PaginationUtil.PAGINATION_SIZE + 1);
 
-        if (beerFilterSortRequest.getBeerTypes() != null) {
+        if (beerSearchConditionRequest.getBeerTypes() != null) {
             jpaQuery = jpaQuery
-                    .where(beer.type.in(beerFilterSortRequest.getBeerTypes()));
+                    .where(beer.type.in(beerSearchConditionRequest.getBeerTypes()));
         }
 
-        if (beerFilterSortRequest.getCountryIds() != null) {
+        if (beerSearchConditionRequest.getCountryIds() != null) {
             jpaQuery = jpaQuery
-                    .where(beer.country.id.in(beerFilterSortRequest.getCountryIds()));
+                    .where(beer.country.id.in(beerSearchConditionRequest.getCountryIds()));
         }
 
-        if (beerFilterSortRequest.getSortType() == null) return jpaQuery.fetch();
+        if (!PropertyUtil.isEmpty(beerSearchConditionRequest.getSearchKeyword())) {
+            String searchKeyword = beerSearchConditionRequest.getSearchKeyword();
+            jpaQuery = jpaQuery
+                    .where(beer.name.contains(searchKeyword)
+                            .or(beer.country.name.contains(searchKeyword))
+                            .or(beer.country.continent.name.contains(searchKeyword))
+                            .or(beer.content.contains(searchKeyword)));
+        }
 
-        switch (beerFilterSortRequest.getSortType()) {
+        if (beerSearchConditionRequest.getSortType() == null) return jpaQuery.fetch();
+
+        switch (beerSearchConditionRequest.getSortType()) {
             case NAME:
                 jpaQuery = jpaQuery.orderBy(beer.name.asc());
                 break;
@@ -57,6 +67,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
                 jpaQuery = jpaQuery.orderBy(beer.reviews.size().desc());
                 break;
         }
+
 
         return jpaQuery.fetch();
     }
