@@ -18,4 +18,8 @@ public class PropertyUtil {
                 .map(EnumValue::new)
                 .collect(Collectors.toList());
     }
+
+    public static boolean isEmpty(String str) {
+        return str == null || str.trim().isEmpty();
+    }
 }
