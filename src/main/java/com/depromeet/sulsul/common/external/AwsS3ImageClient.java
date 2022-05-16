@@ -24,7 +24,7 @@ import static com.depromeet.sulsul.util.ImageUtil.*;
 @RequiredArgsConstructor
 public class AwsS3ImageClient {
 
-    private static String BUCKET_URL = "https://sulsul-media-bucket.s3.ap-northeast-2.amazonaws.com";
+    private static final String BUCKET_URL = "https://sulsul-media-bucket.s3.ap-northeast-2.amazonaws.com";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -38,7 +38,7 @@ public class AwsS3ImageClient {
         String fileName = multipartFile.getOriginalFilename();
         String bucketObjectName = getNameByUUID(fileName);
 
-        validExtension(ext);
+        isValidExtension(ext);
 
         writeImage(multipartFile, ext, outputStream);
 
