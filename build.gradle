@@ -19,6 +19,9 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
 
+    // Swagger 3.0.0
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
     // Image Scaling
     implementation group: 'com.mortennobel', name: 'java-image-scaling', version: '0.8.6'
 
