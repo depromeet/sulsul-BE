@@ -8,9 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 public class CountryDetail {
 
-    private Long id;
-    private String name;
-    private String imageUrl;
-    private ContinentDto continent;
+    private final Long id;
+    private final String nameKor;
+    private final String nameEng;
+    private final String imageUrl;
+    private final ContinentDto continent;
 
 }
