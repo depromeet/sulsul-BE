@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,21 +20,27 @@ import java.util.List;
 @NoArgsConstructor
 public class RecordDto {
     private String content;
-    private String memberName;
-    private String memberProfileurl;
     private Integer feel;
     private Integer score;
+
+    private MemberRecordDto memberRecordDto;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
+
     private List<Flavor> flavor;
 
     @QueryProjection
-    public RecordDto(String content, Member member, Integer feel, Integer score, List<Flavor> flavor) {
+    public RecordDto(String content, MemberRecordDto memberRecordDto, Integer feel, Integer score, List<Flavor> flavor
+                    , LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.content = content;
-        this.memberName = member.getName();
-        this.memberProfileurl = member.getProfileUrl();
         this.feel = feel;
         this.score = score;
-
         this.flavor = flavor;
+
+        this.memberRecordDto = memberRecordDto;
+
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
     @QueryProjection

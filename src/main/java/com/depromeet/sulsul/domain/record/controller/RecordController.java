@@ -5,6 +5,7 @@ import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beerFlavor.dto.BeerFlavorRequest;
 import com.depromeet.sulsul.domain.beerFlavor.service.BeerFlavorService;
 import com.depromeet.sulsul.domain.record.dto.RecordDto;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequest;
 import com.depromeet.sulsul.domain.record.dto.RecordRequest;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.service.RecordService;
@@ -29,8 +30,8 @@ public class RecordController {
     }
 
     @GetMapping("/record")
-    public ResponseDto<PageableResponse<RecordDto>> findAllRecordsWithPageable(@RequestParam("beerId") Long beerId
-                                                                , @RequestParam("recordId") Long recordId){
-        return ResponseDto.of(recordService.findAllRecordsWithPageable(beerId, recordId));
+    public ResponseDto<PageableResponse<RecordDto>> findAllRecordsWithPageable(@RequestBody RecordFindRequest recordFindRequest){
+
+        return ResponseDto.of(recordService.findAllRecordsWithPageable(recordFindRequest));
     }
 }

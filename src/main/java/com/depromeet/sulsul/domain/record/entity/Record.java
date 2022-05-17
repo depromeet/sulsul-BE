@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.record.entity;
 
+import com.depromeet.sulsul.domain.BaseTimeEntity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import com.depromeet.sulsul.domain.member.entity.Member;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Record {
+public class Record extends BaseTimeEntity {
 
     @Id @Column(name = "record_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

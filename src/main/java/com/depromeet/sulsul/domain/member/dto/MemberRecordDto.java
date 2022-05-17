@@ -14,5 +14,4 @@ public class MemberRecordDto {
 
     private Long id;
     private String name;
-    private String profileUrl;
 }
