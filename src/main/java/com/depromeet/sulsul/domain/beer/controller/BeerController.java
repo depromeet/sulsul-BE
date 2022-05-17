@@ -3,10 +3,7 @@ package com.depromeet.sulsul.domain.beer.controller;
 import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.*;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
@@ -42,7 +39,7 @@ public class BeerController {
     }
 
     @GetMapping("/types")
-    public ResponseDto<List<EnumValue>> findTypes() {
+    public ResponseDto<List<BeerTypeValue>> findTypes() {
         return ResponseDto.of(beerService.findTypes());
     }
 

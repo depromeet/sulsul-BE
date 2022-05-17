@@ -2,10 +2,7 @@ package com.depromeet.sulsul.domain.beer.service;
 
 import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.*;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
@@ -16,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
@@ -57,7 +56,10 @@ public class BeerService {
         return beerRepositoryCustom.findById(memberId, beerId);
     }
 
-    public List<EnumValue> findTypes() {
-        return PropertyUtil.toEnumValues(BeerType.class);
+    public List<BeerTypeValue> findTypes() {
+        return Arrays
+                .stream(BeerType.class.getEnumConstants())
+                .map(BeerTypeValue::new)
+                .collect(Collectors.toList());
     }
 }
