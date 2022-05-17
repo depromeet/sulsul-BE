@@ -18,4 +18,8 @@ public class PropertyUtil {
                 .map(EnumValue::new)
                 .collect(Collectors.toList());
     }
+
+    public static EnumValue toEnumValue(EnumModel enumModel){
+        return new EnumValue(enumModel);
+    }
 }

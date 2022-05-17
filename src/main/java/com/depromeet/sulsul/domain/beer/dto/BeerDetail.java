@@ -19,7 +19,7 @@ public class BeerDetail {
 
     private Long id;
     private CountryDetail country;
-    private BeerType type;
+    private BeerTypeValue type;
     private String nameKor;
     private String nameEng;
     private String imageUrl;
@@ -35,9 +35,9 @@ public class BeerDetail {
     public BeerDetail(Country country, Beer beer, MemberBeer memberBeer) {
         this.id = beer.getId();
         this.country = new CountryDetail(country.getId(),
-                country.getName(), country.getImageUrl(),
+                country.getNameKor(), country.getNameEng(), country.getImageUrl(),
                 new ContinentDto(country.getContinent()));
-        this.type = beer.getType();
+        this.type = new BeerTypeValue(beer.getType());
         this.nameKor = beer.getNameKor();
         this.nameEng = beer.getNameEng();
         this.imageUrl = beer.getImageUrl();
