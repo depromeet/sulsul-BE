@@ -1,9 +1,11 @@
 package com.depromeet.sulsul.domain.beer.entity;
 
+import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.domain.beer.dto.BeerDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.review.entity.Review;
+import com.depromeet.sulsul.util.PropertyUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,18 +39,6 @@ public class Beer {
     private Float alcohol;
     private Integer price;
     private Integer volume;
-
-    public Beer(Country country, BeerDto beerDto) {
-        this.country = country;
-        this.type = beerDto.getType();
-        this.nameKor = beerDto.getNameKor();
-        this.nameEng = beerDto.getNameEng();
-        this.imageUrl = beerDto.getImageUrl();
-        this.content = beerDto.getContent();
-        this.alcohol = beerDto.getAlcohol();
-        this.price = beerDto.getPrice();
-        this.volume = beerDto.getVolume();
-    }
 
     public Beer(Country country, BeerRequest beerRequest) {
         this.country = country;
