@@ -40,10 +40,4 @@ public class ReviewService {
         targetReview.deleteReview();
     }
 
-    // beer의 삭제와 함께 불려야 한다. 나중에
-    @Transactional
-    public Long deleteReviewLinkedBeer(Long beerId){
-        return reviewRepository.deleteByBeerId(beerId);
-    }
-
 }

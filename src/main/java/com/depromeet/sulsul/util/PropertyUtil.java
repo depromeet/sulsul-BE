@@ -11,11 +11,15 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyUtil {
+
     public static List<EnumValue> toEnumValues(Class<? extends EnumModel> e){
         return Arrays
                 .stream(e.getEnumConstants())
                 .map(EnumValue::new)
                 .collect(Collectors.toList());
     }
-    public static final long PAGINATION_SIZE = 10;
+
+    public static EnumValue toEnumValue(EnumModel enumModel){
+        return new EnumValue(enumModel);
+    }
 }

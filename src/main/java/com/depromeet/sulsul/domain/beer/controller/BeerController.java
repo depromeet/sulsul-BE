@@ -3,10 +3,7 @@ package com.depromeet.sulsul.domain.beer.controller;
 import com.depromeet.sulsul.common.dto.EnumValue;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.*;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
@@ -42,7 +39,7 @@ public class BeerController {
     }
 
     @GetMapping("/types")
-    public ResponseDto<List<EnumValue>> findTypes() {
+    public ResponseDto<List<BeerTypeValue>> findTypes() {
         return ResponseDto.of(beerService.findTypes());
     }
 
@@ -50,19 +47,6 @@ public class BeerController {
     @PostMapping("")
     public ResponseEntity save(@RequestBody BeerRequest beerRequest) {
         beerService.save(beerRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //TODO: 업데이트 적용 내용 변경 가능
-    @PutMapping("/v1/beers")
-    public ResponseEntity<Object> update(@RequestBody BeerUpdateRequest beerUpdateRequest){
-        beerService.update(beerUpdateRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @DeleteMapping("/v1/beers")
-    public ResponseEntity<Object> delete(@PathVariable("beerId") Long beerId){
-        beerService.delete(beerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
