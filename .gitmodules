@@ -1,3 +1,4 @@
-[submodule "src/main/resources/config"]
+[submodule "sulsul-secret"]
 	path = src/main/resources/config
-	url = https://github.com/depromeet/sulsul-secret.git
+	url = https://github.com/depromeet/sulsul-secret
+	branch = main
