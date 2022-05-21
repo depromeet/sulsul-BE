@@ -24,6 +24,10 @@ jobs:
     steps:
     # Actions Sequence
     - uses: actions/checkout@v3
+
+    # Submodule Update
+    - name: Git Sumbmodule Update
+      run: git submodule update --remote --recursive
     
     # Set JDK Version
     - name: Set up JDK 11
