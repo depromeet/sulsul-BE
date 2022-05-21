@@ -24,7 +24,10 @@ jobs:
     steps:
     # Actions Sequence
     - uses: actions/checkout@v3
-
+      with:
+        token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+        submodules: true
+        
     # Submodule Update
     - name: Git Sumbmodule Update
       run: git submodule update --remote --recursive
