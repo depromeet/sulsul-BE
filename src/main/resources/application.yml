@@ -9,3 +9,14 @@ spring:
         show_sql: true
         format_sql: true
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+

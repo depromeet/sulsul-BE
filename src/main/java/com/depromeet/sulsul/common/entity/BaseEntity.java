@@ -13,11 +13,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-  private Boolean isDeleted = false;
+  private LocalDateTime deletedAt;
 
   @CreatedDate
-  private LocalDateTime createdDate;
+  private LocalDateTime createdAt;
 
   @LastModifiedDate
-  private LocalDateTime modifiedDate;
+  private LocalDateTime updatedAt;
 }

@@ -13,4 +13,8 @@ public class PaginationUtil {
     public static boolean isOverPaginationSize(List contentsWithPageable) {
         return contentsWithPageable.size() == PaginationUtil.PAGINATION_SIZE + 1;
     }
+
+    public static boolean isOverPaginationSize(List contentsWithPageable, int limit) {
+        return contentsWithPageable.size() == limit + 1;
+    }
 }

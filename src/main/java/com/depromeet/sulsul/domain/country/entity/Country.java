@@ -21,5 +21,7 @@ public class Country {
     @JoinColumn(name = "continent_id")
     private Continent continent;
 
-    private String name;
+    private String nameKor;
+    private String nameEng;
+    private String imageUrl;
 }

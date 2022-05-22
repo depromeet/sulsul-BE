@@ -17,12 +17,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(BusinessException.class)
   protected ResponseEntity<ErrorDto> handleBusinessException(final BusinessException e) {
     log.error("BusinessException : {}", e.toString());
+    e.printStackTrace();
     return new ResponseEntity<>(ErrorDto.of(e.getMessage()), INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(Exception.class)
   protected ResponseEntity<ErrorDto> handleException(final Exception e) {
     log.error("Exception : {}", e.toString());
+    e.printStackTrace();
     return new ResponseEntity<>(ErrorDto.of(e.toString()), INTERNAL_SERVER_ERROR);
   }
 }
