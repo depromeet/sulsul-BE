@@ -31,7 +31,7 @@ public class BeerControllerV2 {
 
   private final BeerService beerService;
 
-  @PostMapping("")
+  @PostMapping
   public ResponseDto<PageableResponse<BeerDto>> findPageWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
     Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
