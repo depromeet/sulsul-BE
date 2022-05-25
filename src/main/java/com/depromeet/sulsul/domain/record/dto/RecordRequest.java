@@ -1,4 +1,4 @@
-package com.depromeet.sulsul.domain.recordsFlavor.dto;
+package com.depromeet.sulsul.domain.record.dto;
 
 import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,10 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordsFlavorRequest {
+public class RecordRequest {
+    private String content;
     private Long beerId;
-    private List<Flavor> flavors = new ArrayList<>();
+    private List<Flavor> Flavors = new ArrayList<>();
+    private Boolean isPublic;
+    private Integer feel;
 }

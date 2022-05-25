@@ -1,10 +1,10 @@
-package com.depromeet.sulsul.domain.records.entity;
+package com.depromeet.sulsul.domain.record.entity;
 
 import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
-import com.depromeet.sulsul.domain.records.dto.RecordsRequest;
-import com.depromeet.sulsul.domain.recordsFlavor.entity.RecordsFlavor;
+import com.depromeet.sulsul.domain.record.dto.RecordRequest;
+import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Records extends BaseEntity {
+public class Record extends BaseEntity {
 
     @Id @Column(name = "record_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,20 +30,18 @@ public class Records extends BaseEntity {
     @JoinColumn(name = "beer_id")
     private Beer beer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "records")
-    private List<RecordsFlavor> recordsFlavors = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "record")
+    private final List<RecordFlavor> recordFlavors = new ArrayList<>();
 
     private String content;
     private Boolean isPublic;
     private Integer feel;
-    private Integer score;
 
-    public Records(Member member, Beer beer, RecordsRequest recordsRequest) {
+    public Record(Member member, Beer beer, RecordRequest recordRequest) {
         this.member = member;
         this.beer = beer;
-        this.content = recordsRequest.getContent();
-        this.isPublic = recordsRequest.getIsPublic();
-        this.feel = recordsRequest.getFeel();
-        this.score = recordsRequest.getScore();
+        this.content = recordRequest.getContent();
+        this.isPublic = recordRequest.getIsPublic();
+        this.feel = recordRequest.getFeel();
     }
 }
