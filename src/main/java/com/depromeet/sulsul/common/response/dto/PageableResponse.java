@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PageableResponse<T> {
 
-    private List<T> contents;
-    private Boolean hasNext = false;
-    private Long next_cursor;
+  private List<T> contents;
+  private Boolean hasNext = false;
+  private Long nextCursor;
 }

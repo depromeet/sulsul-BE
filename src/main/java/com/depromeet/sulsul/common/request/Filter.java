@@ -12,6 +12,7 @@ public class Filter {
 
   @JsonProperty("beerTypes")
   private List<BeerType> beerTypes;
+
   @JsonProperty("countryIds")
   private List<Long> countryIds;
 

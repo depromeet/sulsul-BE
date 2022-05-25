@@ -12,15 +12,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BeerRequest implements Serializable {
 
-    private static final long serialVersionUID = -2120618888041262425L;
+  private static final long serialVersionUID = -2120618888041262425L;
 
-    private Long countryId;
-    private BeerType type;
-    private String nameKor;
-    private String nameEng;
-    private String imageUrl;
-    private String content;
-    private Float alcohol;
-    private Integer price;
-    private Integer volume;
+  private Long countryId;
+  private BeerType type;
+  private String nameKor;
+  private String nameEng;
+  private String imageUrl;
+  private String content;
+  private Float alcohol;
+  private Integer price;
+  private Integer volume;
 }

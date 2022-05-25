@@ -16,11 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class RecordController {
 
-    private final RecordService recordService;
+  private final RecordService recordService;
 
-    @PostMapping("/images")
-    public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
+  @PostMapping("/images")
+  public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
 
-        return ResponseDto.of(recordService.uploadImage(multipartFile));
-    }
+    return ResponseDto.of(recordService.uploadImage(multipartFile));
+  }
 }

@@ -10,13 +10,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReviewDto {
-    private Long id;
-    private MemberDto memberDto;
-    private String content;
 
-    public ReviewDto(Long id, String content, MemberDto memberDto) {
-        this.id = id;
-        this.content = content;
-        this.memberDto = memberDto;
-    }
+  private Long id;
+  private MemberDto memberDto;
+  private String content;
+
+  public ReviewDto(Long id, String content, MemberDto memberDto) {
+    this.id = id;
+    this.content = content;
+    this.memberDto = memberDto;
+  }
 }

@@ -29,64 +29,66 @@ import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 @RequiredArgsConstructor
 public class BeerService {
 
-    private final BeerRepository beerRepository;
-    private final BeerRepositoryCustom beerRepositoryCustom;
-    private final CountryRepository countryRepository;
+  private final BeerRepository beerRepository;
+  private final BeerRepositoryCustom beerRepositoryCustom;
+  private final CountryRepository countryRepository;
 
-    @Transactional(readOnly = true)
-    public PageableResponse<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId, BeerSearchConditionRequest beerSearchConditionRequest) {
-        List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(memberId, beerId, beerSearchConditionRequest);
+  @Transactional(readOnly = true)
+  public PageableResponse<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId,
+      BeerSearchConditionRequest beerSearchConditionRequest) {
+    List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(
+        memberId, beerId, beerSearchConditionRequest);
 
-        PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>();
-        if (isOverPaginationSize(beerDtosWithPageable)) {
-            beerDtosWithPageable.remove(PAGINATION_SIZE);
-            beerPageableResponse.setHasNext(true);
-        }
-
-        beerPageableResponse.setContents(beerDtosWithPageable);
-        return beerPageableResponse;
+    PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>();
+    if (isOverPaginationSize(beerDtosWithPageable)) {
+      beerDtosWithPageable.remove(PAGINATION_SIZE);
+      beerPageableResponse.setHasNext(true);
     }
 
-    @Transactional(readOnly = true)
-    public PageableResponse<BeerDto> findPageWithReadRequest(Long memberId, ReadRequest readRequest) {
-        List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findPageWith(memberId, readRequest);
+    beerPageableResponse.setContents(beerDtosWithPageable);
+    return beerPageableResponse;
+  }
 
-        PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>();
-        if (isOverPaginationSize(beerDtosWithPageable, readRequest.getLimit())) {
-            beerDtosWithPageable.remove(readRequest.getLimit());
-            setNextCursorInfo(beerPageableResponse, readRequest.getCursor(), readRequest.getLimit());
-        }
+  @Transactional(readOnly = true)
+  public PageableResponse<BeerDto> findPageWithReadRequest(Long memberId, ReadRequest readRequest) {
+    List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findPageWith(memberId, readRequest);
 
-        beerPageableResponse.setContents(beerDtosWithPageable);
-        return beerPageableResponse;
+    PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>();
+    if (isOverPaginationSize(beerDtosWithPageable, readRequest.getLimit())) {
+      beerDtosWithPageable.remove(readRequest.getLimit());
+      setNextCursorInfo(beerPageableResponse, readRequest.getCursor(), readRequest.getLimit());
     }
 
-    private void setNextCursorInfo(PageableResponse<BeerDto> beerPageableResponse,
-        Long cursor, int limit) {
-        beerPageableResponse.setHasNext(true);
-        if (cursor == null) {
-            beerPageableResponse.setNext_cursor(Integer.toUnsignedLong(limit));
-            return;
-        }
-        beerPageableResponse.setNext_cursor(cursor + limit);
-    }
+    beerPageableResponse.setContents(beerDtosWithPageable);
+    return beerPageableResponse;
+  }
 
-    public void save(BeerRequest beerRequest) {
-
-        beerRepository.save(new Beer(
-                countryRepository.getById(beerRequest.getCountryId()),
-                beerRequest));
+  private void setNextCursorInfo(PageableResponse<BeerDto> beerPageableResponse,
+      Long cursor, int limit) {
+    beerPageableResponse.setHasNext(true);
+    if (cursor == null) {
+      beerPageableResponse.setNextCursor(Integer.toUnsignedLong(limit));
+      return;
     }
+    beerPageableResponse.setNextCursor(cursor + limit);
+  }
 
-    @Transactional(readOnly = true)
-    public BeerDetail findById(Long memberId, Long beerId) {
-        return beerRepositoryCustom.findById(memberId, beerId);
-    }
+  public void save(BeerRequest beerRequest) {
 
-    public List<BeerTypeValue> findTypes() {
-        return Arrays
-                .stream(BeerType.class.getEnumConstants())
-                .map(BeerTypeValue::new)
-                .collect(Collectors.toList());
-    }
+    beerRepository.save(new Beer(
+        countryRepository.getById(beerRequest.getCountryId()),
+        beerRequest));
+  }
+
+  @Transactional(readOnly = true)
+  public BeerDetail findById(Long memberId, Long beerId) {
+    return beerRepositoryCustom.findById(memberId, beerId);
+  }
+
+  public List<BeerTypeValue> findTypes() {
+    return Arrays
+        .stream(BeerType.class.getEnumConstants())
+        .map(BeerTypeValue::new)
+        .collect(Collectors.toList());
+  }
 }

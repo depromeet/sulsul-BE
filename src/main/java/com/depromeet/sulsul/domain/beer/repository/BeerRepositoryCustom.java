@@ -11,7 +11,10 @@ import java.util.List;
 @Repository
 public interface BeerRepositoryCustom {
 
-    List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId, BeerSearchConditionRequest beerSearchConditionRequest);
-    List<BeerDto> findPageWith(Long memberId, ReadRequest readRequest);
-    BeerDetail findById(Long memberId, Long beerId);
+  List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
+      BeerSearchConditionRequest beerSearchConditionRequest);
+
+  List<BeerDto> findPageWith(Long memberId, ReadRequest readRequest);
+
+  BeerDetail findById(Long memberId, Long beerId);
 }

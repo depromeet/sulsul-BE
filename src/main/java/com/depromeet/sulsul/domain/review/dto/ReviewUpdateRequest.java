@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReviewUpdateRequest {
-    private Long id;
-    private String content;
-    private Long memberId;
-    private Long beerId;
+
+  private Long id;
+  private String content;
+  private Long memberId;
+  private Long beerId;
 }

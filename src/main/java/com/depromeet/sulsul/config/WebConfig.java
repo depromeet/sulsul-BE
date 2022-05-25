@@ -8,9 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToSortTypeConverter());
-        registry.addConverter(new StringToBeerTypeConverter());
-    }
+
+  @Override
+  public void addFormatters(FormatterRegistry registry) {
+    registry.addConverter(new StringToSortTypeConverter());
+    registry.addConverter(new StringToBeerTypeConverter());
+  }
 }

@@ -11,9 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 public final class BeerSearchConditionRequest {
 
-    private List<BeerType> beerTypes;
-    private List<Long> countryIds;
-    private SortType sortType;
-    private String searchKeyword;
+  private List<BeerType> beerTypes;
+  private List<Long> countryIds;
+  private SortType sortType;
+  private String searchKeyword;
 
 }

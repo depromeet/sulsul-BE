@@ -18,45 +18,45 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BeerDto {
 
-    private Long id;
-    private CountryDetail country;
-    private BeerTypeValue type;
-    private String nameKor;
-    private String nameEng;
-    private String imageUrl;
-    private String content;
-    private Float alcohol;
-    private Integer price;
-    private Integer volume;
-    private LocalDateTime deletedAt;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+  private Long id;
+  private CountryDetail country;
+  private BeerTypeValue type;
+  private String nameKor;
+  private String nameEng;
+  private String imageUrl;
+  private String content;
+  private Float alcohol;
+  private Integer price;
+  private Integer volume;
+  private LocalDateTime deletedAt;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
-    //COMMENT: RECORD로 부터 얻는 정보
-    private Integer feel;
+  //COMMENT: RECORD로 부터 얻는 정보
+  private Integer feel;
 
-    //COMMENT: MEMBER_BEER로 부터 얻는 정보
-    private Boolean isLiked = false;
+  //COMMENT: MEMBER_BEER로 부터 얻는 정보
+  private Boolean isLiked = false;
 
-    @QueryProjection
-    public BeerDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
-        this.id = beer.getId();
-        this.country = new CountryDetail(country.getId(), country.getNameKor(), country.getNameEng(),
-                country.getImageUrl(), new ContinentDto(country.getContinent()));
-        this.type = new BeerTypeValue(beer.getType());
-        this.nameKor = beer.getNameKor();
-        this.nameEng = beer.getNameEng();
-        this.imageUrl = beer.getImageUrl();
-        this.content = beer.getContent();
-        this.alcohol = beer.getAlcohol();
-        this.price = beer.getPrice();
-        this.volume = beer.getVolume();
-        this.deletedAt = beer.getDeletedAt();
-        this.createdAt = beer.getCreatedAt();
-        this.updatedAt = beer.getUpdatedAt();
-        this.feel = feel;
-        if (memberBeer != null) {
-            this.isLiked = true;
-        }
+  @QueryProjection
+  public BeerDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
+    this.id = beer.getId();
+    this.country = new CountryDetail(country.getId(), country.getNameKor(), country.getNameEng(),
+        country.getImageUrl(), new ContinentDto(country.getContinent()));
+    this.type = new BeerTypeValue(beer.getType());
+    this.nameKor = beer.getNameKor();
+    this.nameEng = beer.getNameEng();
+    this.imageUrl = beer.getImageUrl();
+    this.content = beer.getContent();
+    this.alcohol = beer.getAlcohol();
+    this.price = beer.getPrice();
+    this.volume = beer.getVolume();
+    this.deletedAt = beer.getDeletedAt();
+    this.createdAt = beer.getCreatedAt();
+    this.updatedAt = beer.getUpdatedAt();
+    this.feel = feel;
+    if (memberBeer != null) {
+      this.isLiked = true;
     }
+  }
 }

@@ -18,39 +18,39 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BeerDetail {
 
-    private Long id;
-    private CountryDetail country;
-    private BeerTypeValue type;
-    private String nameKor;
-    private String nameEng;
-    private String imageUrl;
-    private String content;
-    private Float alcohol;
-    private Integer price;
-    private Integer volume;
-    private LocalDateTime deletedAt;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+  private Long id;
+  private CountryDetail country;
+  private BeerTypeValue type;
+  private String nameKor;
+  private String nameEng;
+  private String imageUrl;
+  private String content;
+  private Float alcohol;
+  private Integer price;
+  private Integer volume;
+  private LocalDateTime deletedAt;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
-    //COMMENT: MEMBER_BEER로 부터 얻는 정보
-    private Boolean isLiked = false;
+  //COMMENT: MEMBER_BEER로 부터 얻는 정보
+  private Boolean isLiked = false;
 
-    @QueryProjection
-    public BeerDetail(Country country, Beer beer, MemberBeer memberBeer) {
-        this.id = beer.getId();
-        this.country = new CountryDetail(country.getId(),
-                country.getNameKor(), country.getNameEng(), country.getImageUrl(),
-                new ContinentDto(country.getContinent()));
-        this.type = new BeerTypeValue(beer.getType());
-        this.nameKor = beer.getNameKor();
-        this.nameEng = beer.getNameEng();
-        this.imageUrl = beer.getImageUrl();
-        this.content = beer.getContent();
-        this.alcohol = beer.getAlcohol();
-        this.price = beer.getPrice();
-        this.volume = beer.getVolume();
-        if (memberBeer != null) {
-            this.isLiked = true;
-        }
+  @QueryProjection
+  public BeerDetail(Country country, Beer beer, MemberBeer memberBeer) {
+    this.id = beer.getId();
+    this.country = new CountryDetail(country.getId(),
+        country.getNameKor(), country.getNameEng(), country.getImageUrl(),
+        new ContinentDto(country.getContinent()));
+    this.type = new BeerTypeValue(beer.getType());
+    this.nameKor = beer.getNameKor();
+    this.nameEng = beer.getNameEng();
+    this.imageUrl = beer.getImageUrl();
+    this.content = beer.getContent();
+    this.alcohol = beer.getAlcohol();
+    this.price = beer.getPrice();
+    this.volume = beer.getVolume();
+    if (memberBeer != null) {
+      this.isLiked = true;
     }
+  }
 }

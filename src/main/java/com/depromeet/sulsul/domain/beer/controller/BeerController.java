@@ -22,36 +22,39 @@ import java.util.List;
 @RequestMapping("/api/v1/beers")
 public class BeerController {
 
-    private final BeerService beerService;
+  private final BeerService beerService;
 
-    @GetMapping("")
-    public ResponseDto<PageableResponse<BeerDto>> findPageWithFilterRequest(@RequestParam("beerId") Long beerId,
-                                                                            @RequestParam(required = false) List<BeerType> beerTypes,
-                                                                            @RequestParam(required = false) List<Long> countryIds,
-                                                                            @RequestParam(required = false) SortType sortType,
-                                                                            @RequestParam(value = "keyword", required = false) String searchKeyword
-                                                            ) {
-        Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
-        BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(beerTypes, countryIds, sortType, searchKeyword);
-        System.out.println(searchKeyword);
-        return ResponseDto.of(beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest));
-    }
+  @GetMapping("")
+  public ResponseDto<PageableResponse<BeerDto>> findPageWithFilterRequest(
+      @RequestParam("beerId") Long beerId,
+      @RequestParam(required = false) List<BeerType> beerTypes,
+      @RequestParam(required = false) List<Long> countryIds,
+      @RequestParam(required = false) SortType sortType,
+      @RequestParam(value = "keyword", required = false) String searchKeyword
+  ) {
+    Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
+    BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(
+        beerTypes, countryIds, sortType, searchKeyword);
+    System.out.println(searchKeyword);
+    return ResponseDto.of(
+        beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest));
+  }
 
-    @GetMapping("/{beerId}")
-    public ResponseDto<BeerDetail> findById(@PathVariable("beerId") Long beerId) {
-        Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
-        return ResponseDto.of(beerService.findById(memberId, beerId));
-    }
+  @GetMapping("/{beerId}")
+  public ResponseDto<BeerDetail> findById(@PathVariable("beerId") Long beerId) {
+    Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
+    return ResponseDto.of(beerService.findById(memberId, beerId));
+  }
 
-    @GetMapping("/types")
-    public ResponseDto<List<BeerTypeValue>> findTypes() {
-        return ResponseDto.of(beerService.findTypes());
-    }
+  @GetMapping("/types")
+  public ResponseDto<List<BeerTypeValue>> findTypes() {
+    return ResponseDto.of(beerService.findTypes());
+  }
 
-    //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)
-    @PostMapping("")
-    public ResponseEntity save(@RequestBody BeerRequest beerRequest) {
-        beerService.save(beerRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)
+  @PostMapping("")
+  public ResponseEntity save(@RequestBody BeerRequest beerRequest) {
+    beerService.save(beerRequest);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

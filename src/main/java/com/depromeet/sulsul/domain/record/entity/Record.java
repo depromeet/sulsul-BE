@@ -13,20 +13,21 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Record {
 
-    @Id @Column(name = "record_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "record_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "beer_id")
-    private Beer beer;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "beer_id")
+  private Beer beer;
 
-    private String content;
-    private Boolean isPublic;
-    private Integer feel;
-    private Integer score;
+  private String content;
+  private Boolean isPublic;
+  private Integer feel;
+  private Integer score;
 }

@@ -15,12 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class RecordService {
 
-    private final AwsS3ImageClient awsS3ImageClient;
+  private final AwsS3ImageClient awsS3ImageClient;
 
-    public ImageDto uploadImage(MultipartFile multipartFile) {
-        if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
-            throw new IllegalArgumentException("[ERROR] Not supported file format.");
-        }
-        return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+  public ImageDto uploadImage(MultipartFile multipartFile) {
+    if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
+      throw new IllegalArgumentException("[ERROR] Not supported file format.");
     }
+    return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+  }
 }

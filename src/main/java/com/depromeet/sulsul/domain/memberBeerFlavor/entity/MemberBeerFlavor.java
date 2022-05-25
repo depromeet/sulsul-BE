@@ -13,16 +13,16 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberBeerFlavor {
 
-    @Id
-    @Column(name = "member_beer_flavor_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "member_beer_flavor_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "beer_flavor_id")
-    private BeerFlavor beerFlavor;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "beer_flavor_id")
+  private BeerFlavor beerFlavor;
 }

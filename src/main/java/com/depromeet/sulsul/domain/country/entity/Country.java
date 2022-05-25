@@ -12,16 +12,16 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Country {
 
-    @Id
-    @Column(name = "country_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "country_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "continent_id")
-    private Continent continent;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "continent_id")
+  private Continent continent;
 
-    private String nameKor;
-    private String nameEng;
-    private String imageUrl;
+  private String nameKor;
+  private String nameEng;
+  private String imageUrl;
 }

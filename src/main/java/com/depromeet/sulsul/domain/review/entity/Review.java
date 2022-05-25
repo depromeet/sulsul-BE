@@ -14,43 +14,43 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
 
-    @Id
-    @Column(name = "review_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "review_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "beer_id")
-    private Beer beer;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "beer_id")
+  private Beer beer;
 
-    private String content;
+  private String content;
 
-    private Boolean isDeleted = false;
+  private Boolean isDeleted = false;
 
-    public Review(String content, Member member, Beer beer) {
-        this.content = content;
-        this.member = member;
-        this.beer = beer;
-    }
+  public Review(String content, Member member, Beer beer) {
+    this.content = content;
+    this.member = member;
+    this.beer = beer;
+  }
 
-    public Review(Long id, String content, Boolean isDeleted, Member member, Beer beer) {
-        this.id = id;
-        this.content = content;
-        this.isDeleted = isDeleted;
-        this.member = member;
-        this.beer = beer;
-    }
+  public Review(Long id, String content, Boolean isDeleted, Member member, Beer beer) {
+    this.id = id;
+    this.content = content;
+    this.isDeleted = isDeleted;
+    this.member = member;
+    this.beer = beer;
+  }
 
-    public void updateReview(String content) {
-        this.content = content;
-    }
+  public void updateReview(String content) {
+    this.content = content;
+  }
 
-    public void deleteReview(){
-        this.isDeleted = true;
-    }
+  public void deleteReview() {
+    this.isDeleted = true;
+  }
 
 }

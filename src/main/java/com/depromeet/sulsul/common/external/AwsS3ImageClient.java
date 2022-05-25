@@ -24,55 +24,57 @@ import static com.depromeet.sulsul.util.ImageUtil.*;
 @RequiredArgsConstructor
 public class AwsS3ImageClient {
 
-    private static final String BUCKET_URL = "https://sulsul-media-bucket.s3.ap-northeast-2.amazonaws.com";
+  private static final String BUCKET_URL = "https://sulsul-media-bucket.s3.ap-northeast-2.amazonaws.com";
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+  @Value("${cloud.aws.s3.bucket}")
+  private String bucket;
 
-    private final AmazonS3Client amazonS3Client;
+  private final AmazonS3Client amazonS3Client;
 
-    public String upload(MultipartFile multipartFile, ImageType imageType) {
+  public String upload(MultipartFile multipartFile, ImageType imageType) {
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        String ext = extractExt(multipartFile.getOriginalFilename());
-        String fileName = multipartFile.getOriginalFilename();
-        String bucketObjectName = getNameByUUID(fileName);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    String ext = extractExt(multipartFile.getOriginalFilename());
+    String fileName = multipartFile.getOriginalFilename();
+    String bucketObjectName = getNameByUUID(fileName);
 
-        isValidExtension(ext);
+    isValidExtension(ext);
 
-        writeImage(multipartFile, ext, outputStream);
+    writeImage(multipartFile, ext, outputStream);
 
-        InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+    InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-        putObject(imageType, bucketObjectName, inputStream, outputStream, ext);
+    putObject(imageType, bucketObjectName, inputStream, outputStream, ext);
 
-        return append(BUCKET_URL, imageType.name(), bucketObjectName);
+    return append(BUCKET_URL, imageType.name(), bucketObjectName);
+  }
+
+  private void putObject(ImageType imageType, String bucketObjectName, InputStream inputStream,
+      ByteArrayOutputStream outputStream, String ext) {
+
+    try {
+      amazonS3Client.putObject(new PutObjectRequest(makePathBy(imageType),
+          bucketObjectName,
+          inputStream,
+          ImageUtil.getObjectMetadata(outputStream, ext)));
+    } catch (AmazonS3Exception e) {
+      log.error("[ERROR] Fail to upload to S3: {}", e.getMessage());
+      e.printStackTrace();
     }
 
-    private void putObject(ImageType imageType, String bucketObjectName, InputStream inputStream, ByteArrayOutputStream outputStream, String ext) {
+  }
 
-        try {
-            amazonS3Client.putObject(new PutObjectRequest(makePathBy(imageType),
-                    bucketObjectName,
-                    inputStream,
-                    ImageUtil.getObjectMetadata(outputStream, ext)));
-        } catch (AmazonS3Exception e) {
-            log.error("[ERROR] Fail to upload to S3: {}", e.getMessage());
-            e.printStackTrace();
-        }
-
+  private void writeImage(MultipartFile multipartFile, String ext,
+      ByteArrayOutputStream outputStream) {
+    try {
+      ImageIO.write(resize(multipartFile), ext, outputStream);
+    } catch (IOException e) {
+      log.error("[ERROR] Exception occured during IO: {}", e.getMessage());
+      e.printStackTrace();
     }
+  }
 
-    private void writeImage(MultipartFile multipartFile, String ext, ByteArrayOutputStream outputStream) {
-        try {
-            ImageIO.write(resize(multipartFile), ext, outputStream);
-        } catch (IOException e) {
-            log.error("[ERROR] Exception occured during IO: {}", e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public String makePathBy(ImageType imageType) {
-        return bucket + ImageUtil.SLASH + imageType.name();
-    }
+  public String makePathBy(ImageType imageType) {
+    return bucket + ImageUtil.SLASH + imageType.name();
+  }
 }
