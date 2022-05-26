@@ -20,4 +20,8 @@ public class BaseEntity {
 
   @LastModifiedDate
   private LocalDateTime modifiedAt;
+
+  public void setDeletedAt(){
+    this.deletedAt = LocalDateTime.now();
+  }
 }

@@ -76,4 +76,11 @@ public class RecordService {
         recordDtoPageableResponse.setContents(allRecordDtosWithPageable);
         return recordDtoPageableResponse;
     }
+
+    // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
+    @Transactional
+    public void delete(Long recordId, Long memberId){
+        Record targetRecord = recordRepository.getById(recordId);
+        targetRecord.setDeletedAt();
+    }
 }

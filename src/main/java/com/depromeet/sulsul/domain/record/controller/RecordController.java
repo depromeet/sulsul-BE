@@ -43,4 +43,11 @@ public class RecordController {
         return ResponseDto.of(recordService.findAllRecordsWithPageable(recordFindRequest));
     }
 
+    @DeleteMapping("/records")
+    public ResponseEntity<Object> delete(@RequestParam Long recordId){
+        // TODO : 임시 유저아이디 사용.
+        Long memberIdTemp = 1L;
+        recordService.delete(recordId, memberIdTemp);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
