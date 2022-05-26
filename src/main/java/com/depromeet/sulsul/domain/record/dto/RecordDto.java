@@ -1,7 +1,7 @@
 package com.depromeet.sulsul.domain.record.dto;
 
 import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
-import com.depromeet.sulsul.domain.member.dto.MemberRecordsDto;
+import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +17,18 @@ import java.util.List;
 public class RecordDto {
     private String content;
     private Integer feel;
-    private MemberRecordsDto memberRecordsDto;
+    private MemberRecordDto memberRecordDto;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<FlavorDto> flavorDtos = new ArrayList<>();
 
     @QueryProjection
-    public RecordDto(String content, MemberRecordsDto memberRecordsDto, Integer feel, List<FlavorDto> flavorDtos
+    public RecordDto(String content, MemberRecordDto memberRecordDto, Integer feel, List<FlavorDto> flavorDtos
             , LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.content = content;
         this.feel = feel;
         this.flavorDtos = flavorDtos;
-        this.memberRecordsDto = memberRecordsDto;
+        this.memberRecordDto = memberRecordDto;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }

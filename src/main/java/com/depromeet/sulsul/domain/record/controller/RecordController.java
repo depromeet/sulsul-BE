@@ -1,6 +1,5 @@
 package com.depromeet.sulsul.domain.record.controller;
 
-import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponse;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordDto;
@@ -8,13 +7,12 @@ import com.depromeet.sulsul.domain.record.dto.RecordFindRequest;
 import com.depromeet.sulsul.domain.record.dto.RecordRequest;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.service.RecordService;
-import com.depromeet.sulsul.domain.recordFlavor.dto.RecordsFlavorRequest;
-import com.depromeet.sulsul.domain.recordFlavor.service.RecordsFlavorService;
+import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
+import com.depromeet.sulsul.domain.recordFlavor.service.RecordFlavorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -23,8 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class RecordController {
 
     private final RecordService recordService;
-    private final RecordsFlavorService recordsFlavorService;
-//
+    private final RecordFlavorService recordFlavorService;
+
+        //  TODO : 에러 출력. 이후 변경예정
 //    @PostMapping("/images")
 //    public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
 //        return ResponseDto.of(recordService.uploadImage(multipartFile));
@@ -32,13 +31,14 @@ public class RecordController {
 
     @PostMapping("/records")
     public ResponseEntity<Object> save(@RequestBody RecordRequest recordRequest){
-        Record recordSave = recordService.save(recordRequest);
-        RecordsFlavorRequest recordsFlavorRequest = new RecordsFlavorRequest(recordRequest.getBeerId(), recordRequest.getFlavors());
-        recordsFlavorService.save(recordsFlavorRequest, recordSave);
+        Long memberIdTemp = 1L;
+        Record recordSave = recordService.save(recordRequest, memberIdTemp);
+        RecordFlavorRequest recordFlavorRequest = new RecordFlavorRequest(recordRequest.getBeerId(), recordRequest.getFlavors());
+        recordFlavorService.save(recordFlavorRequest, recordSave);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/findRecords")
+    @PostMapping("/records/find")
     public ResponseDto<PageableResponse<RecordDto>> findAllRecordsWithPageable(@RequestBody RecordFindRequest recordFindRequest){
         return ResponseDto.of(recordService.findAllRecordsWithPageable(recordFindRequest));
     }

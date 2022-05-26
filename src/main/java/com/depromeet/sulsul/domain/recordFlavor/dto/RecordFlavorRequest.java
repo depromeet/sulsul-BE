@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordsFlavorRequest {
+public class RecordFlavorRequest {
     private Long beerId;
     private List<Flavor> flavors = new ArrayList<>();
 }
