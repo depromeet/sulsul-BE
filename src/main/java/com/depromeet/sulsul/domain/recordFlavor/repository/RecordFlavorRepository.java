@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecordsFlavorRepository extends JpaRepository<RecordFlavor, Long> {
+public interface RecordFlavorRepository extends JpaRepository<RecordFlavor, Long> {
 }

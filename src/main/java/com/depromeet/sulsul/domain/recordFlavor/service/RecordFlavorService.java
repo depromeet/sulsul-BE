@@ -4,9 +4,9 @@ import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.flavor.repository.FlavorRepository;
 import com.depromeet.sulsul.domain.record.entity.Record;
-import com.depromeet.sulsul.domain.recordFlavor.dto.RecordsFlavorRequest;
+import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
-import com.depromeet.sulsul.domain.recordFlavor.repository.RecordsFlavorRepository;
+import com.depromeet.sulsul.domain.recordFlavor.repository.RecordFlavorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,23 +18,20 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 
-public class RecordsFlavorService {
-    private final RecordsFlavorRepository recordsFlavorRepository;
-    private final BeerRepository beerRepository;
-    private final FlavorRepository flavorRepository;
+public class RecordFlavorService {
+    private final RecordFlavorRepository recordFlavorRepository;
 
     @Transactional
-    public void save(RecordsFlavorRequest recordsFlavorRequest, Record record){
+    public void save(RecordFlavorRequest recordFlavorRequest, Record record){
         List<RecordFlavor> recordFlavorList = new ArrayList<>();
-        Beer beer = beerRepository.getById(recordsFlavorRequest.getBeerId());
-        for(int i=0; i<recordsFlavorRequest.getFlavors().size(); i++){
+        int flavorSize = recordFlavorRequest.getFlavors().size();
+        for(int i=0; i<flavorSize; i++){
             recordFlavorList.add(new RecordFlavor(
-//                            beer
-                    record
-                            , recordsFlavorRequest.getFlavors().get(i)
+                            record
+                            , recordFlavorRequest.getFlavors().get(i)
                     )
             );
         }
-        recordsFlavorRepository.saveAll(recordFlavorList);
+        recordFlavorRepository.saveAll(recordFlavorList);
     }
 }
