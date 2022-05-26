@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.record.repository;
 
+import com.depromeet.sulsul.common.entity.QBaseEntity;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequest;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.util.PaginationUtil;
@@ -9,7 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.depromeet.sulsul.domain.record.entity.QRecords.records;
+import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
 
 public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -20,11 +21,12 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
 
     @Override
     public List<Record> findAllRecordsWithPageable(RecordFindRequest recordFindRequest){
-        List<Record> recordDtos = queryFactory.select(records)
-                .from(records)
+        List<Record> recordDtos = queryFactory.select(record)
+                .from(record)
                 .where(beerIdEq(recordFindRequest.getBeerId())
                         , memberIdEq(recordFindRequest.getMemberId())
                         , recordIdGoe(recordFindRequest.getRecordId())
+                        , record.deletedAt.isNull()
                 )
                 .limit(PaginationUtil.PAGINATION_SIZE+1)
                 .fetch();
@@ -32,14 +34,14 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     }
 
     private BooleanExpression beerIdEq(Long beerId){
-        return beerId != null ? records.beer.id.eq(beerId) : null;
+        return beerId != null ? record.beer.id.eq(beerId) : null;
     }
 
     private BooleanExpression memberIdEq(Long memberId){
-        return memberId != null ? records.member.id.eq(memberId) : null;
+        return memberId != null ? record.member.id.eq(memberId) : null;
     }
 
     private BooleanExpression recordIdGoe(Long recordId){
-        return recordId != null ? records.id.goe(recordId) : null;
+        return recordId != null ? record.id.goe(recordId) : null;
     }
 }
