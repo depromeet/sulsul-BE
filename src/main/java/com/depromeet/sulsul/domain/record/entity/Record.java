@@ -44,4 +44,5 @@ public class Record extends BaseEntity {
         this.isPublic = recordRequest.getIsPublic();
         this.feel = recordRequest.getFeel();
     }
+
 }
