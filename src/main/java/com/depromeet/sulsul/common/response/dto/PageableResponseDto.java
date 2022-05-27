@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageableResponse<T> implements Serializable {
+public class PageableResponseDto<T> implements Serializable {
 
   private boolean success;
   private List<T> contents;
@@ -22,11 +22,11 @@ public class PageableResponse<T> implements Serializable {
   private ErrorResponseDto error;
 
 
-  private PageableResponse(ErrorResponseDto errorResponseDto) {
+  private PageableResponseDto(ErrorResponseDto errorResponseDto) {
     this.error = errorResponseDto;
   }
 
-  private PageableResponse(List<T> contents, Long nextCursor, int paginationSize) {
+  private PageableResponseDto(List<T> contents, Long nextCursor, int paginationSize) {
     paginate(contents, nextCursor, paginationSize);
     this.contents = contents;
     this.success = true;
@@ -52,15 +52,16 @@ public class PageableResponse<T> implements Serializable {
     return contents.size() > size;
   }
 
-  public static <T> PageableResponse<T> of(List<T> contents, Long nextCursor, int paginationSize) {
-    return new PageableResponse<>(contents, nextCursor, paginationSize);
+  public static <T> PageableResponseDto<T> of(List<T> contents, Long nextCursor,
+      int paginationSize) {
+    return new PageableResponseDto<>(contents, nextCursor, paginationSize);
   }
 
-  public static PageableResponse<?> ERROR(Throwable throwable, HttpStatus status) {
-    return new PageableResponse(ErrorResponseDto.of(throwable, status));
+  public static PageableResponseDto<?> ERROR(Throwable throwable, HttpStatus status) {
+    return new PageableResponseDto(ErrorResponseDto.of(throwable, status));
   }
 
-  public static PageableResponse<?> ERROR(String errorMessage, HttpStatus status) {
-    return new PageableResponse(ErrorResponseDto.of(errorMessage, status));
+  public static PageableResponseDto<?> ERROR(String errorMessage, HttpStatus status) {
+    return new PageableResponseDto(ErrorResponseDto.of(errorMessage, status));
   }
 }

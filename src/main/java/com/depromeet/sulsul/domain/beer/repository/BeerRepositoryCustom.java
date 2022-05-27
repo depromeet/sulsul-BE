@@ -16,5 +16,7 @@ public interface BeerRepositoryCustom {
 
   List<BeerDto> findPageWith(Long memberId, ReadRequest readRequest);
 
+  List<BeerDto> findPageWith(Long memberId);
+
   BeerDetail findById(Long memberId, Long beerId);
 }

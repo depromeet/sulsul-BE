@@ -33,39 +33,33 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   public List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
       BeerSearchConditionRequest beerSearchConditionRequest) {
     JPAQuery<BeerDto> jpaQuery = queryFactory.select(
-            new QBeerDto(country, beer, record.feel, memberBeer))
-        .from(beer)
-        .leftJoin(record).on(beer.eq(record.beer))
-        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
-        .innerJoin(country).on(beer.country.eq(country))
-        .fetchJoin()
-        .where(beer.id.goe(beerId))
+            new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).fetchJoin().where(beer.id.goe(beerId))
         .limit(PaginationUtil.PAGINATION_SIZE + 1);
 
     if (beerSearchConditionRequest.getBeerTypes() != null) {
-      jpaQuery = jpaQuery
-          .where(beer.type.in(beerSearchConditionRequest.getBeerTypes()));
+      jpaQuery = jpaQuery.where(beer.type.in(beerSearchConditionRequest.getBeerTypes()));
     }
 
     if (beerSearchConditionRequest.getCountryIds() != null) {
-      jpaQuery = jpaQuery
-          .where(beer.country.id.in(beerSearchConditionRequest.getCountryIds()));
+      jpaQuery = jpaQuery.where(beer.country.id.in(beerSearchConditionRequest.getCountryIds()));
     }
 
     if (!PropertyUtil.isEmpty(beerSearchConditionRequest.getSearchKeyword())) {
       String searchKeyword = beerSearchConditionRequest.getSearchKeyword();
-      jpaQuery = jpaQuery
-          .where(beer.nameKor.contains(searchKeyword)
-              .or(beer.nameEng.contains(searchKeyword))
+      jpaQuery = jpaQuery.where(
+          beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
               .or(beer.country.nameKor.contains(searchKeyword))
               .or(beer.country.nameEng.contains(searchKeyword))
               .or(beer.country.continent.name.contains(searchKeyword))
               .or(beer.content.contains(searchKeyword)));
     }
 
-      if (beerSearchConditionRequest.getSortType() == null) {
-          return jpaQuery.fetch();
-      }
+    if (beerSearchConditionRequest.getSortType() == null) {
+      return jpaQuery.fetch();
+    }
 
     switch (beerSearchConditionRequest.getSortType()) {
       case NAME:
@@ -90,12 +84,10 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     Long cursor = readRequest.getCursor();
 
     JPAQuery<BeerDto> jpaQuery = queryFactory.select(
-            new QBeerDto(country, beer, record.feel, memberBeer))
-        .from(beer)
-        .leftJoin(record).on(beer.eq(record.beer))
-        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
-        .innerJoin(country).on(beer.country.eq(country))
-        .fetchJoin()
+            new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).fetchJoin()
 //            .where(beer.id.goe(cursor))  // TODO: No-Offset 기반의 최적화
         .limit(readRequest.getLimit() + 1);
 
@@ -104,29 +96,26 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     }
 
     if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
-      jpaQuery = jpaQuery
-          .where(beer.type.in(filter.getBeerTypes()));
+      jpaQuery = jpaQuery.where(beer.type.in(filter.getBeerTypes()));
     }
 
     if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
-      jpaQuery = jpaQuery
-          .where(beer.country.id.in(filter.getCountryIds()));
+      jpaQuery = jpaQuery.where(beer.country.id.in(filter.getCountryIds()));
     }
 
     if (!PropertyUtil.isEmpty(readRequest.getQuery())) {
       String searchKeyword = readRequest.getQuery();
-      jpaQuery = jpaQuery
-          .where(beer.nameKor.contains(searchKeyword)
-              .or(beer.nameEng.contains(searchKeyword))
+      jpaQuery = jpaQuery.where(
+          beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
               .or(beer.country.nameKor.contains(searchKeyword))
               .or(beer.country.nameEng.contains(searchKeyword))
               .or(beer.country.continent.name.contains(searchKeyword))
               .or(beer.content.contains(searchKeyword)));
     }
 
-      if (CollectionUtils.isEmpty(sortBy)) {
-          return jpaQuery.fetch();
-      }
+    if (CollectionUtils.isEmpty(sortBy)) {
+      return jpaQuery.fetch();
+    }
 
     for (SortCondition sortCondition : sortBy) {
       jpaQuery = appendDynamicBuilderWith(jpaQuery, sortCondition);
@@ -134,7 +123,18 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     }
 
     return jpaQuery.fetch();
+  }
 
+  @Override
+  public List<BeerDto> findPageWith(Long memberId) {
+
+    JPAQuery<BeerDto> jpaQuery = queryFactory.select(
+            new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1);
+
+    return jpaQuery.fetch();
   }
 
   private JPAQuery<BeerDto> appendDynamicBuilderWith(JPAQuery<BeerDto> jpaQuery,
@@ -180,11 +180,8 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
   @Override
   public BeerDetail findById(Long memberId, Long beerId) {
-    return queryFactory.select(new QBeerDetail(country, beer, memberBeer))
-        .from(beer)
+    return queryFactory.select(new QBeerDetail(country, beer, memberBeer)).from(beer)
         .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
-        .innerJoin(country).on(beer.country.eq(country))
-        .where(beer.id.eq(beerId))
-        .fetchOne();
+        .innerJoin(country).on(beer.country.eq(country)).where(beer.id.eq(beerId)).fetchOne();
   }
 }
