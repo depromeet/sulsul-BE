@@ -19,6 +19,6 @@ public class ContinentController {
 
   @GetMapping("")
   public ResponseDto<List<ContinentDto>> findAll() {
-    return ResponseDto.of(continentService.findAll());
+    return ResponseDto.from(continentService.findAll());
   }
 }

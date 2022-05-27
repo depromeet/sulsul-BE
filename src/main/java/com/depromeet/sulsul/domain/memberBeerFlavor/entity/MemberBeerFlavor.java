@@ -3,14 +3,22 @@ package com.depromeet.sulsul.domain.memberBeerFlavor.entity;
 import com.depromeet.sulsul.domain.beerFlavor.entity.BeerFlavor;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import lombok.ToString;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString(exclude = {"beer", "flavor", "memberBeerFlavors"})
+@EqualsAndHashCode(exclude = {"beer", "flavor", "memberBeerFlavors"})
 public class MemberBeerFlavor {
 
   @Id

@@ -5,16 +5,24 @@ import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.ToString;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString(exclude = {"country", "records"})
+@EqualsAndHashCode(exclude = {"country", "records"})
 public class Beer extends BaseEntity {
 
   @Id
@@ -29,6 +37,7 @@ public class Beer extends BaseEntity {
   @OneToMany(mappedBy = "beer")
   private List<Record> records = new ArrayList<>();
 
+  @Enumerated(value = EnumType.STRING)
   private BeerType type;
   private String nameKor;
   private String nameEng;

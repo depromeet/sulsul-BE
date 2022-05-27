@@ -21,6 +21,6 @@ public class RecordController {
   @PostMapping("/images")
   public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
 
-    return ResponseDto.of(recordService.uploadImage(multipartFile));
+    return ResponseDto.from(recordService.uploadImage(multipartFile));
   }
 }

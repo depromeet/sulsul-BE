@@ -21,6 +21,6 @@ public class CountryController {
   @GetMapping("")
   public ResponseDto<List<CountryDto>> findAll(
       @RequestParam(value = "continentId", required = false) Long continentId) {
-    return ResponseDto.of(countryService.findAllByContinentId(continentId));
+    return ResponseDto.from(countryService.findAllByContinentId(continentId));
   }
 }
