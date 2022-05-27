@@ -2,7 +2,6 @@ package com.depromeet.sulsul.domain.beer.dto;
 
 import com.depromeet.sulsul.domain.MemberBeer;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
-import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
 import com.depromeet.sulsul.domain.country.dto.CountryDetail;
 import com.depromeet.sulsul.domain.country.entity.Country;
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeerDetail {
+public class BeerDetailResponseDto {
 
   private Long id;
   private CountryDetail country;
@@ -36,7 +35,7 @@ public class BeerDetail {
   private Boolean isLiked = false;
 
   @QueryProjection
-  public BeerDetail(Country country, Beer beer, MemberBeer memberBeer) {
+  public BeerDetailResponseDto(Country country, Beer beer, MemberBeer memberBeer) {
     this.id = beer.getId();
     this.country = new CountryDetail(country.getId(),
         country.getNameKor(), country.getNameEng(), country.getImageUrl(),

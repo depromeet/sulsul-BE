@@ -30,9 +30,9 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   @Override
-  public List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
+  public List<BeerResponseDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
       BeerSearchConditionRequest beerSearchConditionRequest) {
-    JPAQuery<BeerDto> jpaQuery = queryFactory.select(
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
             new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
@@ -77,13 +77,13 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   @Override
-  public List<BeerDto> findPageWith(Long memberId, ReadRequest readRequest) {
+  public List<BeerResponseDto> findPageWith(Long memberId, ReadRequest readRequest) {
 
     Filter filter = readRequest.getFilter();
     List<SortCondition> sortBy = readRequest.getSortBy();
     Long cursor = readRequest.getCursor();
 
-    JPAQuery<BeerDto> jpaQuery = queryFactory.select(
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
             new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
@@ -126,9 +126,9 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   @Override
-  public List<BeerDto> findPageWith(Long memberId) {
+  public List<BeerResponseDto> findPageWith(Long memberId) {
 
-    JPAQuery<BeerDto> jpaQuery = queryFactory.select(
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
             new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
@@ -137,7 +137,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     return jpaQuery.fetch();
   }
 
-  private JPAQuery<BeerDto> appendDynamicBuilderWith(JPAQuery<BeerDto> jpaQuery,
+  private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,
       SortCondition sortCondition) {
     if (sortCondition == ID_ASC) {
       return jpaQuery.orderBy(beer.id.asc());
@@ -179,7 +179,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   @Override
-  public BeerDetail findById(Long memberId, Long beerId) {
+  public BeerDetailResponseDto findById(Long memberId, Long beerId) {
     return queryFactory.select(new QBeerDetail(country, beer, memberBeer)).from(beer)
         .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
         .innerJoin(country).on(beer.country.eq(country)).where(beer.id.eq(beerId)).fetchOne();

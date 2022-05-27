@@ -2,9 +2,9 @@ package com.depromeet.sulsul.domain.record.controller;
 
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordDto;
-import com.depromeet.sulsul.domain.record.dto.RecordFindRequest;
-import com.depromeet.sulsul.domain.record.dto.RecordRequest;
+import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.service.RecordService;
 import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
@@ -30,19 +30,19 @@ public class RecordController {
 //    }
 
   @PostMapping("/records")
-  public ResponseEntity<Object> save(@RequestBody RecordRequest recordRequest) {
+  public ResponseEntity<Object> save(@RequestBody RecordRequestDto recordRequestDto) {
     Long memberIdTemp = 1L;
-    Record recordSave = recordService.save(recordRequest, memberIdTemp);
-    RecordFlavorRequest recordFlavorRequest = new RecordFlavorRequest(recordRequest.getBeerId(),
-        recordRequest.getFlavors());
+    Record recordSave = recordService.save(recordRequestDto, memberIdTemp);
+    RecordFlavorRequest recordFlavorRequest = new RecordFlavorRequest(recordRequestDto.getBeerId(),
+        recordRequestDto.getFlavors());
     recordFlavorService.save(recordFlavorRequest, recordSave);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PostMapping("/records/find")
-  public ResponseDto<PageableResponseDto<RecordDto>> findAllRecordsWithPageable(
-      @RequestBody RecordFindRequest recordFindRequest) {
-    return ResponseDto.from(recordService.findAllRecordsWithPageable(recordFindRequest));
+  public ResponseDto<PageableResponseDto<RecordResponseDto>> findAllRecordsWithPageable(
+      @RequestBody RecordFindRequestDto recordFindRequestDto) {
+    return ResponseDto.from(recordService.findAllRecordsWithPageable(recordFindRequestDto));
   }
 
   @DeleteMapping("/records")

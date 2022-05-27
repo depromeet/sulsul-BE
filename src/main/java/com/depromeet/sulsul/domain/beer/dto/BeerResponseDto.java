@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeerDto {
+public class BeerResponseDto {
 
   private Long id;
   private CountryDetail country;
@@ -38,7 +38,7 @@ public class BeerDto {
   private Boolean isLiked = false;
 
   @QueryProjection
-  public BeerDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
+  public BeerResponseDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
     this.id = beer.getId();
     this.country = new CountryDetail(country.getId(), country.getNameKor(), country.getNameEng(),
         country.getImageUrl(), new ContinentDto(country.getContinent()));

@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.util.List;
 
+// TODO: will be deprecated.
 @Getter
 @AllArgsConstructor
 public final class BeerSearchConditionRequest {

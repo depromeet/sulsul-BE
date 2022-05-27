@@ -2,10 +2,10 @@ package com.depromeet.sulsul.domain.beer.service;
 
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
@@ -34,42 +34,42 @@ public class BeerService {
   private final CountryRepository countryRepository;
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId,
+  public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(Long memberId, Long beerId,
       BeerSearchConditionRequest beerSearchConditionRequest) {
-    List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(
+    List<BeerResponseDto> beerResponseDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(
         memberId, beerId, beerSearchConditionRequest);
 
-    PageableResponseDto<BeerDto> beerPageableResponseDto = new PageableResponseDto<>();
-    if (isOverPaginationSize(beerDtosWithPageable)) {
-      beerDtosWithPageable.remove(PAGINATION_SIZE);
+    PageableResponseDto<BeerResponseDto> beerPageableResponseDto = new PageableResponseDto<>();
+    if (isOverPaginationSize(beerResponseDtosWithPageable)) {
+      beerResponseDtosWithPageable.remove(PAGINATION_SIZE);
       beerPageableResponseDto.setHasNext(true);
     }
 
-    beerPageableResponseDto.setContents(beerDtosWithPageable);
+    beerPageableResponseDto.setContents(beerResponseDtosWithPageable);
     return beerPageableResponseDto;
   }
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<BeerDto> findPageWithReadRequest(Long memberId, ReadRequest request) {
-    List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findPageWith(memberId, request);
-    return PageableResponseDto.of(beerDtosWithPageable, request.getCursor(), request.getLimit());
+  public PageableResponseDto<BeerResponseDto> findPageWithReadRequest(Long memberId, ReadRequest request) {
+    List<BeerResponseDto> beerResponseDtosWithPageable = beerRepositoryCustom.findPageWith(memberId, request);
+    return PageableResponseDto.of(beerResponseDtosWithPageable, request.getCursor(), request.getLimit());
   }
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<BeerDto> findAll(Long memberId) {
+  public PageableResponseDto<BeerResponseDto> findAll(Long memberId) {
 
     return PageableResponseDto.of(beerRepositoryCustom.findPageWith(memberId), 0L, PAGINATION_SIZE);
   }
 
-  public void save(BeerRequest beerRequest) {
+  public void save(BeerRequestDto beerRequestDto) {
 
     beerRepository.save(new Beer(
-        countryRepository.getById(beerRequest.getCountryId()),
-        beerRequest));
+        countryRepository.getById(beerRequestDto.getCountryId()),
+        beerRequestDto));
   }
 
   @Transactional(readOnly = true)
-  public BeerDetail findById(Long memberId, Long beerId) {
+  public BeerDetailResponseDto findById(Long memberId, Long beerId) {
     return beerRepositoryCustom.findById(memberId, beerId);
   }
 

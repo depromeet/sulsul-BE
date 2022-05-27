@@ -1,7 +1,7 @@
 package com.depromeet.sulsul.domain.beer.entity;
 
 import com.depromeet.sulsul.common.entity.BaseEntity;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import lombok.AccessLevel;
@@ -47,15 +47,15 @@ public class Beer extends BaseEntity {
   private Integer price;
   private Integer volume;
 
-  public Beer(Country country, BeerRequest beerRequest) {
+  public Beer(Country country, BeerRequestDto beerRequestDto) {
     this.country = country;
-    this.type = beerRequest.getType();
-    this.nameKor = beerRequest.getNameKor();
-    this.nameEng = beerRequest.getNameEng();
-    this.imageUrl = beerRequest.getImageUrl();
-    this.content = beerRequest.getContent();
-    this.alcohol = beerRequest.getAlcohol();
-    this.price = beerRequest.getPrice();
-    this.volume = beerRequest.getVolume();
+    this.type = beerRequestDto.getType();
+    this.nameKor = beerRequestDto.getNameKor();
+    this.nameEng = beerRequestDto.getNameEng();
+    this.imageUrl = beerRequestDto.getImageUrl();
+    this.content = beerRequestDto.getContent();
+    this.alcohol = beerRequestDto.getAlcohol();
+    this.price = beerRequestDto.getPrice();
+    this.volume = beerRequestDto.getVolume();
   }
 }

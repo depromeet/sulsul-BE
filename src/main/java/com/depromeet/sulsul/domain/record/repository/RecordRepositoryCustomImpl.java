@@ -1,7 +1,6 @@
 package com.depromeet.sulsul.domain.record.repository;
 
-import com.depromeet.sulsul.common.entity.QBaseEntity;
-import com.depromeet.sulsul.domain.record.dto.RecordFindRequest;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,12 +20,12 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
-  public List<Record> findAllRecordsWithPageable(RecordFindRequest recordFindRequest) {
+  public List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto) {
     List<Record> recordDtos = queryFactory.select(record)
         .from(record)
-        .where(beerIdEq(recordFindRequest.getBeerId())
-            , memberIdEq(recordFindRequest.getMemberId())
-            , recordIdGoe(recordFindRequest.getRecordId())
+        .where(beerIdEq(recordFindRequestDto.getBeerId())
+            , memberIdEq(recordFindRequestDto.getMemberId())
+            , recordIdGoe(recordFindRequestDto.getRecordId())
             , record.deletedAt.isNull()
         )
         .limit(PaginationUtil.PAGINATION_SIZE + 1)

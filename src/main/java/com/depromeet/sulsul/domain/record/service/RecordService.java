@@ -8,9 +8,9 @@ import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
 import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
-import com.depromeet.sulsul.domain.record.dto.RecordDto;
-import com.depromeet.sulsul.domain.record.dto.RecordFindRequest;
-import com.depromeet.sulsul.domain.record.dto.RecordRequest;
+import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
@@ -45,20 +45,20 @@ public class RecordService {
 //    }
 
   @Transactional
-  public Record save(RecordRequest recordRequest, Long memberId) {
+  public Record save(RecordRequestDto recordRequestDto, Long memberId) {
     Member member = memberRepository.getById(memberId);
-    Beer beer = beerRepository.getById(recordRequest.getBeerId());
+    Beer beer = beerRepository.getById(recordRequestDto.getBeerId());
     return recordRepository.save(new Record(
-        member, beer, recordRequest
+        member, beer, recordRequestDto
     ));
   }
 
-  public PageableResponseDto<RecordDto> findAllRecordsWithPageable(
-      RecordFindRequest recordFindRequest) {
+  public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
+      RecordFindRequestDto recordFindRequestDto) {
     List<Record> allRecordWithPageable = recordRepository.findAllRecordsWithPageable(
-        recordFindRequest);
-    List<RecordDto> allRecordDtosWithPageable = new ArrayList<>();
-    PageableResponseDto<RecordDto> recordDtoPageableResponse = new PageableResponseDto<>();
+        recordFindRequestDto);
+    List<RecordResponseDto> allRecordDtosWithPageableResponse = new ArrayList<>();
+    PageableResponseDto<RecordResponseDto> recordDtoPageableResponse = new PageableResponseDto<>();
 
     for (Record record : allRecordWithPageable) {
       List<RecordFlavor> recordFlavors = record.getRecordFlavors();
@@ -70,14 +70,14 @@ public class RecordService {
       MemberRecordDto memberRecordDto = new MemberRecordDto(record.getMember().getId(),
           record.getMember().getName());
 
-      allRecordDtosWithPageable.add(new RecordDto(record.getContent(), memberRecordDto,
+      allRecordDtosWithPageableResponse.add(new RecordResponseDto(record.getContent(), memberRecordDto,
           record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
     }
-    if (isOverPaginationSize(allRecordDtosWithPageable)) {
-      allRecordDtosWithPageable.remove(PAGINATION_SIZE);
+    if (isOverPaginationSize(allRecordDtosWithPageableResponse)) {
+      allRecordDtosWithPageableResponse.remove(PAGINATION_SIZE);
       recordDtoPageableResponse.setHasNext(true);
     }
-    recordDtoPageableResponse.setContents(allRecordDtosWithPageable);
+    recordDtoPageableResponse.setContents(allRecordDtosWithPageableResponse);
     return recordDtoPageableResponse;
   }
 

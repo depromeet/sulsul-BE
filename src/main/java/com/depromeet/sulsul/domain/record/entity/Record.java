@@ -3,7 +3,7 @@ package com.depromeet.sulsul.domain.record.entity;
 import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
-import com.depromeet.sulsul.domain.record.dto.RecordRequest;
+import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,11 +46,11 @@ public class Record extends BaseEntity {
   private Boolean isPublic;
   private Integer feel;
 
-  public Record(Member member, Beer beer, RecordRequest recordRequest) {
+  public Record(Member member, Beer beer, RecordRequestDto recordRequestDto) {
     this.member = member;
     this.beer = beer;
-    this.content = recordRequest.getContent();
-    this.isPublic = recordRequest.getIsPublic();
-    this.feel = recordRequest.getFeel();
+    this.content = recordRequestDto.getContent();
+    this.isPublic = recordRequestDto.getIsPublic();
+    this.feel = recordRequestDto.getFeel();
   }
 }

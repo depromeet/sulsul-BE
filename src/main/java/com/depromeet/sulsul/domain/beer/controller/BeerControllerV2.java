@@ -3,9 +3,9 @@ package com.depromeet.sulsul.domain.beer.controller;
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
 import java.util.List;
@@ -28,7 +28,7 @@ public class BeerControllerV2 {
   private final BeerService beerService;
 
   @PostMapping
-  public PageableResponseDto<BeerDto> findPageWithFilterRequest( // TODO: ResponseDto 제거
+  public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest( // TODO: ResponseDto 제거
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
     Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
     if (readRequest == null) {
@@ -39,7 +39,7 @@ public class BeerControllerV2 {
   }
 
   @GetMapping("/{beerId}")
-  public ResponseDto<BeerDetail> findById(@PathVariable("beerId") Long beerId) {
+  public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId) {
     Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
     return ResponseDto.from(beerService.findById(memberId, beerId));
   }
@@ -51,8 +51,8 @@ public class BeerControllerV2 {
 
   //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)
   @PostMapping("/save")
-  public ResponseEntity save(@RequestBody BeerRequest beerRequest) {
-    beerService.save(beerRequest);
+  public ResponseEntity save(@RequestBody BeerRequestDto beerRequestDto) {
+    beerService.save(beerRequestDto);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

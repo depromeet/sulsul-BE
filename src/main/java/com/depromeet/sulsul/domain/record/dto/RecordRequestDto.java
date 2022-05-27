@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordRequest {
+public class RecordRequestDto {
 
   private String content;
   private Long beerId;

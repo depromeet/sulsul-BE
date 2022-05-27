@@ -1,8 +1,8 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
 import com.depromeet.sulsul.common.request.ReadRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import org.springframework.stereotype.Repository;
 
@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public interface BeerRepositoryCustom {
 
-  List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
+  List<BeerResponseDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
       BeerSearchConditionRequest beerSearchConditionRequest);
 
-  List<BeerDto> findPageWith(Long memberId, ReadRequest readRequest);
+  List<BeerResponseDto> findPageWith(Long memberId, ReadRequest readRequest);
 
-  List<BeerDto> findPageWith(Long memberId);
+  List<BeerResponseDto> findPageWith(Long memberId);
 
-  BeerDetail findById(Long memberId, Long beerId);
+  BeerDetailResponseDto findById(Long memberId, Long beerId);
 }
