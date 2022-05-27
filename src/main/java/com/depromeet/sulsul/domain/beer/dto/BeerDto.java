@@ -28,7 +28,6 @@ public class BeerDto {
   private Float alcohol;
   private Integer price;
   private Integer volume;
-  private LocalDateTime deletedAt;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
@@ -51,7 +50,6 @@ public class BeerDto {
     this.alcohol = beer.getAlcohol();
     this.price = beer.getPrice();
     this.volume = beer.getVolume();
-    this.deletedAt = beer.getDeletedAt();
     this.createdAt = beer.getCreatedAt();
     this.updatedAt = beer.getUpdatedAt();
     this.feel = feel;
