@@ -1,26 +1,40 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
+import static com.depromeet.sulsul.common.request.SortCondition.ALCOHOL_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.ALCOHOL_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.ID_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.ID_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_ENG_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_ENG_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_KOR_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_KOR_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.RECORD_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.RECORD_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_DESC;
+import static com.depromeet.sulsul.domain.QMemberBeer.memberBeer;
+import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
+import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
+import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+
 import com.depromeet.sulsul.common.request.Filter;
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.request.SortCondition;
-import com.depromeet.sulsul.domain.beer.dto.*;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.depromeet.sulsul.domain.beer.dto.QBeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.depromeet.sulsul.util.PropertyUtil;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
 import java.util.List;
+import javax.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
-
-import static com.depromeet.sulsul.common.request.SortCondition.*;
-import static com.depromeet.sulsul.domain.QMemberBeer.memberBeer;
-import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
-import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
-import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
 
 @Repository
 public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {

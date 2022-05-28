@@ -1,7 +1,9 @@
 package com.depromeet.sulsul.domain.country.dto;
 
 import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
