@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.memberBeer.service;
 
+import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.member.entity.Member;
@@ -25,18 +26,17 @@ public class MemberBeerService {
   @Transactional
   public void save(Long beerId, Long memberId){
     Optional<MemberBeer> memberBeer = memberBeerRepository.findMemberBeerByBeerIdAndMemberId(beerId, memberId);
-    if(memberBeer.isPresent()){
-      memberBeer.get().restore();
-    }else{
-      Beer beer = beerRepository.getById(beerId);
-      Member member = memberRepository.getById(memberId);
-      memberBeerRepository.save(new MemberBeer(beer, member));
-    }
+
+    Beer beer = beerRepository.getById(beerId);
+    Member member = memberRepository.getById(memberId);
+
+    memberBeer.ifPresentOrElse(BaseEntity::restore
+      , () -> memberBeerRepository.save(new MemberBeer(beer, member)));
   }
 
   @Transactional
   public void delete(Long beerId, Long memberId){
     MemberBeer memberBeer = memberBeerRepository.getMemberBeerByBeerIdAndMemberId(beerId, memberId);
-    memberBeer.delete();;
+    memberBeer.delete();
   }
 }
