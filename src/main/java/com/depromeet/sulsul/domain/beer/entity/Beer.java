@@ -1,54 +1,61 @@
 package com.depromeet.sulsul.domain.beer.entity;
 
-import com.depromeet.sulsul.common.dto.EnumValue;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.common.entity.BaseEntity;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.country.entity.Country;
-import com.depromeet.sulsul.domain.review.entity.Review;
-import com.depromeet.sulsul.util.PropertyUtil;
+import com.depromeet.sulsul.domain.record.entity.Record;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.ToString;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Beer {
+@AllArgsConstructor
+@ToString(exclude = {"country", "records"})
+@EqualsAndHashCode(exclude = {"country", "records"})
+public class Beer extends BaseEntity {
 
-    @Id
-    @Column(name = "beer_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "beer_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")
-    private Country country;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "country_id")
+  private Country country;
 
-    @OneToMany(mappedBy = "beer")
-    private List<Review> reviews = new ArrayList<>();
+  @OneToMany(mappedBy = "beer")
+  private List<Record> records = new ArrayList<>();
 
-    private BeerType type;
-    private String nameKor;
-    private String nameEng;
-    private String imageUrl;
-    private String content;
-    private Float alcohol;
-    private Integer price;
-    private Integer volume;
+  @Enumerated(value = EnumType.STRING)
+  private BeerType type;
+  private String nameKor;
+  private String nameEng;
+  private String imageUrl;
+  private String content;
+  private Float alcohol;
+  private Integer price;
+  private Integer volume;
 
-    public Beer(Country country, BeerRequest beerRequest) {
-        this.country = country;
-        this.type = beerRequest.getType();
-        this.nameKor = beerRequest.getNameKor();
-        this.nameEng = beerRequest.getNameEng();
-        this.imageUrl = beerRequest.getImageUrl();
-        this.content = beerRequest.getContent();
-        this.alcohol = beerRequest.getAlcohol();
-        this.price = beerRequest.getPrice();
-        this.volume = beerRequest.getVolume();
-    }
+  public Beer(Country country, BeerRequestDto beerRequestDto) {
+    this.country = country;
+    this.type = beerRequestDto.getType();
+    this.nameKor = beerRequestDto.getNameKor();
+    this.nameEng = beerRequestDto.getNameEng();
+    this.imageUrl = beerRequestDto.getImageUrl();
+    this.content = beerRequestDto.getContent();
+    this.alcohol = beerRequestDto.getAlcohol();
+    this.price = beerRequestDto.getPrice();
+    this.volume = beerRequestDto.getVolume();
+  }
 }

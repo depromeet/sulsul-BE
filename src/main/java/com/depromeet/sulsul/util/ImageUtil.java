@@ -17,52 +17,54 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageUtil {
 
-    public static final String SLASH = "/";
-    public static final int STANDARD_SIZE = 500;
+  public static final String SLASH = "/";
+  public static final int STANDARD_SIZE = 500;
 
-    public static BufferedImage resize(MultipartFile multipartFile) throws IOException {
+  public static BufferedImage resize(MultipartFile multipartFile) throws IOException {
 
-        BufferedImage bufferedImage = ImageIO.read(multipartFile.getInputStream());
+    BufferedImage bufferedImage = ImageIO.read(multipartFile.getInputStream());
 
-        MultiStepRescaleOp rescale = getRescale(bufferedImage.getWidth(), bufferedImage.getHeight());
+    MultiStepRescaleOp rescale = getRescale(bufferedImage.getWidth(), bufferedImage.getHeight());
 
-        rescale.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Soft);
+    rescale.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Soft);
 
-        return rescale.filter(bufferedImage, null);
+    return rescale.filter(bufferedImage, null);
+  }
+
+  private static MultiStepRescaleOp getRescale(int width, int height) {
+    if (width > height) {
+      height *= (float) STANDARD_SIZE / width;
+      return new MultiStepRescaleOp(STANDARD_SIZE, height);
     }
 
-    private static MultiStepRescaleOp getRescale(int width, int height) {
-        if (width > height) {
-            height *= (float) STANDARD_SIZE / width;
-            return new MultiStepRescaleOp(STANDARD_SIZE, height);
-        }
+    width *= (float) STANDARD_SIZE / height;
+    return new MultiStepRescaleOp(width, STANDARD_SIZE);
+  }
 
-        width *= (float) STANDARD_SIZE / height;
-        return new MultiStepRescaleOp(width, STANDARD_SIZE);
+  public static ObjectMetadata getObjectMetadata(ByteArrayOutputStream outputStream, String ext) {
+    ObjectMetadata objectMetadata = new ObjectMetadata();
+    objectMetadata.setContentLength(outputStream.size());
+    objectMetadata.setContentType(ext);
+
+    return objectMetadata;
+  }
+
+  public static boolean isValidExtension(String fileName) {
+    if (EnumUtils.isValidEnum(ImageExt.class, extractExt(fileName))) {
+      return true;
     }
+    return false;
+  }
 
-    public static ObjectMetadata getObjectMetadata(ByteArrayOutputStream outputStream, String ext) {
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentLength(outputStream.size());
-        objectMetadata.setContentType(ext);
+  public static String getNameByUUID(String orginName) {
+    return UUID.randomUUID().toString() + "." + extractExt(orginName);
+  }
 
-        return objectMetadata;
-    }
+  public static String extractExt(String orginName) {
+    return orginName.substring(orginName.lastIndexOf(".") + 1);
+  }
 
-    public static boolean isValidExtension(String fileName) {
-        if (EnumUtils.isValidEnum(ImageExt.class, extractExt(fileName))) return true;
-        return false;
-    }
-
-    public static String getNameByUUID(String orginName) {
-        return UUID.randomUUID().toString() + "." + extractExt(orginName);
-    }
-
-    public static String extractExt(String orginName) {
-        return orginName.substring(orginName.lastIndexOf(".") + 1);
-    }
-
-    public static String append(String...paths) {
-        return String.join("/", paths);
-    }
+  public static String append(String... paths) {
+    return String.join("/", paths);
+  }
 }
