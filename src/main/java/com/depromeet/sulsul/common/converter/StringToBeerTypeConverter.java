@@ -6,12 +6,12 @@ import org.springframework.core.convert.converter.Converter;
 
 public class StringToBeerTypeConverter implements Converter<String, BeerType> {
 
-    public BeerType convert(String source) {
-        try {
-            source.replaceAll("-", "_");
-            return BeerType.valueOf(source.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+  public BeerType convert(String source) {
+    try {
+      source.replaceAll("-", "_");
+      return BeerType.valueOf(source.toUpperCase());
+    } catch (IllegalArgumentException e) {
+      return null;
     }
+  }
 }

@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordFindRequest {
-    private Long memberId;
-    private Long beerId;
-    private Long recordId;
+public class RecordFindRequestDto {
+
+  private Long memberId;
+  private Long beerId;
+  private Long recordId;
 }

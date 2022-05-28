@@ -16,10 +16,11 @@ import java.util.List;
 @RequestMapping("/api/v1/countries")
 public class CountryController {
 
-    private final CountryService countryService;
+  private final CountryService countryService;
 
-    @GetMapping("")
-    public ResponseDto<List<CountryDto>> findAll(@RequestParam(value = "continentId", required = false) Long continentId) {
-        return ResponseDto.of(countryService.findAllByContinentId(continentId));
-    }
+  @GetMapping("")
+  public ResponseDto<List<CountryDto>> findAll(
+      @RequestParam(value = "continentId", required = false) Long continentId) {
+    return ResponseDto.from(countryService.findAllByContinentId(continentId));
+  }
 }

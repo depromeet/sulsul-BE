@@ -11,10 +11,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordRequest {
-    private String content;
-    private Long beerId;
-    private List<Flavor> Flavors = new ArrayList<>();
-    private Boolean isPublic;
-    private Integer feel;
+public class RecordRequestDto {
+
+  private String content;
+  private Long beerId;
+  private List<Flavor> Flavors = new ArrayList<>();
+  private Boolean isPublic;
+  private Integer feel;
 }

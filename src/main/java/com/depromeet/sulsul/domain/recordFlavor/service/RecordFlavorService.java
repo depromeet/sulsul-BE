@@ -19,19 +19,20 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class RecordFlavorService {
-    private final RecordFlavorRepository recordFlavorRepository;
 
-    @Transactional
-    public void save(RecordFlavorRequest recordFlavorRequest, Record record){
-        List<RecordFlavor> recordFlavorList = new ArrayList<>();
-        int flavorSize = recordFlavorRequest.getFlavors().size();
-        for(int i=0; i<flavorSize; i++){
-            recordFlavorList.add(new RecordFlavor(
-                            record
-                            , recordFlavorRequest.getFlavors().get(i)
-                    )
-            );
-        }
-        recordFlavorRepository.saveAll(recordFlavorList);
+  private final RecordFlavorRepository recordFlavorRepository;
+
+  @Transactional
+  public void save(RecordFlavorRequest recordFlavorRequest, Record record) {
+    List<RecordFlavor> recordFlavorList = new ArrayList<>();
+    int flavorSize = recordFlavorRequest.getFlavors().size();
+    for (int i = 0; i < flavorSize; i++) {
+      recordFlavorList.add(new RecordFlavor(
+              record
+              , recordFlavorRequest.getFlavors().get(i)
+          )
+      );
     }
+    recordFlavorRepository.saveAll(recordFlavorList);
+  }
 }

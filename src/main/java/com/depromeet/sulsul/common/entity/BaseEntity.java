@@ -19,9 +19,9 @@ public abstract class BaseEntity {
   private LocalDateTime createdAt;
 
   @LastModifiedDate
-  private LocalDateTime modifiedAt;
+  private LocalDateTime updatedAt;
 
-  public void setDeletedAt(){
+  public void delete() {
     this.deletedAt = LocalDateTime.now();
   }
 }
