@@ -8,6 +8,8 @@ import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,37 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "맥주 APIs (version 2)")
 @RequestMapping("/api/v2/beers")
 public class BeerControllerV2 {
 
   private final BeerService beerService;
 
   @PostMapping
-  public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest( // TODO: ResponseDto 제거
+  @ApiOperation(value = "맥주 조회 API (검색/필터/정렬 포함)")
+  public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
     Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
     if (readRequest == null) {
-
       return beerService.findAll(memberId);
     }
     return beerService.findPageWithReadRequest(memberId, readRequest);
-  }
-
-  @GetMapping("/{beerId}")
-  public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId) {
-    Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
-    return ResponseDto.from(beerService.findById(memberId, beerId));
-  }
-
-  @GetMapping("/types")
-  public ResponseDto<List<BeerTypeValue>> findTypes() { // TODO: 일급객체로 넘겨야 함.
-    return ResponseDto.from(beerService.findTypes());
-  }
-
-  //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)
-  @PostMapping("/save")
-  public ResponseEntity save(@RequestBody BeerRequestDto beerRequestDto) {
-    beerService.save(beerRequestDto);
-    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
