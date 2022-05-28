@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
-    List<Country> findAllByContinentId(Long continentId);
+
+  List<Country> findAllByContinentId(Long continentId);
 }

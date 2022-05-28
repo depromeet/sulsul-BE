@@ -31,6 +31,8 @@ dependencies {
     // Utility Class Package
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
+    // for processing warning message (javax.annotation.meta.WHEN)
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
     runtimeOnly 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
