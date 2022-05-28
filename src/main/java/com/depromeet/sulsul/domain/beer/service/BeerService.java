@@ -2,6 +2,8 @@ package com.depromeet.sulsul.domain.beer.service;
 
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
@@ -81,5 +83,14 @@ public class BeerService {
         .stream(BeerType.class.getEnumConstants())
         .map(BeerTypeValue::new)
         .collect(Collectors.toList());
+  }
+
+  public ResponseDto<BeerCountResponseDto> countWithFilterRequest(ReadRequest readRequest) {
+    Long entireResultCount = beerRepository.count();
+    if (readRequest == null) {
+      return ResponseDto.from(new BeerCountResponseDto(entireResultCount, entireResultCount));
+    }
+    Long searchResultCount = (long) beerRepositoryCustom.countWithFilter(readRequest);
+    return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
   }
 }

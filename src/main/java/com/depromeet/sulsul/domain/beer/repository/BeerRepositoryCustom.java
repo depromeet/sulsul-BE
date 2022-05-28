@@ -19,4 +19,6 @@ public interface BeerRepositoryCustom {
   List<BeerResponseDto> findPageWith(Long memberId);
 
   BeerDetailResponseDto findById(Long memberId, Long beerId);
+
+  Integer countWithFilter(ReadRequest readRequest);
 }
