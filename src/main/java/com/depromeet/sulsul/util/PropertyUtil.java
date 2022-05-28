@@ -2,12 +2,11 @@ package com.depromeet.sulsul.util;
 
 import com.depromeet.sulsul.common.dto.EnumModel;
 import com.depromeet.sulsul.common.dto.EnumValue;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

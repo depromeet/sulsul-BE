@@ -2,12 +2,11 @@ package com.depromeet.sulsul.common.response.dto;
 
 import com.depromeet.sulsul.common.error.dto.ErrorResponseDto;
 import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 import org.springframework.http.HttpStatus;
 
 @Getter

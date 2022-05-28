@@ -1,9 +1,8 @@
 package com.depromeet.sulsul.util;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PaginationUtil {
