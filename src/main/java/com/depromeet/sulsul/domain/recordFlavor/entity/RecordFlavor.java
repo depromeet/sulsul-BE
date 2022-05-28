@@ -5,15 +5,21 @@ import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import lombok.ToString;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"record", "flavor"})
+@EqualsAndHashCode(exclude = {"record", "flavor"})
 public class RecordFlavor extends BaseEntity {
 
   @Id

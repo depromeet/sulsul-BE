@@ -22,8 +22,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString(exclude = {"member", "beer"})
-@EqualsAndHashCode(exclude = {"member", "beer"})
+@ToString(exclude = {"member", "beer", "recordFlavors"})
+@EqualsAndHashCode(exclude = {"member", "beer", "recordFlavors"})
 public class Record extends BaseEntity {
 
   @Id

@@ -33,7 +33,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   public List<BeerResponseDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
       BeerSearchConditionRequest beerSearchConditionRequest) {
     JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
-            new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin().where(beer.id.goe(beerId))
@@ -84,7 +84,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     Long cursor = readRequest.getCursor();
 
     JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
-            new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin()
@@ -129,7 +129,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   public List<BeerResponseDto> findPageWith(Long memberId) {
 
     JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
-            new QBeerDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1);
@@ -180,7 +180,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
   @Override
   public BeerDetailResponseDto findById(Long memberId, Long beerId) {
-    return queryFactory.select(new QBeerDetail(country, beer, memberBeer)).from(beer)
+    return queryFactory.select(new QBeerDetailResponseDto(country, beer, memberBeer)).from(beer)
         .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
         .innerJoin(country).on(beer.country.eq(country)).where(beer.id.eq(beerId)).fetchOne();
   }

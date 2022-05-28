@@ -5,23 +5,23 @@ import org.springframework.http.HttpStatus;
 public class ErrorResponseDto {
 
   private final String message;
-  private final int status;
+  private final int code;
 
   public static ErrorResponseDto of(Throwable throwable, HttpStatus status) {
     return new ErrorResponseDto(throwable, status);
   }
 
-  private ErrorResponseDto(Throwable throwable, HttpStatus status) {
-    this(throwable.getMessage(), status);
+  private ErrorResponseDto(Throwable throwable, HttpStatus code) {
+    this(throwable.getMessage(), code);
   }
 
   public static ErrorResponseDto of(String errorMessage, HttpStatus status) {
     return new ErrorResponseDto(errorMessage, status);
   }
 
-  private ErrorResponseDto(String errorMessage, HttpStatus status) {
+  private ErrorResponseDto(String errorMessage, HttpStatus code) {
     this.message = errorMessage;
-    this.status = status.value();
+    this.code = code.value();
   }
 
   public static ErrorResponseDto of(String errorMessage, int errorCode) {
@@ -30,14 +30,14 @@ public class ErrorResponseDto {
 
   private ErrorResponseDto(String errorMessage, int errorCode) {
     this.message = errorMessage;
-    this.status = errorCode;
+    this.code = errorCode;
   }
 
   public String getMessage() {
     return message;
   }
 
-  public int getStatus() {
-    return status;
+  public int getCode() {
+    return code;
   }
 }

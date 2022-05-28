@@ -70,8 +70,9 @@ public class RecordService {
       MemberRecordDto memberRecordDto = new MemberRecordDto(record.getMember().getId(),
           record.getMember().getName());
 
-      allRecordDtosWithPageableResponse.add(new RecordResponseDto(record.getContent(), memberRecordDto,
-          record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
+      allRecordDtosWithPageableResponse.add(
+          new RecordResponseDto(record.getContent(), memberRecordDto,
+              record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
     }
     if (isOverPaginationSize(allRecordDtosWithPageableResponse)) {
       allRecordDtosWithPageableResponse.remove(PAGINATION_SIZE);

@@ -23,6 +23,7 @@ public class ResponseDto<T> implements Serializable {
   }
 
   private ResponseDto(ErrorResponseDto errorResponseDto) {
+    this.contents = null;
     this.error = errorResponseDto;
   }
 

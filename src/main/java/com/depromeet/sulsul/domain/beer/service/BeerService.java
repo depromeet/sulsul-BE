@@ -50,9 +50,12 @@ public class BeerService {
   }
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<BeerResponseDto> findPageWithReadRequest(Long memberId, ReadRequest request) {
-    List<BeerResponseDto> beerResponseDtosWithPageable = beerRepositoryCustom.findPageWith(memberId, request);
-    return PageableResponseDto.of(beerResponseDtosWithPageable, request.getCursor(), request.getLimit());
+  public PageableResponseDto<BeerResponseDto> findPageWithReadRequest(Long memberId,
+      ReadRequest request) {
+    List<BeerResponseDto> beerResponseDtosWithPageable = beerRepositoryCustom.findPageWith(memberId,
+        request);
+    return PageableResponseDto.of(beerResponseDtosWithPageable, request.getCursor(),
+        request.getLimit());
   }
 
   @Transactional(readOnly = true)
