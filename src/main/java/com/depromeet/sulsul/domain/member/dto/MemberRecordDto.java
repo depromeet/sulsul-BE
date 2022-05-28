@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class MemberRecordDto {
-    private Long id;
-    private String name;
+
+  private Long id;
+  private String name;
 }

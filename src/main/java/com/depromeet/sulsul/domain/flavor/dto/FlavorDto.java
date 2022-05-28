@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class FlavorDto {
-    private Long id;
-    private String content;
+
+  private Long id;
+  private String content;
 }

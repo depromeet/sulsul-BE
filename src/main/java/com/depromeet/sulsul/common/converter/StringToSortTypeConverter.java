@@ -6,11 +6,11 @@ import org.springframework.core.convert.converter.Converter;
 
 public class StringToSortTypeConverter implements Converter<String, SortType> {
 
-    public SortType convert(String source) {
-        try {
-            return SortType.valueOf(source.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+  public SortType convert(String source) {
+    try {
+      return SortType.valueOf(source.toUpperCase());
+    } catch (IllegalArgumentException e) {
+      return null;
     }
+  }
 }

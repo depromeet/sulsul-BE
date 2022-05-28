@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecordFlavorRequest {
-    private Long beerId;
-    private List<Flavor> flavors = new ArrayList<>();
+
+  private Long beerId;
+  private List<Flavor> flavors = new ArrayList<>();
 }
