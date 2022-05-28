@@ -15,7 +15,7 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 
 import static com.depromeet.sulsul.common.request.SortCondition.*;
-import static com.depromeet.sulsul.domain.QMemberBeer.memberBeer;
+import static com.depromeet.sulsul.domain.memberBeer.entity.QMemberBeer.memberBeer;
 import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
 import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
 import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
