@@ -1,4 +1,4 @@
-package com.depromeet.sulsul.common.response.dto;
+package com.depromeet.sulsul.common.error.dto;
 
 import org.springframework.http.HttpStatus;
 
