@@ -14,20 +14,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CountryService {
 
-    private final CountryRepository countryRepository;
+  private final CountryRepository countryRepository;
 
-    @Transactional(readOnly = true)
-    public List<CountryDto> findAllByContinentId(Long continentId) {
-        if (continentId == null) {
-            return countryRepository.findAll()
-                    .stream()
-                    .map(CountryDto::new)
-                    .collect(Collectors.toList());
-        }
-
-        return countryRepository.findAllByContinentId(continentId)
-                .stream()
-                .map(CountryDto::new)
-                .collect(Collectors.toList());
+  @Transactional(readOnly = true)
+  public List<CountryDto> findAllByContinentId(Long continentId) {
+    if (continentId == null) {
+      return countryRepository.findAll()
+          .stream()
+          .map(CountryDto::new)
+          .collect(Collectors.toList());
     }
+
+    return countryRepository.findAllByContinentId(continentId)
+        .stream()
+        .map(CountryDto::new)
+        .collect(Collectors.toList());
+  }
 }

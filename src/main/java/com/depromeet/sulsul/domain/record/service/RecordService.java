@@ -1,27 +1,32 @@
 package com.depromeet.sulsul.domain.record.service;
 
-import com.depromeet.sulsul.common.dto.ImageDto;
-import com.depromeet.sulsul.common.entity.ImageType;
-import com.depromeet.sulsul.common.error.exception.custom.BeerNotFoundException;
-import com.depromeet.sulsul.common.error.exception.custom.FlavorNotFoundException;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
+import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
-import com.depromeet.sulsul.domain.flavor.entity.Flavor;
-import com.depromeet.sulsul.domain.flavor.repository.FlavorRepository;
-import com.depromeet.sulsul.domain.record.dto.RecordRequest;
+import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
+import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
+import com.depromeet.sulsul.domain.member.entity.Member;
+import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
-import com.depromeet.sulsul.domain.record.entity.RecordFlavor;
-import com.depromeet.sulsul.domain.record.repository.RecordFlavorRepository;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
-import com.depromeet.sulsul.util.ImageUtil;
+import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
+import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
 @Service
+@Transactional(readOnly = true)
 @Slf4j
 @RequiredArgsConstructor
 public class RecordService {
@@ -29,29 +34,58 @@ public class RecordService {
   private final AwsS3ImageClient awsS3ImageClient;
   private final RecordRepository recordRepository;
   private final BeerRepository beerRepository;
-  private final FlavorRepository flavorRepository;
-  private final RecordFlavorRepository recordFlavorRepository;
+  private final MemberRepository memberRepository;
 
-  public ImageDto uploadImage(MultipartFile multipartFile) {
-    if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
-      throw new IllegalArgumentException("[ERROR] Not supported file format.");
-    }
-    return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+  // TODO : 에러 출력. 이후 변경예정
+//    public ImageDto uploadImage(MultipartFile multipartFile) {
+//        if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
+//            throw new IllegalArgumentException("[ERROR] Not supported file format.");
+//        }
+//        return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+//    }
+
+  @Transactional
+  public Record save(RecordRequestDto recordRequestDto, Long memberId) {
+    Member member = memberRepository.getById(memberId);
+    Beer beer = beerRepository.getById(recordRequestDto.getBeerId());
+    return recordRepository.save(new Record(
+        member, beer, recordRequestDto
+    ));
   }
 
-  public void findAll() {
+  public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
+      RecordFindRequestDto recordFindRequestDto) {
+    List<Record> allRecordWithPageable = recordRepository.findAllRecordsWithPageable(
+        recordFindRequestDto);
+    List<RecordResponseDto> allRecordDtosWithPageableResponse = new ArrayList<>();
+    PageableResponseDto<RecordResponseDto> recordDtoPageableResponse = new PageableResponseDto<>();
 
+    for (Record record : allRecordWithPageable) {
+      List<RecordFlavor> recordFlavors = record.getRecordFlavors();
+      List<FlavorDto> flavorDtos = new ArrayList<>();
+      for (RecordFlavor recordFlavor : recordFlavors) {
+        flavorDtos.add(
+            new FlavorDto(recordFlavor.getFlavor().getId(), recordFlavor.getFlavor().getContent()));
+      }
+      MemberRecordDto memberRecordDto = new MemberRecordDto(record.getMember().getId(),
+          record.getMember().getName());
+
+      allRecordDtosWithPageableResponse.add(
+          new RecordResponseDto(record.getContent(), memberRecordDto,
+              record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
+    }
+    if (isOverPaginationSize(allRecordDtosWithPageableResponse)) {
+      allRecordDtosWithPageableResponse.remove(PAGINATION_SIZE);
+      recordDtoPageableResponse.setHasNext(true);
+    }
+    recordDtoPageableResponse.setContents(allRecordDtosWithPageableResponse);
+    return recordDtoPageableResponse;
   }
 
-  public void save(RecordRequest recordRequest) {
-
-    Record record = recordRepository.save(recordRequest.toEntity());
-
-    for (Long flavorId : recordRequest.getFlavorIds()) {
-        Flavor flavor = flavorRepository.findById(flavorId).orElseThrow(FlavorNotFoundException::new);
-        RecordFlavor recordFlavor = RecordFlavor.of(record, flavor);
-
-      recordFlavorRepository.save(recordFlavor);
-    }
+  // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
+  @Transactional
+  public void delete(Long recordId, Long memberId) {
+    Record targetRecord = recordRepository.getById(recordId);
+    targetRecord.delete();
   }
 }

@@ -10,15 +10,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CountryDto {
 
-    private final Long id;
-    private final String nameKor;
-    private final String nameEng;
-    private final String imageUrl;
+  private final Long id;
+  private final String nameKor;
+  private final String nameEng;
+  private final String imageUrl;
 
-    public CountryDto(Country country) {
-        this.id = country.getId();
-        this.nameKor = country.getNameKor();
-        this.nameEng = country.getNameEng();
-        this.imageUrl = country.getImageUrl();
-    }
+  public CountryDto(Country country) {
+    this.id = country.getId();
+    this.nameKor = country.getNameKor();
+    this.nameEng = country.getNameEng();
+    this.imageUrl = country.getImageUrl();
+  }
 }

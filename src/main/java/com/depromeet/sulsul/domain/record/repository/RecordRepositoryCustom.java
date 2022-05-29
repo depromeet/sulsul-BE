@@ -1,9 +1,13 @@
 package com.depromeet.sulsul.domain.record.repository;
 
-import com.depromeet.sulsul.domain.record.dto.RecordResponse;
-import org.springframework.data.domain.Page;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
+import com.depromeet.sulsul.domain.record.entity.Record;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface RecordRepositoryCustom {
 
-    Page<RecordResponse> findAllByMemberId(Long memberId);
+  List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto);
 }
