@@ -1,12 +1,13 @@
 package com.depromeet.sulsul.domain.record.dto;
 
 import com.depromeet.sulsul.domain.record.entity.Record;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,18 +21,14 @@ public class RecordRequest {
   private Integer feel;
   private Boolean isPublic;
   private Integer score;
-  private List<Long> flavorIds = new ArrayList<>();
-  private Double stampOffsetX;
-  private Double stampOffsetY;
 
+  private List<Long> flavorIds = new ArrayList<>();
   public Record toEntity() {
     return Record.builder()
         .content(this.content)
         .feel(this.feel)
         .isPublic(this.isPublic)
         .score(this.score)
-        .stampOffsetX(this.stampOffsetX)
-        .stampOffsetY(this.stampOffsetY)
         .build();
   }
 }
