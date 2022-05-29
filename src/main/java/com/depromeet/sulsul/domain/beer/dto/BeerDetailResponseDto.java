@@ -27,7 +27,6 @@ public class BeerDetailResponseDto {
   private Float alcohol;
   private Integer price;
   private Integer volume;
-  private LocalDateTime deletedAt;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
@@ -48,6 +47,8 @@ public class BeerDetailResponseDto {
     this.alcohol = beer.getAlcohol();
     this.price = beer.getPrice();
     this.volume = beer.getVolume();
+    this.createdAt = beer.getCreatedAt();
+    this.updatedAt = beer.getUpdatedAt();
     if (memberBeer != null) {
       this.isLiked = true;
     }

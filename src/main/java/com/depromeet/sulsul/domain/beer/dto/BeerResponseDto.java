@@ -7,6 +7,7 @@ import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.memberBeer.entity.MemberBeer;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class BeerResponseDto {
 

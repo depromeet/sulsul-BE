@@ -1,15 +1,14 @@
 package com.depromeet.sulsul.domain.record.repository;
 
+import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import javax.persistence.EntityManager;
 import java.util.List;
-
-import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+import javax.persistence.EntityManager;
 
 public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
 

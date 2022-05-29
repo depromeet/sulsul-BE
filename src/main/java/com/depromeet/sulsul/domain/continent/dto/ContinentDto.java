@@ -3,7 +3,6 @@ package com.depromeet.sulsul.domain.continent.dto;
 import com.depromeet.sulsul.domain.continent.entity.Continent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
