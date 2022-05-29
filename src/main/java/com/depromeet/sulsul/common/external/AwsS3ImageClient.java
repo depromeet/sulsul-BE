@@ -1,23 +1,26 @@
 package com.depromeet.sulsul.common.external;
 
+import static com.depromeet.sulsul.util.ImageUtil.append;
+import static com.depromeet.sulsul.util.ImageUtil.extractExt;
+import static com.depromeet.sulsul.util.ImageUtil.getNameByUUID;
+import static com.depromeet.sulsul.util.ImageUtil.isValidExtension;
+import static com.depromeet.sulsul.util.ImageUtil.resize;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.depromeet.sulsul.common.entity.ImageType;
 import com.depromeet.sulsul.util.ImageUtil;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import static com.depromeet.sulsul.util.ImageUtil.*;
 
 @Component
 @Slf4j

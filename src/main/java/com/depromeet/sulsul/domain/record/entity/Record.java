@@ -5,17 +5,24 @@ import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import lombok.ToString;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
