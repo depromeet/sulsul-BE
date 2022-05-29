@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class MemberBeerService {
   private final MemberBeerRepository memberBeerRepository;
@@ -23,20 +23,23 @@ public class MemberBeerService {
 
   // TODO : 찜한 맥주의 경우 모든 경우 해당 member가 본인인지 검증하는 로직이 필요하다.
 
-  @Transactional
-  public void save(Long beerId, Long memberId){
-    Optional<MemberBeer> memberBeer = memberBeerRepository.findMemberBeerByBeerIdAndMemberId(beerId, memberId);
-
-    Beer beer = beerRepository.getById(beerId);
-    Member member = memberRepository.getById(memberId);
-
-    memberBeer.ifPresentOrElse(BaseEntity::restore
-      , () -> memberBeerRepository.save(new MemberBeer(beer, member)));
+  public boolean save(Long beerId, Long memberId){
+    if(!memberBeerRepository.existsByBeerIdAndMemberId(beerId, memberId)){
+      Beer beer = beerRepository.getById(beerId);
+      Member member = memberRepository.getById(memberId);
+      memberBeerRepository.save(new MemberBeer(beer, member));
+      return true;
+    }else{
+      return false;
+    }
   }
 
-  @Transactional
-  public void delete(Long beerId, Long memberId){
-    MemberBeer memberBeer = memberBeerRepository.getMemberBeerByBeerIdAndMemberId(beerId, memberId);
-    memberBeer.delete();
+  public boolean delete(Long beerId, Long memberId){
+    if(memberBeerRepository.existsByBeerIdAndMemberId(beerId, memberId)){
+      memberBeerRepository.deleteByBeerIdAndMemberId(beerId, memberId);
+      return true;
+    }else{
+      return false;
+    }
   }
 }
