@@ -2,12 +2,11 @@ package com.depromeet.sulsul.domain.country.service;
 
 import com.depromeet.sulsul.domain.country.dto.CountryDto;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
