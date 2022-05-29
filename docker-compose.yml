@@ -2,7 +2,7 @@ version: '3'
 
 services:
   sulsuldb:
-    image: mariadb:10.3
+    image: mariadb10.3:v1
     container_name: sulsul-database
     ports:
       - "3306:3306"

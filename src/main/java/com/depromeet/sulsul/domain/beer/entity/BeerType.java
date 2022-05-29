@@ -1,8 +1,6 @@
 package com.depromeet.sulsul.domain.beer.entity;
 
 import com.depromeet.sulsul.common.dto.EnumModel;
-import com.depromeet.sulsul.common.request.SortCondition;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
