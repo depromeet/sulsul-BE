@@ -10,6 +10,7 @@ import com.depromeet.sulsul.domain.beer.dto.BeerCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
@@ -17,7 +18,9 @@ import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustom;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +86,13 @@ public class BeerService {
         .map(BeerTypeValue::new)
         .collect(Collectors.toList());
   }
+
+  public BeerResponsesDto findRecommands(Long memberId) {
+    List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeerNotExistsRecord(
+        memberId);
+    Collections.shuffle(beerResponseDtos);
+
+    return BeerResponsesDto.from(new ArrayList<>(beerResponseDtos.subList(0, PAGINATION_SIZE)));
 
   public ResponseDto<BeerCountResponseDto> countWithFilterRequest(ReadRequest readRequest) {
     Long entireResultCount = beerRepository.count();
