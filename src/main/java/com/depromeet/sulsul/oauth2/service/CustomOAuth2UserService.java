@@ -2,7 +2,6 @@ package com.depromeet.sulsul.oauth2.service;
 
 import static com.depromeet.sulsul.domain.member.dto.RoleType.USER;
 
-import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import java.util.Collections;
