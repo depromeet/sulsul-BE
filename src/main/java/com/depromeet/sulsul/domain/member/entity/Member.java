@@ -24,7 +24,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "records")
-@EqualsAndHashCode(exclude = "record")
+@EqualsAndHashCode(exclude = "records")
 public class Member {
 
   @Id
