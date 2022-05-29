@@ -1,11 +1,10 @@
 package com.depromeet.sulsul.domain.beer.dto;
 
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
