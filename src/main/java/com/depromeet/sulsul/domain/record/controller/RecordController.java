@@ -2,9 +2,9 @@ package com.depromeet.sulsul.domain.record.controller;
 
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.service.RecordService;
 import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
@@ -12,7 +12,12 @@ import com.depromeet.sulsul.domain.recordFlavor.service.RecordFlavorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController

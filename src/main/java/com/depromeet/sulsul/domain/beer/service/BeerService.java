@@ -1,27 +1,28 @@
 package com.depromeet.sulsul.domain.beer.service;
 
+import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
+import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
+
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustom;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
-import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -81,5 +82,14 @@ public class BeerService {
         .stream(BeerType.class.getEnumConstants())
         .map(BeerTypeValue::new)
         .collect(Collectors.toList());
+  }
+
+  public ResponseDto<BeerCountResponseDto> countWithFilterRequest(ReadRequest readRequest) {
+    Long entireResultCount = beerRepository.count();
+    if (readRequest == null) {
+      return ResponseDto.from(new BeerCountResponseDto(entireResultCount, entireResultCount));
+    }
+    Long searchResultCount = (long) beerRepositoryCustom.countWithFilter(readRequest);
+    return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
   }
 }
