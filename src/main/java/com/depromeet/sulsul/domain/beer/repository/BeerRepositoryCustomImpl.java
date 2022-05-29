@@ -1,24 +1,38 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
-import com.depromeet.sulsul.common.request.Filter;
-import com.depromeet.sulsul.common.request.ReadRequest;
-import com.depromeet.sulsul.common.request.SortCondition;
-import com.depromeet.sulsul.domain.beer.dto.*;
-import com.depromeet.sulsul.util.PaginationUtil;
-import com.depromeet.sulsul.util.PropertyUtil;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-import org.springframework.util.CollectionUtils;
-
-import static com.depromeet.sulsul.common.request.SortCondition.*;
+import static com.depromeet.sulsul.common.request.SortCondition.ALCOHOL_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.ALCOHOL_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.ID_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.ID_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_ENG_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_ENG_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_KOR_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_KOR_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.RECORD_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.RECORD_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_DESC;
 import static com.depromeet.sulsul.domain.QMemberBeer.memberBeer;
 import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
 import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
 import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+
+import com.depromeet.sulsul.common.request.Filter;
+import com.depromeet.sulsul.common.request.ReadRequest;
+import com.depromeet.sulsul.common.request.SortCondition;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.depromeet.sulsul.domain.beer.dto.QBeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
+import com.depromeet.sulsul.util.PaginationUtil;
+import com.depromeet.sulsul.util.PropertyUtil;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 @Repository
 public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
@@ -128,13 +142,22 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   @Override
   public List<BeerResponseDto> findPageWith(Long memberId) {
 
-    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
+    return queryFactory.select(
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1);
+        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1)
+        .fetch();
+  }
 
-    return jpaQuery.fetch();
+  @Override
+  public List<BeerResponseDto> findBeerNotExistsRecord(Long memberId) {
+
+    return queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(record.isNull()).fetchJoin().fetch();
   }
 
   private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,

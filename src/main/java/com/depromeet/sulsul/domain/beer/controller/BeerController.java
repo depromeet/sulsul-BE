@@ -3,19 +3,25 @@ package com.depromeet.sulsul.domain.beer.controller;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +30,7 @@ public class BeerController {
 
   private final BeerService beerService;
 
-  @GetMapping("")
+  @GetMapping
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestParam("beerId") Long beerId,
       @RequestParam(required = false) List<BeerType> beerTypes,
@@ -36,6 +42,12 @@ public class BeerController {
     BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(
         beerTypes, countryIds, sortType, searchKeyword);
     return beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest);
+  }
+
+  @GetMapping("/recommand")
+  public ResponseDto<BeerResponsesDto> findRecommands() {
+    Long memberId = 1L;
+    return ResponseDto.from(beerService.findRecommands(memberId));
   }
 
   @GetMapping("/{beerId}")
@@ -50,7 +62,7 @@ public class BeerController {
   }
 
   //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)
-  @PostMapping("")
+  @PostMapping
   public ResponseEntity save(@RequestBody BeerRequestDto beerRequestDto) {
     beerService.save(beerRequestDto);
     return new ResponseEntity<>(HttpStatus.OK);
