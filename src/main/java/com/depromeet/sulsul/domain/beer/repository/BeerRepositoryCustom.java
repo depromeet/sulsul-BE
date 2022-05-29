@@ -18,5 +18,7 @@ public interface BeerRepositoryCustom {
 
   List<BeerResponseDto> findPageWith(Long memberId);
 
+  List<BeerResponseDto> findBeerNotExistsRecord(Long memberId);
+
   BeerDetailResponseDto findById(Long memberId, Long beerId);
 }
