@@ -1,6 +1,9 @@
 package com.depromeet.sulsul.domain.flavor.entity;
 
 import com.depromeet.sulsul.common.entity.BaseEntity;
+import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +28,8 @@ public class Flavor extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String content;
+
+  @OneToMany(mappedBy = "flavor")
+  private List<RecordFlavor> recordFlavors = new ArrayList<>();
+
 }
