@@ -21,7 +21,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
 
   @Override
   public List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto) {
-    List<Record> recordDtos = queryFactory.select(record)
+    return queryFactory.select(record)
         .from(record)
         .where(beerIdEq(recordFindRequestDto.getBeerId())
             , memberIdEq(recordFindRequestDto.getMemberId())
@@ -30,7 +30,6 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         )
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
-    return recordDtos;
   }
 
   private BooleanExpression beerIdEq(Long beerId) {
