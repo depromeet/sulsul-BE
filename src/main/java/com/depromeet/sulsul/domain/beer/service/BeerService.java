@@ -81,4 +81,9 @@ public class BeerService {
         .map(BeerTypeValue::new)
         .collect(Collectors.toList());
   }
+
+  @Transactional(readOnly = true)
+  public Long findMemberBeerCount(Long id) {
+    return beerRepositoryCustom.findMemberBeerCount(id);
+  }
 }
