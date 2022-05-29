@@ -10,5 +10,5 @@ public interface RecordRepositoryCustom {
 
   List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto);
 
-    Long findMemberRecordCount(Long id);
+    Long findRecordCountByMemberId(Long id);
 }

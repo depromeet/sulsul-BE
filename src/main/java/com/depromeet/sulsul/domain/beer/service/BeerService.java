@@ -83,7 +83,7 @@ public class BeerService {
   }
 
   @Transactional(readOnly = true)
-  public Long findMemberBeerCount(Long id) {
-    return beerRepositoryCustom.findMemberBeerCount(id);
+  public Long findBeerCountByMemberId(Long id) {
+    return beerRepositoryCustom.findBeerCountByMemberId(id);
   }
 }

@@ -88,7 +88,7 @@ public class RecordService {
     targetRecord.delete();
   }
 
-  public Long findMemberRecordCount(Long id) {
-    return recordRepository.findMemberRecordCount(id);
+  public Long findRecordCountByMemberId(Long id) {
+    return recordRepository.findRecordCountByMemberId(id);
   }
 }

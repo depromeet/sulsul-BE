@@ -26,9 +26,9 @@ public class MemberFacade {
      */
     @Transactional(readOnly = true)
     public MyPageRequestDto findMyPageByMemberId(Long id) {
-        Long beerCount = beerService.findMemberBeerCount(id);
-        Long recordCount = recordService.findMemberRecordCount(id);
-        Long countryCount = countryService.MemberCountryCount(id);
+        Long beerCount = beerService.findBeerCountByMemberId(id);
+        Long recordCount = recordService.findRecordCountByMemberId(id);
+        Long countryCount = countryService.findCountryCountByMemberId(id);
 
         return MyPageRequestDto.of(beerCount, recordCount, countryCount, null, null);
     }

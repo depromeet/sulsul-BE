@@ -35,11 +35,11 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
-  public Long findMemberRecordCount(Long id) {
+  public Long findRecordCountByMemberId(Long id) {
     return queryFactory
             .selectFrom(record)
             .leftJoin(record.member, member)
-            .where(record.deletedAt.isNull())
+            .where(record.member.id.eq(id), record.deletedAt.isNull())
             .stream()
             .count();
   }
