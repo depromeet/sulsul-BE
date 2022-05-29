@@ -28,6 +28,8 @@ import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
 import com.depromeet.sulsul.domain.record.entity.QRecord;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.depromeet.sulsul.util.PropertyUtil;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -65,11 +67,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     if (!PropertyUtil.isEmpty(beerSearchConditionRequest.getSearchKeyword())) {
       String searchKeyword = beerSearchConditionRequest.getSearchKeyword();
       jpaQuery = jpaQuery.where(
-          beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
-              .or(beer.country.nameKor.contains(searchKeyword))
-              .or(beer.country.nameEng.contains(searchKeyword))
-              .or(beer.country.continent.name.contains(searchKeyword))
-              .or(beer.content.contains(searchKeyword)));
+          searchBooleanExpression(searchKeyword));
     }
 
     if (beerSearchConditionRequest.getSortType() == null) {
@@ -121,11 +119,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     if (!PropertyUtil.isEmpty(readRequest.getQuery())) {
       String searchKeyword = readRequest.getQuery();
       jpaQuery = jpaQuery.where(
-          beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
-              .or(beer.country.nameKor.contains(searchKeyword))
-              .or(beer.country.nameEng.contains(searchKeyword))
-              .or(beer.country.continent.name.contains(searchKeyword))
-              .or(beer.content.contains(searchKeyword)));
+          searchBooleanExpression(searchKeyword));
     }
 
     if (CollectionUtils.isEmpty(sortBy)) {
@@ -140,16 +134,33 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     return jpaQuery.fetch();
   }
 
+  private BooleanExpression searchBooleanExpression(String searchKeyword) {
+    return beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
+        .or(beer.country.nameKor.contains(searchKeyword))
+        .or(beer.country.nameEng.contains(searchKeyword))
+        .or(beer.country.continent.name.contains(searchKeyword))
+        .or(beer.content.contains(searchKeyword));
+  }
+
   @Override
   public List<BeerResponseDto> findPageWith(Long memberId) {
 
-    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
+    return queryFactory.select(
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1);
+        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1)
+        .fetch();
+  }
 
-    return jpaQuery.fetch();
+  @Override
+  public List<BeerResponseDto> findBeerNotExistsRecord(Long memberId) {
+
+    return queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(record.isNull()).fetchJoin().fetch();
   }
 
   private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,
@@ -210,5 +221,29 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
             .stream()
             .distinct()
             .count();
+  public Integer countWithFilter(ReadRequest readRequest) {
+
+    BooleanBuilder builder = new BooleanBuilder();
+
+    Filter filter = readRequest.getFilter();
+    String query = readRequest.getQuery();
+
+    if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
+      builder.and(beer.type.in(filter.getBeerTypes()));
+    }
+
+    if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
+      builder.and(beer.country.id.in(filter.getCountryIds()));
+    }
+
+    if (!PropertyUtil.isEmpty(query)) {
+      builder.and(searchBooleanExpression(query));
+    }
+
+    return queryFactory.select(beer)
+        .from(beer)
+        .where(builder)
+        .fetch()
+        .size();
   }
 }
