@@ -1,6 +1,7 @@
 package com.depromeet.sulsul.domain.flavor.controller;
 
 
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.flavor.dto.FlavorResponseDto;
 import com.depromeet.sulsul.domain.flavor.dto.FlavorResponse;
 import com.depromeet.sulsul.domain.flavor.entity.Flavor;
