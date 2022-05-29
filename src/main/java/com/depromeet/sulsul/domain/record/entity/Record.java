@@ -52,6 +52,24 @@ public class Record extends BaseEntity {
   private String content;
   private Boolean isPublic;
   private Integer feel;
+  private Integer score;
+  private Double stampOffsetX;
+  private Double stampOffsetY;
+
+  @Builder
+  public Record(String content, Boolean isPublic, Integer feel, Integer score, Double stampOffsetX, Double stampOffsetY) {
+    this.content = content;
+    this.isPublic = isPublic;
+    this.feel = feel;
+    this.score = score;
+    this.stampOffsetX = stampOffsetX;
+    this.stampOffsetY = stampOffsetY;
+  }
+
+  public void updateBeer(Beer beer) {
+    this.beer = beer;
+  }
+
 
   public Record(Member member, Beer beer, RecordRequestDto recordRequestDto) {
     this.member = member;

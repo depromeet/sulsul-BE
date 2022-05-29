@@ -19,6 +19,6 @@ public class FlavorController {
 
     @GetMapping
     public ResponseDto<List<FlavorResponse>> findAll() {
-        return ResponseDto.of(flavorService.findAll());
+        return ResponseDto.from(flavorService.findAll());
     }
 }
