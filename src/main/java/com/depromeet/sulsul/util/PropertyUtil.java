@@ -8,18 +8,22 @@ import lombok.NoArgsConstructor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyUtil {
 
-    public static List<EnumValue> toEnumValues(Class<? extends EnumModel> e){
-        return Arrays
-                .stream(e.getEnumConstants())
-                .map(EnumValue::new)
-                .collect(Collectors.toList());
-    }
+  public static final String EMPTY_STRING = "";
 
-    public static EnumValue toEnumValue(EnumModel enumModel){
-        return new EnumValue(enumModel);
-    }
+  public static boolean isEmpty(String str) {
+    return StringUtils.isBlank(str);
+  }
+
+  public static List<EnumValue> toEnumValues(Class<? extends EnumModel> e) {
+    return Arrays.stream(e.getEnumConstants()).map(EnumValue::new).collect(Collectors.toList());
+  }
+
+  public static EnumValue toEnumValue(EnumModel enumModel) {
+    return new EnumValue(enumModel);
+  }
 }
