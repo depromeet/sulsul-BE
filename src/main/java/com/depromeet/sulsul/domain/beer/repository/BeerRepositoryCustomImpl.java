@@ -23,6 +23,8 @@ import com.depromeet.sulsul.common.request.SortCondition;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.depromeet.sulsul.domain.beer.dto.QBeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.depromeet.sulsul.util.PropertyUtil;
 import com.querydsl.jpa.impl.JPAQuery;
