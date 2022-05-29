@@ -27,6 +27,8 @@ import com.depromeet.sulsul.domain.beer.dto.QBeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.depromeet.sulsul.util.PropertyUtil;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -64,11 +66,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     if (!PropertyUtil.isEmpty(beerSearchConditionRequest.getSearchKeyword())) {
       String searchKeyword = beerSearchConditionRequest.getSearchKeyword();
       jpaQuery = jpaQuery.where(
-          beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
-              .or(beer.country.nameKor.contains(searchKeyword))
-              .or(beer.country.nameEng.contains(searchKeyword))
-              .or(beer.country.continent.name.contains(searchKeyword))
-              .or(beer.content.contains(searchKeyword)));
+          searchBooleanExpression(searchKeyword));
     }
 
     if (beerSearchConditionRequest.getSortType() == null) {
@@ -120,11 +118,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     if (!PropertyUtil.isEmpty(readRequest.getQuery())) {
       String searchKeyword = readRequest.getQuery();
       jpaQuery = jpaQuery.where(
-          beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
-              .or(beer.country.nameKor.contains(searchKeyword))
-              .or(beer.country.nameEng.contains(searchKeyword))
-              .or(beer.country.continent.name.contains(searchKeyword))
-              .or(beer.content.contains(searchKeyword)));
+          searchBooleanExpression(searchKeyword));
     }
 
     if (CollectionUtils.isEmpty(sortBy)) {
@@ -137,6 +131,14 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     }
 
     return jpaQuery.fetch();
+  }
+
+  private BooleanExpression searchBooleanExpression(String searchKeyword) {
+    return beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
+        .or(beer.country.nameKor.contains(searchKeyword))
+        .or(beer.country.nameEng.contains(searchKeyword))
+        .or(beer.country.continent.name.contains(searchKeyword))
+        .or(beer.content.contains(searchKeyword));
   }
 
   @Override
@@ -206,5 +208,32 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     return queryFactory.select(new QBeerDetailResponseDto(country, beer, memberBeer)).from(beer)
         .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
         .innerJoin(country).on(beer.country.eq(country)).where(beer.id.eq(beerId)).fetchOne();
+  }
+
+  @Override
+  public Integer countWithFilter(ReadRequest readRequest) {
+
+    BooleanBuilder builder = new BooleanBuilder();
+
+    Filter filter = readRequest.getFilter();
+    String query = readRequest.getQuery();
+
+    if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
+      builder.and(beer.type.in(filter.getBeerTypes()));
+    }
+
+    if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
+      builder.and(beer.country.id.in(filter.getCountryIds()));
+    }
+
+    if (!PropertyUtil.isEmpty(query)) {
+      builder.and(searchBooleanExpression(query));
+    }
+
+    return queryFactory.select(beer)
+        .from(beer)
+        .where(builder)
+        .fetch()
+        .size();
   }
 }

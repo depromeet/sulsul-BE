@@ -5,6 +5,8 @@ import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
@@ -91,5 +93,13 @@ public class BeerService {
     Collections.shuffle(beerResponseDtos);
 
     return BeerResponsesDto.from(new ArrayList<>(beerResponseDtos.subList(0, PAGINATION_SIZE)));
+
+  public ResponseDto<BeerCountResponseDto> countWithFilterRequest(ReadRequest readRequest) {
+    Long entireResultCount = beerRepository.count();
+    if (readRequest == null) {
+      return ResponseDto.from(new BeerCountResponseDto(entireResultCount, entireResultCount));
+    }
+    Long searchResultCount = (long) beerRepositoryCustom.countWithFilter(readRequest);
+    return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
   }
 }

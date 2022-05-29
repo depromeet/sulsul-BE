@@ -2,12 +2,11 @@ package com.depromeet.sulsul.domain.continent.service;
 
 import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
 import com.depromeet.sulsul.domain.continent.repository.ContinentRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
