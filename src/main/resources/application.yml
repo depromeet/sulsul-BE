@@ -20,3 +20,14 @@ spring:
     mapper:
       accept-case-insensitive-enums: true
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAVPAOA5WKLKDZ5UFU
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: sulsul-media-bucket
+    stack:
+      auto: false
