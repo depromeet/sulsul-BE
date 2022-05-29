@@ -5,6 +5,7 @@ import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -23,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 
 @Entity
 @Getter
@@ -52,6 +54,17 @@ public class Record extends BaseEntity {
   private String content;
   private Boolean isPublic;
   private Integer feel;
+  private Integer score;
+  @Builder
+  public Record(String content, Boolean isPublic, Integer feel, Integer score) {
+    this.content = content;
+    this.isPublic = isPublic;
+    this.feel = feel;
+    this.score = score;
+  }
+  public void updateBeer(Beer beer) {
+    this.beer = beer;
+  }
 
   public Record(Member member, Beer beer, RecordRequestDto recordRequestDto) {
     this.member = member;

@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface RecordRepositoryCustom {
 
   List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto);
+
+    Long findRecordCountByMemberId(Long id);
 }

@@ -25,6 +25,7 @@ import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import com.depromeet.sulsul.domain.beer.dto.QBeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
+import com.depromeet.sulsul.domain.record.entity.QRecord;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.depromeet.sulsul.util.PropertyUtil;
 import com.querydsl.core.BooleanBuilder;
@@ -217,6 +218,15 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   @Override
+  public Long findBeerCountByMemberId(Long id) {
+    return queryFactory
+            .select(record.beer.id)
+            .from(record)
+            .leftJoin(record.beer,beer)
+            .where(record.member.id.eq(id),beer.deletedAt.isNull())
+            .stream()
+            .distinct()
+            .count();
   public Integer countWithFilter(ReadRequest readRequest) {
 
     BooleanBuilder builder = new BooleanBuilder();

@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.record.repository;
 
+
 import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
 
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
@@ -29,6 +30,16 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         )
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
+  }
+
+  @Override
+  public Long findRecordCountByMemberId(Long id) {
+    return queryFactory
+            .selectFrom(record)
+            .leftJoin(record.member, member)
+            .where(record.member.id.eq(id), record.deletedAt.isNull())
+            .stream()
+            .count();
   }
 
   private BooleanExpression beerIdEq(Long beerId) {
