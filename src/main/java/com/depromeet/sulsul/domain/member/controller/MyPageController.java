@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/my-page")
+@RequestMapping("/api/v1/my-page")
 public class MyPageController {
     private final MemberFacade memberFacade;
 
