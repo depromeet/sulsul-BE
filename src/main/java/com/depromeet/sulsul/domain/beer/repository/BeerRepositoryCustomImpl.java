@@ -201,12 +201,12 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   @Override
-  public Long findMemberBeerCount(Long id) {
+  public Long findBeerCountByMemberId(Long id) {
     return queryFactory
             .select(record.beer.id)
             .from(record)
             .leftJoin(record.beer,beer)
-            .where(record.member.id.eq(id))
+            .where(record.member.id.eq(id),beer.deletedAt.isNull())
             .stream()
             .distinct()
             .count();

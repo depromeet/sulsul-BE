@@ -18,7 +18,7 @@ public class CountryRepositoryCustomImpl implements CountryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Long findMemberCountryCount(Long id) {
+    public Long findCountryCountByMemberId(Long id) {
         return queryFactory
                 .select(record.beer.country.id)
                 .from(record)

@@ -32,7 +32,7 @@ public class CountryService {
                 .collect(Collectors.toList());
     }
 
-    public Long MemberCountryCount(Long id) {
-        return countryRepository.findMemberCountryCount(id);
+    public Long findCountryCountByMemberId(Long id) {
+        return countryRepository.findCountryCountByMemberId(id);
     }
 }

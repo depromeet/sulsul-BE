@@ -55,6 +55,6 @@ public class RecordController {
 
   @GetMapping("/count/{id}")
   public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id){
-   return ResponseDto.from(recordService.findMemberRecordCount(id));
+   return ResponseDto.from(recordService.findRecordCountByMemberId(id));
   }
 }
