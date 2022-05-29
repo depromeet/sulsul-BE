@@ -1,10 +1,10 @@
 package com.depromeet.sulsul.domain.beer.dto;
 
-import com.depromeet.sulsul.domain.MemberBeer;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.continent.dto.ContinentDto;
 import com.depromeet.sulsul.domain.country.dto.CountryDetail;
 import com.depromeet.sulsul.domain.country.entity.Country;
+import com.depromeet.sulsul.domain.memberBeer.entity.MemberBeer;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

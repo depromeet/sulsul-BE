@@ -37,6 +37,12 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+import static com.depromeet.sulsul.common.request.SortCondition.*;
+import static com.depromeet.sulsul.domain.memberBeer.entity.QMemberBeer.memberBeer;
+import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
+import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
+import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+
 @Repository
 public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
