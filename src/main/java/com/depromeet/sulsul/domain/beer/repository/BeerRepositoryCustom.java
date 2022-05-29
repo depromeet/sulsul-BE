@@ -21,7 +21,7 @@ public interface BeerRepositoryCustom {
 
   BeerDetailResponseDto findById(Long memberId, Long beerId);
 
-  Long findMemberBeerCount(Long id);
   Integer countWithFilter(ReadRequest readRequest);
+
   Long findBeerCountByMemberId(Long id);
 }
