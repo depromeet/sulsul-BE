@@ -34,7 +34,7 @@ public class RecordController {
 //        return ResponseDto.of(recordService.uploadImage(multipartFile));
 //    }
 
-  @PostMapping("/records")
+  @PostMapping("")
   public ResponseEntity<Object> save(@RequestBody RecordRequestDto recordRequestDto) {
     Long memberIdTemp = 1L;
     Record recordSave = recordService.save(recordRequestDto, memberIdTemp);
@@ -44,13 +44,13 @@ public class RecordController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PostMapping("/records/find")
+  @PostMapping("find")
   public ResponseDto<PageableResponseDto<RecordResponseDto>> findAllRecordsWithPageable(
       @RequestBody RecordFindRequestDto recordFindRequestDto) {
     return ResponseDto.from(recordService.findAllRecordsWithPageable(recordFindRequestDto));
   }
 
-  @DeleteMapping("/records")
+  @DeleteMapping("")
   public ResponseEntity<Object> delete(@RequestParam Long recordId) {
     // TODO : 임시 유저아이디 사용.
     Long memberIdTemp = 1L;

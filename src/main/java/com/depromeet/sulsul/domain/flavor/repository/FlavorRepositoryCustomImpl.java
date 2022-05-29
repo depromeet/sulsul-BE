@@ -18,4 +18,25 @@ public class FlavorRepositoryCustomImpl implements FlavorRepositoryCustom {
     public List<FlavorResponse> selectAll() {
         return jpaQueryFactory.select(new QFlavorResponse(flavor.id, flavor.content)).from(flavor).fetch();
     }
+  
+    @Override
+  public List<FlavorResponseDto> findTopThreeFlavorsByCount(Long beerId){
+    return queryFactory.select(new QFlavorResponseDto(flavor.content, flavor.count()))
+        .from(flavor)
+        .innerJoin(recordFlavor).on(flavor.eq(recordFlavor.flavor))
+        .innerJoin(record).on(record.eq(recordFlavor.record))
+        .innerJoin(beer).on(beer.eq(record.beer))
+        .fetchJoin()
+        .where(
+            beerIdEq(beerId)
+        )
+        .limit(3)
+        .groupBy(flavor.id)
+        .orderBy(flavor.count().desc())
+        .fetch();
+  }
+
+  private BooleanExpression beerIdEq(Long beerId) {
+    return beerId != null ? beer.id.eq(beerId) : null;
+  }
 }
