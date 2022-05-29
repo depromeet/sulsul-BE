@@ -2,10 +2,9 @@ package com.depromeet.sulsul.domain.beer.dto;
 
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.List;
 
 // TODO: will be deprecated.
 @Getter

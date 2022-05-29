@@ -4,9 +4,8 @@ import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BeerRepositoryCustom {
@@ -18,5 +17,9 @@ public interface BeerRepositoryCustom {
 
   List<BeerResponseDto> findPageWith(Long memberId);
 
+  List<BeerResponseDto> findBeerNotExistsRecord(Long memberId);
+
   BeerDetailResponseDto findById(Long memberId, Long beerId);
+
+  Integer countWithFilter(ReadRequest readRequest);
 }
