@@ -4,6 +4,10 @@ import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +21,7 @@ public class MemberController {
   private final MemberService memberService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<Object> findMember(@PathVariable final Long id) {
+  public ResponseEntity<Object> findMember(@PathVariable final Long id, Authentication authentication) {
     return ResponseEntity.ok().body(ResponseDto.of(memberService.findMember(id)));
   }
 }

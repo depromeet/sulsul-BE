@@ -1,9 +1,11 @@
 package com.depromeet.sulsul.oauth2.service;
 
+import static com.depromeet.sulsul.domain.member.dto.RoleType.USER;
+
+import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import java.util.Collections;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -28,15 +30,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     // OAuth2 서비스 id (구글, 카카오, 네이버)
     String registrationId = userRequest.getClientRegistration().getRegistrationId();
-    String userNameAttributeName = userRequest.getClientRegistration()
-        .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
-    OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+    OAuthAttributes attributes = OAuthAttributes.of(registrationId, oAuth2User.getAttributes());
 
     saveOrUpdate(attributes);
 
     return new DefaultOAuth2User(
-        Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+        Collections.singleton(new SimpleGrantedAuthority(USER.getAuthority())),
         attributes.getAttributes(), attributes.getNameAttributeKey());
   }
 
