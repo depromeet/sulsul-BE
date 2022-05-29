@@ -35,7 +35,7 @@ public class BeerController {
 
   private final BeerService beerService;
 
-  @GetMapping("")
+  @GetMapping
   @ApiOperation(value = "(deprecated) 맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestParam("beerId") Long beerId,
@@ -50,14 +50,19 @@ public class BeerController {
     return beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest);
   }
 
+  @GetMapping("/recommand")
+  public ResponseDto<BeerResponsesDto> findRecommands() {
+    Long memberId = 1L;
+    return ResponseDto.from(beerService.findRecommands(memberId));
+  }
+
   @PostMapping("/count")
   @ApiOperation(value = "맥주 검색결과/전체 개수 조회 API")
   public ResponseDto<BeerCountResponseDto> countWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
     return beerService.countWithFilterRequest(readRequest);
   }
-
-
+  
   @GetMapping("/{beerId}")
   @ApiOperation(value = "맥주 상세 조회 API")
   public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId) {
@@ -72,7 +77,7 @@ public class BeerController {
   }
 
   //TODO: 로그인 기능 개발 후 권한 관련 수정 필요 (관리자용 기능)
-  @PostMapping("")
+  @PostMapping
   @ApiOperation("맥주 등록 API (관리자용)")
   public ResponseEntity save(@RequestBody BeerRequestDto beerRequestDto) {
     beerService.save(beerRequestDto);

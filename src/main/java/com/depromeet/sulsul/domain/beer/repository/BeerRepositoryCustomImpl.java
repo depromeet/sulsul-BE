@@ -144,13 +144,22 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   @Override
   public List<BeerResponseDto> findPageWith(Long memberId) {
 
-    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
+    return queryFactory.select(
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1);
+        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1)
+        .fetch();
+  }
 
-    return jpaQuery.fetch();
+  @Override
+  public List<BeerResponseDto> findBeerNotExistsRecord(Long memberId) {
+
+    return queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(record.isNull()).fetchJoin().fetch();
   }
 
   private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,
