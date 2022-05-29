@@ -21,7 +21,7 @@ public class MemberController {
   private final MemberService memberService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<Object> findMember(@PathVariable final Long id, Authentication authentication) {
-    return ResponseEntity.ok().body(ResponseDto.of(memberService.findMember(id)));
+  public ResponseEntity<Object> findMember(@PathVariable final Long id) {
+    return ResponseEntity.ok().body(ResponseDto.from(memberService.findMember(id)));
   }
 }

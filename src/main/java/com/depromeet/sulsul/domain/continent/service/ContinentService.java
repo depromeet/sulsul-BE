@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContinentService {
 
-    private final ContinentRepository continentRepository;
+  private final ContinentRepository continentRepository;
 
-    @Transactional(readOnly = true)
-    public List<ContinentDto> findAll() {
-        return continentRepository.findAll()
-                .stream()
-                .map(ContinentDto::new)
-                .collect(Collectors.toList());
-    }
+  @Transactional(readOnly = true)
+  public List<ContinentDto> findAll() {
+    return continentRepository.findAll()
+        .stream()
+        .map(ContinentDto::new)
+        .collect(Collectors.toList());
+  }
 }

@@ -1,22 +1,24 @@
 package com.depromeet.sulsul.domain.beer.service;
 
-import com.depromeet.sulsul.common.dto.EnumValue;
-import com.depromeet.sulsul.common.response.dto.PageableResponse;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetail;
-import com.depromeet.sulsul.domain.beer.dto.BeerDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerFilterSortRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerRequest;
+import com.depromeet.sulsul.common.request.ReadRequest;
+import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepositoryCustom;
 import com.depromeet.sulsul.domain.country.repository.CountryRepository;
-import com.depromeet.sulsul.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
@@ -27,37 +29,57 @@ import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 @RequiredArgsConstructor
 public class BeerService {
 
-    private final BeerRepository beerRepository;
-    private final BeerRepositoryCustom beerRepositoryCustom;
-    private final CountryRepository countryRepository;
+  private final BeerRepository beerRepository;
+  private final BeerRepositoryCustom beerRepositoryCustom;
+  private final CountryRepository countryRepository;
 
-    @Transactional(readOnly = true)
-    public PageableResponse<BeerDto> findPageWithFilterRequest(Long memberId, Long beerId, BeerFilterSortRequest beerFilterSortRequest) {
-        List<BeerDto> beerDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(memberId, beerId, beerFilterSortRequest);
+  @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(Long memberId, Long beerId,
+      BeerSearchConditionRequest beerSearchConditionRequest) {
+    List<BeerResponseDto> beerResponseDtosWithPageable = beerRepositoryCustom.findAllWithPageableFilterSort(
+        memberId, beerId, beerSearchConditionRequest);
 
-        PageableResponse<BeerDto> beerPageableResponse = new PageableResponse<>();
-        if (isOverPaginationSize(beerDtosWithPageable)) {
-            beerDtosWithPageable.remove(PAGINATION_SIZE);
-            beerPageableResponse.setHasNext(true);
-        }
-
-        beerPageableResponse.setContents(beerDtosWithPageable);
-        return beerPageableResponse;
+    PageableResponseDto<BeerResponseDto> beerPageableResponseDto = new PageableResponseDto<>();
+    if (isOverPaginationSize(beerResponseDtosWithPageable)) {
+      beerResponseDtosWithPageable.remove(PAGINATION_SIZE);
+      beerPageableResponseDto.setHasNext(true);
     }
 
-    public void save(BeerRequest beerRequest) {
+    beerPageableResponseDto.setContents(beerResponseDtosWithPageable);
+    return beerPageableResponseDto;
+  }
 
-        beerRepository.save(new Beer(
-                countryRepository.getById(beerRequest.getCountryId()),
-                beerRequest));
-    }
+  @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findPageWithReadRequest(Long memberId,
+      ReadRequest request) {
+    List<BeerResponseDto> beerResponseDtosWithPageable = beerRepositoryCustom.findPageWith(memberId,
+        request);
+    return PageableResponseDto.of(beerResponseDtosWithPageable, request.getCursor(),
+        request.getLimit());
+  }
 
-    @Transactional(readOnly = true)
-    public BeerDetail findById(Long memberId, Long beerId) {
-        return beerRepositoryCustom.findById(memberId, beerId);
-    }
+  @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findAll(Long memberId) {
 
-    public List<EnumValue> findTypes() {
-        return PropertyUtil.toEnumValues(BeerType.class);
-    }
+    return PageableResponseDto.of(beerRepositoryCustom.findPageWith(memberId), 0L, PAGINATION_SIZE);
+  }
+
+  public void save(BeerRequestDto beerRequestDto) {
+
+    beerRepository.save(new Beer(
+        countryRepository.getById(beerRequestDto.getCountryId()),
+        beerRequestDto));
+  }
+
+  @Transactional(readOnly = true)
+  public BeerDetailResponseDto findById(Long memberId, Long beerId) {
+    return beerRepositoryCustom.findById(memberId, beerId);
+  }
+
+  public List<BeerTypeValue> findTypes() {
+    return Arrays
+        .stream(BeerType.class.getEnumConstants())
+        .map(BeerTypeValue::new)
+        .collect(Collectors.toList());
+  }
 }

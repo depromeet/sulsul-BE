@@ -7,12 +7,14 @@ import lombok.Getter;
 
 import java.util.List;
 
+// TODO: will be deprecated.
 @Getter
 @AllArgsConstructor
-public final class BeerFilterSortRequest {
+public final class BeerSearchConditionRequest {
 
-    private List<BeerType> beerTypes;
-    private List<Long> countryIds;
-    private SortType sortType;
+  private List<BeerType> beerTypes;
+  private List<Long> countryIds;
+  private SortType sortType;
+  private String searchKeyword;
 
 }

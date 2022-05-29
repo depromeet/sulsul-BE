@@ -14,13 +14,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+import lombok.ToString;
+
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = "records")
+@EqualsAndHashCode(exclude = "record")
 public class Member {
 
   @Id
@@ -30,9 +40,6 @@ public class Member {
 
   @OneToMany(mappedBy = "member")
   private List<Record> records = new ArrayList<>();
-
-  @OneToMany(mappedBy = "member")
-  private List<Review> reviews = new ArrayList<>();
 
   @Enumerated(EnumType.STRING)
   private RoleType role;
@@ -47,11 +54,10 @@ public class Member {
   }
 
   @Builder
-  public Member(Long id, List<Record> records, List<Review> reviews, RoleType role, String email, String name,
+  public Member(Long id, List<Record> records, RoleType role, String email, String name,
       String profileUrl, String phoneNumber) {
     this.id = id;
     this.records = records;
-    this.reviews = reviews;
     this.role = role;
     this.email = email;
     this.name = name;
