@@ -1,17 +1,17 @@
 package com.depromeet.sulsul.domain.flavor.entity;
 
 import com.depromeet.sulsul.common.entity.BaseEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import lombok.ToString;
 
 @Entity
@@ -28,4 +28,7 @@ public class Flavor extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String content;
+
+  @OneToMany(mappedBy = "flavor")
+  private List<RecordFlavor> recordFlavors = new ArrayList<>();
 }
