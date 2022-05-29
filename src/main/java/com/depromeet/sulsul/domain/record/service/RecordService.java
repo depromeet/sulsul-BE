@@ -87,4 +87,8 @@ public class RecordService {
     Record targetRecord = recordRepository.getById(recordId);
     targetRecord.delete();
   }
+
+  public Long findMemberRecordCount(Long id) {
+    return recordRepository.findMemberRecordCount(id);
+  }
 }

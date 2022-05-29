@@ -2,7 +2,7 @@ version: '3'
 
 services:
   sulsuldb:
-    image: mariadb10.3:v1
+    image: mariadb:10.3
     container_name: sulsul-database
     ports:
       - "3306:3306"
@@ -13,3 +13,7 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_USER: minsoo
       MYSQL_PASSWORD: 1234
+    command: # 명령어 실행
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+
