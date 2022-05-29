@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface FlavorRepository extends JpaRepository<Flavor, Long>, FlavorRepositoryCustom,
     QuerydslPredicateExecutor<Flavor> {
 
+
 }

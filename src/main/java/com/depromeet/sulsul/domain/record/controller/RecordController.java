@@ -57,4 +57,9 @@ public class RecordController {
     recordService.delete(recordId, memberIdTemp);
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  @GetMapping("/count/{id}")
+  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id){
+   return ResponseDto.from(recordService.findRecordCountByMemberId(id));
+  }
 }

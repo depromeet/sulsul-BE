@@ -1,31 +1,25 @@
 package com.depromeet.sulsul.domain.flavor.repository;
 
-import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
-import static com.depromeet.sulsul.domain.flavor.entity.QFlavor.flavor;
-import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
-import static com.depromeet.sulsul.domain.recordFlavor.entity.QRecordFlavor.recordFlavor;
-
-import com.depromeet.sulsul.domain.beer.entity.QBeer;
-import com.depromeet.sulsul.domain.flavor.dto.FlavorResponseDto;
-import com.depromeet.sulsul.domain.flavor.dto.QFlavorResponseDto;
-import com.depromeet.sulsul.domain.flavor.entity.Flavor;
-import com.depromeet.sulsul.domain.flavor.entity.QFlavor;
-import com.depromeet.sulsul.domain.record.entity.QRecord;
-import com.depromeet.sulsul.domain.recordFlavor.entity.QRecordFlavor;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.depromeet.sulsul.domain.flavor.dto.FlavorResponse;
+import com.depromeet.sulsul.domain.flavor.dto.QFlavorResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
-import javax.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
+import static com.depromeet.sulsul.domain.flavor.entity.QFlavor.flavor;
+
+@RequiredArgsConstructor
 public class FlavorRepositoryCustomImpl implements FlavorRepositoryCustom {
 
-  private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
-  public FlavorRepositoryCustomImpl(EntityManager entityManager){
-    this.queryFactory = new JPAQueryFactory(entityManager);
-  }
-
-  @Override
+    @Override
+    public List<FlavorResponse> selectAll() {
+        return jpaQueryFactory.select(new QFlavorResponse(flavor.id, flavor.content)).from(flavor).fetch();
+    }
+  
+    @Override
   public List<FlavorResponseDto> findTopThreeFlavorsByCount(Long beerId){
     return queryFactory.select(new QFlavorResponseDto(flavor.content, flavor.count()))
         .from(flavor)
@@ -45,5 +39,4 @@ public class FlavorRepositoryCustomImpl implements FlavorRepositoryCustom {
   private BooleanExpression beerIdEq(Long beerId) {
     return beerId != null ? beer.id.eq(beerId) : null;
   }
-
 }

@@ -87,19 +87,28 @@ public class BeerService {
         .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
+  public Long findMemberBeerCount(Long id) {
+    return beerRepositoryCustom.findMemberBeerCount(id);
+  }
   public BeerResponsesDto findRecommands(Long memberId) {
     List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeerNotExistsRecord(
-        memberId);
+            memberId);
     Collections.shuffle(beerResponseDtos);
 
     return BeerResponsesDto.from(new ArrayList<>(beerResponseDtos.subList(0, PAGINATION_SIZE)));
-
-  public ResponseDto<BeerCountResponseDto> countWithFilterRequest(ReadRequest readRequest) {
-    Long entireResultCount = beerRepository.count();
-    if (readRequest == null) {
-      return ResponseDto.from(new BeerCountResponseDto(entireResultCount, entireResultCount));
-    }
-    Long searchResultCount = (long) beerRepositoryCustom.countWithFilter(readRequest);
-    return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
   }
+  public ResponseDto<BeerCountResponseDto> countWithFilterRequest(ReadRequest readRequest){
+      Long entireResultCount = beerRepository.count();
+      if (readRequest == null) {
+        return ResponseDto.from(new BeerCountResponseDto(entireResultCount, entireResultCount));
+      }
+      Long searchResultCount = (long) beerRepositoryCustom.countWithFilter(readRequest);
+      return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
+    }
+
+  public Long findBeerCountByMemberId(Long id) {
+    return beerRepositoryCustom.findBeerCountByMemberId(id);
+  }
+
 }
