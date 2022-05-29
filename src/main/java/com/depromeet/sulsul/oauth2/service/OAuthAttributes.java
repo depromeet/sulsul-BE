@@ -28,16 +28,19 @@ public class OAuthAttributes {
 
   }
 
-  public static OAuthAttributes of(String registrationId, String userNameAttributeName,
-      Map<String, Object> attributes) {
+  public static OAuthAttributes of(String registrationId, Map<String, Object> attributes) {
     switch (registrationId) {
       case KAKAO:
         return ofKakao("id", attributes);
       case NAVER:
-
+        return ofNaver("id", attributes);
       default:
         throw new IllegalArgumentException();
     }
+  }
+
+  private static OAuthAttributes ofNaver(String id, Map<String, Object> attributes) {
+    return null;
   }
 
   private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
