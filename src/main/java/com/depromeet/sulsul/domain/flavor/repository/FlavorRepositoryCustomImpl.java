@@ -1,22 +1,30 @@
 package com.depromeet.sulsul.domain.flavor.repository;
 
+import com.depromeet.sulsul.domain.beer.entity.QBeer;
 import com.depromeet.sulsul.domain.flavor.dto.FlavorResponse;
+import com.depromeet.sulsul.domain.flavor.dto.FlavorResponseDto;
 import com.depromeet.sulsul.domain.flavor.dto.QFlavorResponse;
+import com.depromeet.sulsul.domain.flavor.dto.QFlavorResponseDto;
+import com.depromeet.sulsul.domain.record.entity.QRecord;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
 import static com.depromeet.sulsul.domain.flavor.entity.QFlavor.flavor;
+import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+import static com.depromeet.sulsul.domain.recordFlavor.entity.QRecordFlavor.recordFlavor;
 
 @RequiredArgsConstructor
 public class FlavorRepositoryCustomImpl implements FlavorRepositoryCustom {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<FlavorResponse> selectAll() {
-        return jpaQueryFactory.select(new QFlavorResponse(flavor.id, flavor.content)).from(flavor).fetch();
+        return queryFactory.select(new QFlavorResponse(flavor.id, flavor.content)).from(flavor).fetch();
     }
   
     @Override
