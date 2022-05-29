@@ -9,12 +9,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ContinentDto {
 
-    private Long id;
-    private String name;
+  private final Long id;
+  private final String name;
 
-    public ContinentDto(Continent continent) {
-        this.id = continent.getId();
-        this.name = continent.getName();
-    }
+  public ContinentDto(Continent continent) {
+    this.id = continent.getId();
+    this.name = continent.getName();
+  }
 
 }

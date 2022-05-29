@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/api/v1/continents")
 public class ContinentController {
 
-    private final ContinentService continentService;
+  private final ContinentService continentService;
 
-    @GetMapping("")
-    public ResponseDto<List<ContinentDto>> findAll() {
-        return ResponseDto.of(continentService.findAll());
-    }
+  @GetMapping("")
+  public ResponseDto<List<ContinentDto>> findAll() {
+    return ResponseDto.from(continentService.findAll());
+  }
 }
