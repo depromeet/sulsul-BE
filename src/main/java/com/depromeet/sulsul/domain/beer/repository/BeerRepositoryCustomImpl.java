@@ -12,7 +12,6 @@ import static com.depromeet.sulsul.common.request.SortCondition.RECORD_ASC;
 import static com.depromeet.sulsul.common.request.SortCondition.RECORD_DESC;
 import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_ASC;
 import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_DESC;
-import static com.depromeet.sulsul.domain.QMemberBeer.memberBeer;
 import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
 import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
 import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
@@ -222,11 +221,12 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     return queryFactory
             .select(record.beer.id)
             .from(record)
-            .leftJoin(record.beer,beer)
-            .where(record.member.id.eq(id),beer.deletedAt.isNull())
+            .leftJoin(record.beer, beer)
+            .where(record.member.id.eq(id), beer.deletedAt.isNull())
             .stream()
             .distinct()
             .count();
+  }
   public Integer countWithFilter(ReadRequest readRequest) {
 
     BooleanBuilder builder = new BooleanBuilder();

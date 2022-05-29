@@ -87,10 +87,6 @@ public class BeerService {
         .collect(Collectors.toList());
   }
 
-  @Transactional(readOnly = true)
-  public Long findMemberBeerCount(Long id) {
-    return beerRepositoryCustom.findMemberBeerCount(id);
-  }
   public BeerResponsesDto findRecommands(Long memberId) {
     List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeerNotExistsRecord(
             memberId);
