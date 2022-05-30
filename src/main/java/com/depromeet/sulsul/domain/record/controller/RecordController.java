@@ -29,23 +29,18 @@ public class RecordController {
 //        return ResponseDto.of(recordService.uploadImage(multipartFile));
 //    }
 
-  @PostMapping("")
-  public ResponseEntity<Object> save(@RequestBody RecordRequestDto recordRequestDto) {
-    Long memberIdTemp = 1L;
-    Record recordSave = recordService.save(recordRequestDto, memberIdTemp);
-    RecordFlavorRequest recordFlavorRequest = new RecordFlavorRequest(recordRequestDto.getBeerId(),
-        recordRequestDto.getFlavors());
-    recordFlavorService.save(recordFlavorRequest, recordSave);
-    return new ResponseEntity<>(HttpStatus.OK);
+  @PostMapping
+  public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
+    return ResponseDto.from(recordService.save(recordRequestDto));
   }
 
-  @PostMapping("find")
+  @PostMapping("/find")
   public ResponseDto<PageableResponseDto<RecordResponseDto>> findAllRecordsWithPageable(
       @RequestBody RecordFindRequestDto recordFindRequestDto) {
     return ResponseDto.from(recordService.findAllRecordsWithPageable(recordFindRequestDto));
   }
 
-  @DeleteMapping("")
+  @DeleteMapping
   public ResponseEntity<Object> delete(@RequestParam Long recordId) {
     // TODO : 임시 유저아이디 사용.
     Long memberIdTemp = 1L;
