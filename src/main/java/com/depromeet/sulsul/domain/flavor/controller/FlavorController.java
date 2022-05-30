@@ -26,9 +26,9 @@ public class FlavorController {
     public ResponseDto<List<FlavorResponse>> findAll() {
         return ResponseDto.from(flavorService.findAll());
     }
-  
-  @GetMapping("/{beerId}")
-  public List<FlavorResponseDto> test(@PathVariable("beerId") Long beerId){
-    return flavorService.findTopFlavors(beerId);
-  }
+
+    @GetMapping("/{beerId}")
+    public List<FlavorResponseDto> findTopFlavors(@PathVariable("beerId") Long beerId){
+      return flavorService.findTopFlavors(beerId);
+    }
 }

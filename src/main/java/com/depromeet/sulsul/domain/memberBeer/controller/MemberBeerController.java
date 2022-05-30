@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.memberBeer.controller;
 
+import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.memberBeer.service.MemberBeerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,15 +19,14 @@ public class MemberBeerController {
   private final MemberBeerService memberBeerService;
 
   @PostMapping("/{beerId}")
-  public ResponseEntity save(@PathVariable("beerId") Long beerId){
+  public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId){
     Long memberId = 1L; // TODO : 임시 유저아이디 생성
-    return memberBeerService.save(beerId, memberId) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+    return ResponseDto.from(memberBeerService.save(beerId, memberId));
   }
 
   @DeleteMapping("/{beerId}")
-  public ResponseEntity delete(@PathVariable("beerId") Long beerId){
+  public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId){
     Long memberId = 1L; // TODO : 임시 유저아이디 생성
-    return memberBeerService.delete(beerId, memberId) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    return ResponseDto.from(memberBeerService.delete(beerId, memberId));
   }
 }

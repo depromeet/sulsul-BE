@@ -46,11 +46,11 @@ public class RecordController {
   }
 
   @DeleteMapping("")
-  public ResponseEntity<Object> delete(@RequestParam Long recordId) {
+  public ResponseDto<Long> delete(@RequestParam Long recordId) {
     // TODO : 임시 유저아이디 사용.
     Long memberIdTemp = 1L;
     recordService.delete(recordId, memberIdTemp);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseDto.from(recordService.delete(recordId, memberIdTemp));
   }
 
   @GetMapping("/count/{id}")
