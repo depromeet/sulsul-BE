@@ -38,4 +38,5 @@ public class Country {
   private String nameKor;
   private String nameEng;
   private String imageUrl;
+  private String backgroundImageUrl;
 }

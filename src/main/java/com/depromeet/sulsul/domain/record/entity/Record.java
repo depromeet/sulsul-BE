@@ -54,6 +54,10 @@ public class Record extends BaseEntity {
   private String content;
   private Boolean isPublic;
   private Integer feel;
+  private String startCountryKor;
+  private String startCountryEng;
+  private String endCountryKor;
+  private String endCountryEng;
   private Integer score;
   @Builder
   public Record(String content, Boolean isPublic, Integer feel, Integer score) {
