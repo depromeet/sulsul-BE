@@ -71,8 +71,8 @@ public class Beer extends BaseEntity {
 
   public static BeerResponseDto toDto(Beer beer) {
     return BeerResponseDto.builder()
-        .nameKor(beer.nameKor)
-        .nameEng(beer.nameEng)
+        .nameKor(beer.getNameKor())
+        .nameEng(beer.getNameEng())
         .imageUrl(beer.getImageUrl())
         .content(beer.getContent())
         .alcohol(beer.getAlcohol())

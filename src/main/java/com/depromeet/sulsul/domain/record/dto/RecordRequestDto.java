@@ -12,17 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecordRequestDto {
 
-  private String content;
+  private Long memberId;
   private Long beerId;
+  private String imageUrl;
+  private String content;
   private List<Long> FlavorIds = new ArrayList<>();
   private Boolean isPublic;
-  private Integer score;
   private Integer feel;
 
   public Record toEntity() {
     return Record.builder()
         .content(this.content)
         .feel(this.feel)
+        .imageUrl(this.imageUrl)
         .isPublic(this.isPublic)
         .build();
   }

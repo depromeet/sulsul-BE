@@ -71,9 +71,8 @@ public class RecordService {
       flavorDtos.add(flavor.toDto());
     }
 
-    BeerResponseDto beerResponseDto = Beer.toDto(beer);
     RecordResponseDto recordResponseDto = RecordResponseDto.toDto(record);
-
+    BeerResponseDto beerResponseDto = Beer.toDto(beer);
     recordResponseDto.updateBeerResponseDto(beerResponseDto);
     recordResponseDto.updateFlavors(flavorDtos);
     recordResponseDto.updateRecordCount(recordRepository.selectCount());
