@@ -68,7 +68,7 @@ public class RecordService {
       Flavor flavor = flavorRepository.findById(flavorId).orElseThrow(FlavorNotFoundException::new);
       RecordFlavor recordFlavor = RecordFlavor.of(savedRecord, flavor);
       recordFlavorRepository.save(recordFlavor);
-      flavorDtos.add(flavor.toEntity());
+      flavorDtos.add(flavor.toDto());
     }
 
     BeerResponseDto beerResponseDto = Beer.toDto(beer);
