@@ -52,7 +52,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin().where(beer.id.goe(beerId))
-        .limit(PaginationUtil.PAGINATION_SIZE + 1);
+        .limit(PaginationUtil.PAGINATION_SIZE + 1L);
 
     if (beerSearchConditionRequest.getBeerTypes() != null) {
       jpaQuery = jpaQuery.where(beer.type.in(beerSearchConditionRequest.getBeerTypes()));
@@ -92,47 +92,67 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
     Filter filter = readRequest.getFilter();
     List<SortCondition> sortBy = readRequest.getSortBy();
-    Long cursor = readRequest.getCursor();
 
     JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin()
-//            .where(beer.id.goe(cursor))  // TODO: No-Offset 기반의 최적화
-        .limit(readRequest.getLimit() + 1);
+        .where(beer.deletedAt.isNull())
+        .limit(readRequest.getLimit() + 1L);
 
-    if (cursor != null) {
-      jpaQuery = jpaQuery.offset(cursor);
-    }
+    jpaQuery = addOffset(jpaQuery, readRequest.getCursor());
 
-    if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
-      jpaQuery = jpaQuery.where(beer.type.in(filter.getBeerTypes()));
-    }
+    jpaQuery = addBeerTypesFilter(jpaQuery, filter);
 
-    if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
-      jpaQuery = jpaQuery.where(beer.country.id.in(filter.getCountryIds()));
-    }
+    jpaQuery = addCountryIdsFilter(jpaQuery, filter);
 
-    if (!PropertyUtil.isEmpty(readRequest.getQuery())) {
-      String searchKeyword = readRequest.getQuery();
-      jpaQuery = jpaQuery.where(
-          searchBooleanExpression(searchKeyword));
-    }
+    jpaQuery = jpaQuery.where(
+        searchBooleanExpression(readRequest.getQuery()));
 
-    if (CollectionUtils.isEmpty(sortBy)) {
-      return jpaQuery.fetch();
-    }
-
-    for (SortCondition sortCondition : sortBy) {
-      jpaQuery = appendDynamicBuilderWith(jpaQuery, sortCondition);
-
-    }
+    jpaQuery = addOrderByWith(jpaQuery, sortBy);
 
     return jpaQuery.fetch();
   }
 
+  private JPAQuery<BeerResponseDto> addOffset(JPAQuery<BeerResponseDto> jpaQuery, Long cursor) {
+    if (cursor == null) {
+      return jpaQuery;
+    }
+    return jpaQuery.offset(cursor);
+  }
+
+  private JPAQuery<BeerResponseDto> addOrderByWith(JPAQuery<BeerResponseDto> jpaQuery,
+      List<SortCondition> sortBy) {
+    if (CollectionUtils.isEmpty(sortBy)) {
+      return jpaQuery;
+    }
+    for (SortCondition sortCondition : sortBy) {
+      jpaQuery = appendDynamicBuilderWith(jpaQuery, sortCondition);
+    }
+    return jpaQuery;
+  }
+
+  private JPAQuery<BeerResponseDto> addBeerTypesFilter(JPAQuery<BeerResponseDto> jpaQuery,
+      Filter filter) {
+    if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
+      jpaQuery = jpaQuery.where(beer.type.in(filter.getBeerTypes()));
+    }
+    return jpaQuery;
+  }
+
+  private JPAQuery<BeerResponseDto> addCountryIdsFilter(JPAQuery<BeerResponseDto> jpaQuery,
+      Filter filter) {
+    if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
+      jpaQuery = jpaQuery.where(beer.country.id.in(filter.getCountryIds()));
+    }
+    return jpaQuery;
+  }
+
   private BooleanExpression searchBooleanExpression(String searchKeyword) {
+    if (!PropertyUtil.isEmpty(searchKeyword)) {
+      return null;
+    }
     return beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
         .or(beer.country.nameKor.contains(searchKeyword))
         .or(beer.country.nameEng.contains(searchKeyword))
@@ -147,7 +167,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1)
+        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1L)
         .fetch();
   }
 
@@ -212,14 +232,15 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   @Override
   public Long findBeerCountByMemberId(Long id) {
     return queryFactory
-            .select(record.beer.id)
-            .from(record)
-            .leftJoin(record.beer, beer)
-            .where(record.member.id.eq(id), beer.deletedAt.isNull())
-            .stream()
-            .distinct()
-            .count();
+        .select(record.beer.id)
+        .from(record)
+        .leftJoin(record.beer, beer)
+        .where(record.member.id.eq(id), beer.deletedAt.isNull())
+        .stream()
+        .distinct()
+        .count();
   }
+
   public Integer countWithFilter(ReadRequest readRequest) {
 
     BooleanBuilder builder = new BooleanBuilder();
