@@ -17,8 +17,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RecordResponseDto {
 
+  private Long id;
   private String content;
   private Integer feel;
+  private String imageUrl;
   private MemberRecordDto memberRecordDto;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -41,10 +43,12 @@ public class RecordResponseDto {
   }
 
   @Builder
-  public RecordResponseDto(String content, Integer feel, LocalDateTime createdAt, String startCountryKor,
-      String startCountryEng, String endCountryKor, String endCountryEng) {
+  public RecordResponseDto(Long id, String content, Integer feel, String imageUrl, LocalDateTime createdAt,
+      String startCountryKor, String startCountryEng, String endCountryKor, String endCountryEng) {
+    this.id = id;
     this.content = content;
     this.feel = feel;
+    this.imageUrl = imageUrl;
     this.createdAt = createdAt;
     this.startCountryKor = startCountryKor;
     this.startCountryEng = startCountryEng;
@@ -54,8 +58,10 @@ public class RecordResponseDto {
 
   public static RecordResponseDto toDto(Record record) {
     return RecordResponseDto.builder()
+        .id(record.getId())
         .content(record.getContent())
         .feel(record.getFeel())
+        .imageUrl(record.getImageUrl())
         .createdAt(record.getCreatedAt())
         .startCountryKor(record.getStartCountryKor())
         .startCountryEng(record.getStartCountryEng())
