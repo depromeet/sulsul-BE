@@ -29,7 +29,7 @@ public class Flavor extends BaseEntity {
   @OneToMany(mappedBy = "flavor")
   private List<RecordFlavor> recordFlavors = new ArrayList<>();
 
-  public FlavorDto toEntity() {
+  public FlavorDto toDto() {
     return FlavorDto.builder()
         .id(id)
         .content(content)
