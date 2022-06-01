@@ -25,7 +25,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
 @Entity
 @Getter
 @Builder
@@ -48,29 +47,54 @@ public class Record extends BaseEntity {
   @JoinColumn(name = "beer_id")
   private Beer beer;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "record")
+  @OneToMany(mappedBy = "record")
   private final List<RecordFlavor> recordFlavors = new ArrayList<>();
 
   private String content;
   private Boolean isPublic;
   private Integer feel;
-  private Integer score;
+  private String startCountryKor;
+  private String startCountryEng;
+  private String endCountryKor;
+  private String endCountryEng;
+  private String imageUrl;
+
   @Builder
-  public Record(String content, Boolean isPublic, Integer feel, Integer score) {
-    this.content = content;
-    this.isPublic = isPublic;
-    this.feel = feel;
-    this.score = score;
-  }
-  public void updateBeer(Beer beer) {
-    this.beer = beer;
-  }
+  public Record(String content, Boolean isPublic, Integer feel) {
+      this.content = content;
+      this.isPublic = isPublic;
+      this.feel = feel;
+    }
 
   public Record(Member member, Beer beer, RecordRequestDto recordRequestDto) {
-    this.member = member;
+      this.member = member;
+      this.beer = beer;
+      this.content = recordRequestDto.getContent();
+      this.isPublic = recordRequestDto.getIsPublic();
+      this.feel = recordRequestDto.getFeel();
+  }
+
+  public void updateStartCountry(Record record) {
+    if (record != null) {
+      this.startCountryKor = record.getStartCountryKor();
+      this.startCountryEng = record.getStartCountryEng();
+      return;
+    }
+    this.startCountryKor = "한국";
+    this.startCountryEng = "Korea";
+  }
+
+  public void updateEndCountry(Beer beer) {
+    if (beer != null) {
+      this.endCountryKor = beer.getCountry().getNameKor();
+      this.endCountryEng = beer.getCountry().getNameEng();
+      return;
+    }
+    this.endCountryKor = "한국";
+    this.endCountryEng = "Korea";
+  }
+
+  public void updateBeer(Beer beer) {
     this.beer = beer;
-    this.content = recordRequestDto.getContent();
-    this.isPublic = recordRequestDto.getIsPublic();
-    this.feel = recordRequestDto.getFeel();
   }
 }
