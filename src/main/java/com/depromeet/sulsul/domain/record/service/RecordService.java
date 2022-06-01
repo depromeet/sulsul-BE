@@ -3,6 +3,8 @@ package com.depromeet.sulsul.domain.record.service;
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
+import com.depromeet.sulsul.common.dto.ImageDto;
+import com.depromeet.sulsul.common.entity.ImageType;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
@@ -17,12 +19,14 @@ import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
+import com.depromeet.sulsul.util.ImageUtil;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,13 +39,12 @@ public class RecordService {
   private final BeerRepository beerRepository;
   private final MemberRepository memberRepository;
 
-  // TODO : 에러 출력. 이후 변경예정
-//    public ImageDto uploadImage(MultipartFile multipartFile) {
-//        if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
-//            throw new IllegalArgumentException("[ERROR] Not supported file format.");
-//        }
-//        return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
-//    }
+  public ImageDto uploadImage(MultipartFile multipartFile) {
+      if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
+          throw new IllegalArgumentException("[ERROR] Not supported file format.");
+      }
+      return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+  }
 
   @Transactional
   public Record save(RecordRequestDto recordRequestDto, Long memberId) {
