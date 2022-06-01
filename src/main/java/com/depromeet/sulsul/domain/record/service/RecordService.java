@@ -112,9 +112,11 @@ public class RecordService {
   }
 
   // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
-  public void delete(Long recordId, Long memberId) {
+  @Transactional
+  public Long delete(Long recordId, Long memberId) {
     Record targetRecord = recordRepository.getById(recordId);
     targetRecord.delete();
+    return recordId;
   }
 
   @Transactional(readOnly = true)
