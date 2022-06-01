@@ -117,7 +117,7 @@ public class BeerService {
         .collect(Collectors.toList());
   }
 
-  public BeerResponsesDto findRecommands(Long memberId) {
+  public BeerResponsesDto findRecommends(Long memberId) {
     List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeerNotExistsRecord(
         memberId);
     Collections.shuffle(beerResponseDtos);

@@ -11,7 +11,6 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 
 public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
@@ -48,11 +47,28 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   @Override
   public Long findRecordCountByMemberId(Long id) {
     return queryFactory
-            .selectFrom(record)
-            .leftJoin(record.member, member)
-            .where(record.member.id.eq(id), record.deletedAt.isNull())
-            .stream()
-            .count();
+        .selectFrom(record)
+        .leftJoin(record.member, member)
+        .where(record.member.id.eq(id), record.deletedAt.isNull())
+        .stream()
+        .count();
+  }
+
+  @Override
+  public Record findLastSavedCountryName() {
+    return queryFactory
+        .selectFrom(record)
+        .orderBy(record.id.desc())
+        .fetchFirst();
+  }
+
+  @Override
+  public Long selectCount() {
+    return queryFactory
+        .selectFrom(record)
+        .where(record.deletedAt.isNull())
+        .stream()
+        .count();
   }
 
   private BooleanExpression beerIdEq(Long beerId) {
