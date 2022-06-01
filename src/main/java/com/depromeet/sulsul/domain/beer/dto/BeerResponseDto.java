@@ -44,7 +44,8 @@ public class BeerResponseDto {
   public BeerResponseDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
     this.id = beer.getId();
     this.country = new CountryDetail(country.getId(), country.getNameKor(), country.getNameEng(),
-        country.getImageUrl(), new ContinentDto(country.getContinent()));
+        country.getImageUrl(), country.getBackgroundImageUrl(),
+        new ContinentDto(country.getContinent()));
     this.type = new BeerTypeValue(beer.getType());
     this.nameKor = beer.getNameKor();
     this.nameEng = beer.getNameEng();

@@ -10,12 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FlavorResponse {
-    private Long flavorId;
-    private String content;
 
-    @QueryProjection
-    public FlavorResponse(Long flavorId, String content) {
-        this.flavorId = flavorId;
-        this.content = content;
-    }
+  private Long flavorId;
+  private String content;
+
+  @QueryProjection
+  public FlavorResponse(Long flavorId, String content) {
+    this.flavorId = flavorId;
+    this.content = content;
+  }
 }

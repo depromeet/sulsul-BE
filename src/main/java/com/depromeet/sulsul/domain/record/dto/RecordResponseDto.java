@@ -32,7 +32,8 @@ public class RecordResponseDto {
   private BeerResponseDto beerResponseDto;
   private Long recordCount;
 
-  public RecordResponseDto(String content, MemberRecordDto memberRecordDto, Integer feel, List<FlavorDto> flavorDtos,
+  public RecordResponseDto(String content, MemberRecordDto memberRecordDto, Integer feel,
+      List<FlavorDto> flavorDtos,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.content = content;
     this.feel = feel;
@@ -43,7 +44,8 @@ public class RecordResponseDto {
   }
 
   @Builder
-  public RecordResponseDto(Long id, String content, Integer feel, String imageUrl, LocalDateTime createdAt,
+  public RecordResponseDto(Long id, String content, Integer feel, String imageUrl,
+      LocalDateTime createdAt,
       String startCountryKor, String startCountryEng, String endCountryKor, String endCountryEng) {
     this.id = id;
     this.content = content;

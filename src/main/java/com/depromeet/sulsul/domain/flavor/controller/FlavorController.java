@@ -20,17 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "맛 조회 API")
 public class FlavorController {
 
-    private final FlavorService flavorService;
+  private final FlavorService flavorService;
 
-    @ApiOperation(value = "전체 맛 조회 API")
-    @GetMapping
-    public ResponseDto<List<FlavorResponse>> findAll() {
-        return ResponseDto.from(flavorService.findAll());
-    }
+  @ApiOperation(value = "전체 맛 조회 API")
+  @GetMapping
+  public ResponseDto<List<FlavorResponse>> findAll() {
+    return ResponseDto.from(flavorService.findAll());
+  }
 
-    @ApiOperation(value = "해당 맥주의 최상위 맛 3개 조회 API")
-    @GetMapping("/{beerId}")
-    public ResponseDto<List<FlavorResponseDto>> findTopFlavors(@PathVariable("beerId") Long beerId){
-      return ResponseDto.from(flavorService.findTopFlavors(beerId));
-    }
+  @ApiOperation(value = "해당 맥주의 최상위 맛 3개 조회 API")
+  @GetMapping("/{beerId}")
+  public ResponseDto<List<FlavorResponseDto>> findTopFlavors(@PathVariable("beerId") Long beerId) {
+    return ResponseDto.from(flavorService.findTopFlavors(beerId));
+  }
 }

@@ -45,10 +45,10 @@ public class BeerController {
     return beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest);
   }
 
-  @GetMapping("/recommand")
-  public ResponseDto<BeerResponsesDto> findRecommands() {
+  @GetMapping("/recommend")
+  public ResponseDto<BeerResponsesDto> findRecommends() {
     Long memberId = 1L;
-    return ResponseDto.from(beerService.findRecommands(memberId));
+    return ResponseDto.from(beerService.findRecommends(memberId));
   }
 
   @PostMapping("/count")
@@ -57,7 +57,7 @@ public class BeerController {
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
     return beerService.countWithFilterRequest(readRequest);
   }
-  
+
   @GetMapping("/{beerId}")
   @ApiOperation(value = "맥주 상세 조회 API")
   public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId) {

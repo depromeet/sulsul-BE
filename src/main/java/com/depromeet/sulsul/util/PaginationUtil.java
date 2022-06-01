@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PaginationUtil {
 
-  public static int PAGINATION_SIZE = 15;
+  public static int PAGINATION_SIZE = 9;
 
   public static boolean isOverPaginationSize(List contentsWithPageable) {
     return contentsWithPageable.size() > PaginationUtil.PAGINATION_SIZE;
