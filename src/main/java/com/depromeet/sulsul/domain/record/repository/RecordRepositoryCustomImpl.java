@@ -7,6 +7,7 @@ import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.util.PaginationUtil;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -31,6 +32,16 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         )
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
+  }
+
+  @Override
+  public Tuple findEndCountryOfRecordByMemberId(Long id) {
+    return queryFactory.select(record.endCountryKor, record.endCountryEng)
+        .from(record)
+        .innerJoin(record.member, member)
+        .where(record.deletedAt.isNull())
+        .orderBy(record.id.desc())
+        .fetchOne();
   }
 
   @Override

@@ -16,29 +16,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class MemberBeerService {
+
   private final MemberBeerRepository memberBeerRepository;
   private final BeerRepository beerRepository;
   private final MemberRepository memberRepository;
 
-
   // TODO : 찜한 맥주의 경우 모든 경우 해당 member가 본인인지 검증하는 로직이 필요하다.
 
-  public boolean save(Long beerId, Long memberId){
-    if(!memberBeerRepository.existsByBeerIdAndMemberId(beerId, memberId)){
+  public boolean save(Long beerId, Long memberId) {
+    if (!memberBeerRepository.existsByBeerIdAndMemberId(beerId, memberId)) {
       Beer beer = beerRepository.getById(beerId);
       Member member = memberRepository.getById(memberId);
       memberBeerRepository.save(new MemberBeer(beer, member));
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  public boolean delete(Long beerId, Long memberId){
-    if(memberBeerRepository.existsByBeerIdAndMemberId(beerId, memberId)){
+  public boolean delete(Long beerId, Long memberId) {
+    if (memberBeerRepository.existsByBeerIdAndMemberId(beerId, memberId)) {
       memberBeerRepository.deleteByBeerIdAndMemberId(beerId, memberId);
       return true;
-    }else{
+    } else {
       return false;
     }
   }
