@@ -19,7 +19,7 @@ public class MemberService {
 
   @Transactional(readOnly = true)
   public MemberDto findMember(final long id) {
-    return memberRepository.selectById(id);
+    return memberRepository.selectById(id).orElseThrow(MemberNotFoundException::new);
   }
 
   public void updateName(Long id, MyPageRequestDto myPageRequestDto) {
