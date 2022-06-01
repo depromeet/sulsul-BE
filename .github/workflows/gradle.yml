@@ -83,4 +83,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: zeze1004/sulsul:latest 
+        tags: zeze1004/sulsul-app:latest 

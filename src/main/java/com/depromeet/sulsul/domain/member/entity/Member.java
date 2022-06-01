@@ -59,9 +59,13 @@ public class Member {
     this.phoneNumber = phoneNumber;
   }
 
-  public Member update(String name, String email){
+  public Member update(String name, String email) {
     this.name = name;
     this.email = email;
     return this;
+  }
+
+  public void updateName(String name) {
+    this.name = name;
   }
 }
