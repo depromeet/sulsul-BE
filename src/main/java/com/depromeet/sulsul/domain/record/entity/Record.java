@@ -5,7 +5,6 @@ import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -61,17 +60,17 @@ public class Record extends BaseEntity {
 
   @Builder
   public Record(String content, Boolean isPublic, Integer feel) {
-      this.content = content;
-      this.isPublic = isPublic;
-      this.feel = feel;
-    }
+    this.content = content;
+    this.isPublic = isPublic;
+    this.feel = feel;
+  }
 
   public Record(Member member, Beer beer, RecordRequestDto recordRequestDto) {
-      this.member = member;
-      this.beer = beer;
-      this.content = recordRequestDto.getContent();
-      this.isPublic = recordRequestDto.getIsPublic();
-      this.feel = recordRequestDto.getFeel();
+    this.member = member;
+    this.beer = beer;
+    this.content = recordRequestDto.getContent();
+    this.isPublic = recordRequestDto.getIsPublic();
+    this.feel = recordRequestDto.getFeel();
   }
 
   public void updateStartCountry(Record record) {
@@ -83,7 +82,7 @@ public class Record extends BaseEntity {
     this.startCountryKor = "한국";
     this.startCountryEng = "Korea";
   }
-
+  
   public void updateEndCountry(Beer beer) {
     if (beer != null) {
       this.endCountryKor = beer.getCountry().getNameKor();
@@ -97,4 +96,5 @@ public class Record extends BaseEntity {
   public void updateBeer(Beer beer) {
     this.beer = beer;
   }
+
 }

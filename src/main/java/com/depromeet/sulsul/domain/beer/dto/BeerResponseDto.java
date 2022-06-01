@@ -9,12 +9,14 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class BeerResponseDto {
@@ -42,7 +44,8 @@ public class BeerResponseDto {
   public BeerResponseDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
     this.id = beer.getId();
     this.country = new CountryDetail(country.getId(), country.getNameKor(), country.getNameEng(),
-        country.getImageUrl(), new ContinentDto(country.getContinent()));
+        country.getImageUrl(), country.getBackgroundImageUrl(),
+        new ContinentDto(country.getContinent()));
     this.type = new BeerTypeValue(beer.getType());
     this.nameKor = beer.getNameKor();
     this.nameEng = beer.getNameEng();

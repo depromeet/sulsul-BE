@@ -27,6 +27,7 @@ import lombok.ToString;
 @ToString(exclude = {"beer", "member"})
 @EqualsAndHashCode(exclude = {"beer", "member"})
 public class MemberBeer extends BaseEntity {
+
   @Id
   @Column(name = "member_beer_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)

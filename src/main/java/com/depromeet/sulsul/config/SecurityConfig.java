@@ -17,6 +17,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
+        .authorizeHttpRequests()
+        .antMatchers("/swagger-ui.html", "/h2-console", "/**").permitAll()
+        .anyRequest().authenticated()
+        .and()
         .logout()
         .logoutSuccessUrl("/")
         .and()
