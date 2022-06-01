@@ -1,6 +1,6 @@
 package com.depromeet.sulsul.domain.record.dto;
 
-import com.depromeet.sulsul.domain.flavor.entity.Flavor;
+import com.depromeet.sulsul.domain.record.entity.Record;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecordRequestDto {
 
-  private String content;
+  private Long memberId;
   private Long beerId;
-  private List<Flavor> Flavors = new ArrayList<>();
+  private String imageUrl;
+  private String content;
+  private List<Long> FlavorIds = new ArrayList<>();
   private Boolean isPublic;
   private Integer feel;
+
+  public Record toEntity() {
+    return Record.builder()
+        .content(this.content)
+        .feel(this.feel)
+        .imageUrl(this.imageUrl)
+        .isPublic(this.isPublic)
+        .build();
+  }
 }

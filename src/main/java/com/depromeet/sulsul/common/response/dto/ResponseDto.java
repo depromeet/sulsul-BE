@@ -5,11 +5,13 @@ import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResponseDto<T> implements Serializable {
 
@@ -38,5 +40,11 @@ public class ResponseDto<T> implements Serializable {
 
   public static ResponseDto<?> ERROR(String errorMessage, HttpStatus status) {
     return new ResponseDto(ErrorResponseDto.of(errorMessage, status));
+  }
+
+  public static ResponseDto<?> OK() {
+    ResponseDto<Object> responseDto = new ResponseDto<>();
+    responseDto.setSuccess(true);
+    return responseDto;
   }
 }
