@@ -20,7 +20,8 @@ public class OAuthAttributes {
   private String email;
 
   @Builder
-  public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email) {
+  public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name,
+      String email) {
     this.attributes = attributes;
     this.nameAttributeKey = nameAttributeKey;
     this.name = name;
@@ -44,7 +45,8 @@ public class OAuthAttributes {
     return null;
   }
 
-  private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+  private static OAuthAttributes ofKakao(String userNameAttributeName,
+      Map<String, Object> attributes) {
 
     Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
     Map<String, Object> profile = (Map<String, Object>) response.get("profile");

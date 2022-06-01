@@ -6,6 +6,8 @@ import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import java.util.List;
 
 public interface FlavorRepositoryCustom {
-    List<FlavorResponse> selectAll();
-    List<FlavorResponseDto> findTopThreeFlavorsByCount(Long beerId);
+
+  List<FlavorResponse> selectAll();
+
+  List<FlavorResponseDto> findTopThreeFlavorsByCount(Long beerId);
 }

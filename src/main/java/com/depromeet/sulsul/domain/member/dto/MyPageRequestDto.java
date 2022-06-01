@@ -20,7 +20,8 @@ public class MyPageRequestDto implements Serializable {
   private String name;
 
   @Builder
-  public MyPageRequestDto(Long beerCount, Long recordCount, Long countryCount, Long unregisteredBeerCount,
+  public MyPageRequestDto(Long beerCount, Long recordCount, Long countryCount,
+      Long unregisteredBeerCount,
       Long favoriteBeerCount) {
     this.beerCount = beerCount;
     this.recordCount = recordCount;
@@ -29,7 +30,8 @@ public class MyPageRequestDto implements Serializable {
     this.favoriteBeerCount = favoriteBeerCount;
   }
 
-  public static MyPageRequestDto of(Long beerCount, Long recordCount, Long countryCount, Long unregisteredBeerCount,
+  public static MyPageRequestDto of(Long beerCount, Long recordCount, Long countryCount,
+      Long unregisteredBeerCount,
       Long favoriteBeerCount) {
     return MyPageRequestDto.builder()
         .beerCount(beerCount)

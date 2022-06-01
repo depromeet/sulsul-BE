@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import lombok.ToString;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,6 +21,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Flavor extends BaseEntity {
+
   @Id
   @Column(name = "flavor_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)

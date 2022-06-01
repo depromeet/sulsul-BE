@@ -29,10 +29,10 @@ public class RecordController {
 
   private final RecordService recordService;
 
-    @PostMapping("/images")
-    public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
-        return ResponseDto.from(recordService.uploadImage(multipartFile));
-    }
+  @PostMapping("/images")
+  public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
+    return ResponseDto.from(recordService.uploadImage(multipartFile));
+  }
 
   @PostMapping
   public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
@@ -57,7 +57,7 @@ public class RecordController {
 
   @ApiOperation(value = "유저별 기록 수 조회 API")
   @GetMapping("/count/{id}")
-  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id){
-   return ResponseDto.from(recordService.findRecordCountByMemberId(id));
+  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id) {
+    return ResponseDto.from(recordService.findRecordCountByMemberId(id));
   }
 }

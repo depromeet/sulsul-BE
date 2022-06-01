@@ -37,7 +37,8 @@ public class BeerDetailResponseDto {
   private Boolean isLiked = false;
 
   @QueryProjection
-  public BeerDetailResponseDto(Country country, Beer beer, MemberBeer memberBeer, CountryNameDto startCountry) {
+  public BeerDetailResponseDto(Country country, Beer beer, MemberBeer memberBeer,
+      CountryNameDto startCountry) {
     this.id = beer.getId();
     this.country = new CountryDetail(country.getId(),
         country.getNameKor(), country.getNameEng(), country.getImageUrl(),

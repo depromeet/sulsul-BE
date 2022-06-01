@@ -45,10 +45,10 @@ public class RecordService {
   private final RecordFlavorRepository recordFlavorRepository;
 
   public ImageDto uploadImage(MultipartFile multipartFile) {
-      if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
-          throw new IllegalArgumentException("[ERROR] Not supported file format.");
-      }
-      return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+    if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
+      throw new IllegalArgumentException("[ERROR] Not supported file format.");
+    }
+    return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
   }
 
   public RecordResponseDto save(RecordRequestDto recordRequestDto) {
@@ -56,7 +56,8 @@ public class RecordService {
     List<FlavorDto> flavorDtos = new ArrayList<>();
 
     Record lastSavedRecord = recordRepository.findLastSavedCountryName();
-    Beer beer = beerRepository.findById(recordRequestDto.getBeerId()).orElseThrow(BeerNotFoundException::new);
+    Beer beer = beerRepository.findById(recordRequestDto.getBeerId())
+        .orElseThrow(BeerNotFoundException::new);
 
     Record record = recordRequestDto.toEntity();
     record.updateBeer(beer);
