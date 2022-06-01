@@ -2,6 +2,7 @@ package com.depromeet.sulsul.domain.member.entity;
 
 import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.record.entity.Record;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -49,7 +51,7 @@ public class Member {
 
   @Builder
   public Member(Long id, List<Record> records, RoleType role, String email, String name,
-      String profileUrl, String phoneNumber) {
+                String profileUrl, String phoneNumber) {
     this.id = id;
     this.records = records;
     this.role = role;
