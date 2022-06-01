@@ -12,6 +12,7 @@ import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.util.PaginationUtil;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -37,13 +38,40 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
+  public Tuple findEndCountryOfRecordByMemberId(Long id) {
+    return queryFactory.select(record.endCountryKor, record.endCountryEng)
+        .from(record)
+        .innerJoin(record.member, member)
+        .where(record.deletedAt.isNull())
+        .orderBy(record.id.desc())
+        .fetchOne();
+  }
+
+  @Override
   public Long findRecordCountByMemberId(Long id) {
     return queryFactory
-            .selectFrom(record)
-            .leftJoin(record.member, member)
-            .where(record.member.id.eq(id), record.deletedAt.isNull())
-            .stream()
-            .count();
+        .selectFrom(record)
+        .leftJoin(record.member, member)
+        .where(record.member.id.eq(id), record.deletedAt.isNull())
+        .stream()
+        .count();
+  }
+
+  @Override
+  public Record findLastSavedCountryName() {
+    return queryFactory
+        .selectFrom(record)
+        .orderBy(record.id.desc())
+        .fetchFirst();
+  }
+
+  @Override
+  public Long selectCount() {
+    return queryFactory
+        .selectFrom(record)
+        .where(record.deletedAt.isNull())
+        .stream()
+        .count();
   }
 
   @Override

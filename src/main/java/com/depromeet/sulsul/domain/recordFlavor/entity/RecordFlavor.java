@@ -41,8 +41,16 @@ public class RecordFlavor extends BaseEntity {
   @JoinColumn(name = "flavor_id")
   private Flavor flavor;
 
+  @Builder
   public RecordFlavor(Record record, Flavor flavor) {
     this.record = record;
     this.flavor = flavor;
+  }
+
+  public static RecordFlavor of(Record record, Flavor flavor) {
+    return RecordFlavor.builder()
+        .record(record)
+        .flavor(flavor)
+        .build();
   }
 }

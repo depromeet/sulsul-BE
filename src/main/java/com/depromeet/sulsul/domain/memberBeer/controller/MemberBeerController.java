@@ -23,14 +23,14 @@ public class MemberBeerController {
 
   @PostMapping("/{beerId}")
   @ApiOperation(value = "찜하기 API")
-  public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId){
+  public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId) {
     Long memberId = 1L; // TODO : 임시 유저아이디 생성
     return ResponseDto.from(memberBeerService.save(beerId, memberId));
   }
 
   @ApiOperation(value = "찜하기 취소 API")
   @DeleteMapping("/{beerId}")
-  public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId){
+  public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId) {
     Long memberId = 1L; // TODO : 임시 유저아이디 생성
     return ResponseDto.from(memberBeerService.delete(beerId, memberId));
   }

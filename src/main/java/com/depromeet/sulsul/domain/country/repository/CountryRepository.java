@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long>, CountryRepositoryCustom {
 
-    List<Country> findAllByContinentId(Long continentId);
+  List<Country> findAllByContinentId(Long continentId);
 }

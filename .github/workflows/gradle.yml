@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main, dev ]
+    branches: [ dev ]
 
 permissions:
   contents: read
@@ -83,4 +83,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: zeze1004/sulsul:latest 
+        tags: zeze1004/sulsul-app:latest 

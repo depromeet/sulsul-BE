@@ -15,14 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class FlavorService {
 
-    private final FlavorRepository flavorRepository;
+  private final FlavorRepository flavorRepository;
 
-    public List<FlavorResponse> findAll() {
-        return flavorRepository.selectAll();
-    }
-  
-  
-  public List<FlavorResponseDto> findTopFlavors(Long beerId){
+  public List<FlavorResponse> findAll() {
+    return flavorRepository.selectAll();
+  }
+
+
+  public List<FlavorResponseDto> findTopFlavors(Long beerId) {
     return flavorRepository.findTopThreeFlavorsByCount(beerId);
   }
 }

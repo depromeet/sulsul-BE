@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.record.controller;
 
+import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
@@ -10,14 +11,20 @@ import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.service.RecordService;
 import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
-import com.depromeet.sulsul.domain.recordFlavor.service.RecordFlavorService;
+import java.util.List;
+import com.depromeet.sulsul.domain.record.service.RecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -27,22 +34,15 @@ import org.springframework.web.bind.annotation.*;
 public class RecordController {
 
   private final RecordService recordService;
-  private final RecordFlavorService recordFlavorService;
 
-  //  TODO : 에러 출력. 이후 변경예정
-//    @PostMapping("/images")
-//    public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
-//        return ResponseDto.of(recordService.uploadImage(multipartFile));
-//    }
+  @PostMapping("/images")
+  public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
+    return ResponseDto.from(recordService.uploadImage(multipartFile));
+  }
 
-  @PostMapping()
-  public ResponseEntity<Object> save(@RequestBody RecordRequestDto recordRequestDto) {
-    Long memberIdTemp = 1L;
-    Record recordSave = recordService.save(recordRequestDto, memberIdTemp);
-    RecordFlavorRequest recordFlavorRequest = new RecordFlavorRequest(recordRequestDto.getBeerId(),
-        recordRequestDto.getFlavors());
-    recordFlavorService.save(recordFlavorRequest, recordSave);
-    return new ResponseEntity<>(HttpStatus.OK);
+  @PostMapping
+  public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
+    return ResponseDto.from(recordService.save(recordRequestDto));
   }
 
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
@@ -65,8 +65,8 @@ public class RecordController {
 
   @ApiOperation(value = "유저별 기록 수 조회 API")
   @GetMapping("/count/{id}")
-  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id){
-   return ResponseDto.from(recordService.findRecordCountByMemberId(id));
+  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id) {
+    return ResponseDto.from(recordService.findRecordCountByMemberId(id));
   }
 
   @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
