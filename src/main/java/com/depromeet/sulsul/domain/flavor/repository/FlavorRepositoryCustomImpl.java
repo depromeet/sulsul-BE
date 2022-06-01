@@ -20,15 +20,15 @@ import static com.depromeet.sulsul.domain.recordFlavor.entity.QRecordFlavor.reco
 @RequiredArgsConstructor
 public class FlavorRepositoryCustomImpl implements FlavorRepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
+  private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<FlavorResponse> selectAll() {
-        return queryFactory.select(new QFlavorResponse(flavor.id, flavor.content)).from(flavor).fetch();
-    }
-  
-    @Override
-  public List<FlavorResponseDto> findTopThreeFlavorsByCount(Long beerId){
+  @Override
+  public List<FlavorResponse> selectAll() {
+    return queryFactory.select(new QFlavorResponse(flavor.id, flavor.content)).from(flavor).fetch();
+  }
+
+  @Override
+  public List<FlavorResponseDto> findTopThreeFlavorsByCount(Long beerId) {
     return queryFactory.select(new QFlavorResponseDto(flavor.content, flavor.count()))
         .from(flavor)
         .innerJoin(recordFlavor).on(flavor.eq(recordFlavor.flavor))

@@ -3,6 +3,8 @@ package com.depromeet.sulsul.domain.record.service;
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
+import com.depromeet.sulsul.common.dto.ImageDto;
+import com.depromeet.sulsul.common.entity.ImageType;
 import com.depromeet.sulsul.common.error.exception.custom.BeerNotFoundException;
 import com.depromeet.sulsul.common.error.exception.custom.FlavorNotFoundException;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
@@ -14,7 +16,6 @@ import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
 import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import com.depromeet.sulsul.domain.flavor.repository.FlavorRepository;
 import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
-import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
@@ -22,12 +23,14 @@ import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import com.depromeet.sulsul.domain.recordFlavor.repository.RecordFlavorRepository;
+import com.depromeet.sulsul.util.ImageUtil;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -38,24 +41,23 @@ public class RecordService {
   private final AwsS3ImageClient awsS3ImageClient;
   private final RecordRepository recordRepository;
   private final BeerRepository beerRepository;
-  private final MemberRepository memberRepository;
   private final FlavorRepository flavorRepository;
   private final RecordFlavorRepository recordFlavorRepository;
 
-  // TODO : 에러 출력. 이후 변경예정
-//    public ImageDto uploadImage(MultipartFile multipartFile) {
-//        if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
-//            throw new IllegalArgumentException("[ERROR] Not supported file format.");
-//        }
-//        return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
-//    }
+  public ImageDto uploadImage(MultipartFile multipartFile) {
+    if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
+      throw new IllegalArgumentException("[ERROR] Not supported file format.");
+    }
+    return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
+  }
 
   public RecordResponseDto save(RecordRequestDto recordRequestDto) {
 
     List<FlavorDto> flavorDtos = new ArrayList<>();
 
     Record lastSavedRecord = recordRepository.findLastSavedCountryName();
-    Beer beer = beerRepository.findById(recordRequestDto.getBeerId()).orElseThrow(BeerNotFoundException::new);
+    Beer beer = beerRepository.findById(recordRequestDto.getBeerId())
+        .orElseThrow(BeerNotFoundException::new);
 
     Record record = recordRequestDto.toEntity();
     record.updateBeer(beer);

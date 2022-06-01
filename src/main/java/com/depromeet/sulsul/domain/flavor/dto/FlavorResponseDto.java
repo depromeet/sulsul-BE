@@ -9,11 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FlavorResponseDto {
+
   private String content;
   private Long count;
 
   @QueryProjection
-  public FlavorResponseDto(String content, Long count){
+  public FlavorResponseDto(String content, Long count) {
     this.content = content;
     this.count = count;
   }

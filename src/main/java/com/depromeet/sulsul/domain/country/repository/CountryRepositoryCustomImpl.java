@@ -15,19 +15,19 @@ import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
 @RequiredArgsConstructor
 public class CountryRepositoryCustomImpl implements CountryRepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
+  private final JPAQueryFactory queryFactory;
 
-    @Override
-    public Long findCountryCountByMemberId(Long id) {
-        return queryFactory
-                .select(record.beer.country.id)
-                .from(record)
-                .leftJoin(record.beer,beer)
-                .leftJoin(beer.country, country)
-                .where(record.member.id.eq(id))
-                .stream()
-                .distinct()
-                .count();
+  @Override
+  public Long findCountryCountByMemberId(Long id) {
+    return queryFactory
+        .select(record.beer.country.id)
+        .from(record)
+        .leftJoin(record.beer, beer)
+        .leftJoin(beer.country, country)
+        .where(record.member.id.eq(id))
+        .stream()
+        .distinct()
+        .count();
 
-    }
+  }
 }

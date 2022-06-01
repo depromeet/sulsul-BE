@@ -6,7 +6,7 @@ import static com.depromeet.sulsul.common.error.dto.ErrorType.BEER_NOT_FOUND;
 
 public class BeerNotFoundException extends BusinessException {
 
-    public BeerNotFoundException() {
-        super(BEER_NOT_FOUND.getMessage());
-    }
+  public BeerNotFoundException() {
+    super(BEER_NOT_FOUND.getMessage());
+  }
 }

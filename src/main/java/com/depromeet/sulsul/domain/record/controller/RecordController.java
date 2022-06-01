@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.record.controller;
 
+import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -27,11 +29,10 @@ public class RecordController {
 
   private final RecordService recordService;
 
-  //  TODO : 에러 출력. 이후 변경예정
-//    @PostMapping("/images")
-//    public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
-//        return ResponseDto.of(recordService.uploadImage(multipartFile));
-//    }
+  @PostMapping("/images")
+  public ResponseDto<ImageDto> uploadImage(@RequestParam("file") MultipartFile multipartFile) {
+    return ResponseDto.from(recordService.uploadImage(multipartFile));
+  }
 
   @PostMapping
   public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
@@ -56,7 +57,7 @@ public class RecordController {
 
   @ApiOperation(value = "유저별 기록 수 조회 API")
   @GetMapping("/count/{id}")
-  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id){
-   return ResponseDto.from(recordService.findRecordCountByMemberId(id));
+  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id) {
+    return ResponseDto.from(recordService.findRecordCountByMemberId(id));
   }
 }
