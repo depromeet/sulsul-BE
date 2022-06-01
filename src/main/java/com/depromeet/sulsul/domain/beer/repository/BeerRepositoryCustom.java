@@ -19,6 +19,8 @@ public interface BeerRepositoryCustom {
 
   List<BeerResponseDto> findBeerNotExistsRecord(Long memberId);
 
+  List<BeerResponseDto> findBeerLikedByMemberId(Long memberId);
+
   Tuple findById(Long memberId, Long beerId);
 
   Integer countWithFilter(ReadRequest readRequest);
