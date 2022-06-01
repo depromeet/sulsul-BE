@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecordFindRequestDto {
-
   private Long memberId;
   private Long beerId;
   private Long recordId;
