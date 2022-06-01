@@ -1,9 +1,9 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
 import com.depromeet.sulsul.common.request.ReadRequest;
-import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.querydsl.core.Tuple;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +19,7 @@ public interface BeerRepositoryCustom {
 
   List<BeerResponseDto> findBeerNotExistsRecord(Long memberId);
 
-  BeerDetailResponseDto findById(Long memberId, Long beerId);
+  Tuple findById(Long memberId, Long beerId);
 
   Integer countWithFilter(ReadRequest readRequest);
 

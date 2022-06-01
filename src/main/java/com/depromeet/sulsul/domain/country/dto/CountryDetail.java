@@ -14,6 +14,7 @@ public class CountryDetail {
   private final String nameKor;
   private final String nameEng;
   private final String imageUrl;
+  private final String backgroundImageUrl;
   private final ContinentDto continent;
 
 }

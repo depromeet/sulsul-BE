@@ -26,7 +26,8 @@ public class MyPageController {
   }
 
   @PutMapping("/{id}")
-  public ResponseDto<?> updateName(@PathVariable Long id, @RequestBody MyPageRequestDto myPageRequestDto) {
+  public ResponseDto<?> updateName(@PathVariable Long id,
+      @RequestBody MyPageRequestDto myPageRequestDto) {
     memberService.updateName(id, myPageRequestDto);
     return ResponseDto.OK();
   }
