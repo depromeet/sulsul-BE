@@ -1,13 +1,19 @@
 package com.depromeet.sulsul.domain.flavor.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class FlavorDto {
-    private Long id;
-    private String content;
+
+  private Long id;
+  private String content;
+
+  @Builder
+  public FlavorDto(Long id, String content) {
+    this.id = id;
+    this.content = content;
+  }
 }

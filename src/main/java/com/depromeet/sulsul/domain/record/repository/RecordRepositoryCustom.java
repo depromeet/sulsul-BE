@@ -1,14 +1,29 @@
 package com.depromeet.sulsul.domain.record.repository;
 
-import com.depromeet.sulsul.domain.record.dto.RecordDto;
+import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
+import com.querydsl.core.Tuple;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Repository
 public interface RecordRepositoryCustom {
 
-    List<Record> findAllRecordsWithPageable(Long beerId, Long recordId);
+  List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto, Long memberId);
 
+  Long findRecordCountByMemberId(Long id);
+
+  List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long beerId, Long memberId);
+
+  RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId);
+
+  Tuple findEndCountryOfRecordByMemberId(Long id);
+
+  Long findRecordCountByMemberId(Long id);
+
+  Record findLastSavedCountryName();
+
+  Long selectCount();
 }

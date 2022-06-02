@@ -7,17 +7,17 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SortType implements EnumModel {
-    REVIEW("리뷰 많은 순"), NAME("이름 순"), ALCOHOL("알코올 도수 순");
+  REVIEW("리뷰 많은 순"), NAME("이름 순"), ALCOHOL("알코올 도수 순");
 
-    private final String korean;
+  private final String korean;
 
-    @Override
-    public String getKey() {
-        return name();
-    }
+  @Override
+  public String getKey() {
+    return name();
+  }
 
-    @Override
-    public String getValue() {
-        return korean;
-    }
+  @Override
+  public String getValue() {
+    return korean;
+  }
 }

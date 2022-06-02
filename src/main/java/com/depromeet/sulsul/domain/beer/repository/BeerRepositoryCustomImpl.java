@@ -1,73 +1,278 @@
 package com.depromeet.sulsul.domain.beer.repository;
 
-import com.depromeet.sulsul.domain.beer.dto.*;
-import com.depromeet.sulsul.util.PaginationUtil;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static com.depromeet.sulsul.domain.QMemberBeer.memberBeer;
+import static com.depromeet.sulsul.common.request.SortCondition.ALCOHOL_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.ALCOHOL_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.ID_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.ID_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_ENG_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_ENG_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_KOR_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.NAME_KOR_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.RECORD_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.RECORD_DESC;
+import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_ASC;
+import static com.depromeet.sulsul.common.request.SortCondition.UPDATED_AT_DESC;
 import static com.depromeet.sulsul.domain.beer.entity.QBeer.beer;
 import static com.depromeet.sulsul.domain.country.entity.QCountry.country;
+import static com.depromeet.sulsul.domain.memberBeer.entity.QMemberBeer.memberBeer;
 import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
+
+import com.depromeet.sulsul.common.request.Filter;
+import com.depromeet.sulsul.common.request.ReadRequest;
+import com.depromeet.sulsul.common.request.SortCondition;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.depromeet.sulsul.domain.beer.dto.QBeerResponseDto;
+import com.depromeet.sulsul.util.PaginationUtil;
+import com.depromeet.sulsul.util.PropertyUtil;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 @Repository
 public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
+  private final JPAQueryFactory queryFactory;
 
-    public BeerRepositoryCustomImpl(EntityManager entityManager) {
-        this.queryFactory = new JPAQueryFactory(entityManager);
-    }
-    
-    @Override
-    public List<BeerDto> findAllWithPageableFilterSort(Long memberId, Long beerId, BeerFilterSortRequest beerFilterSortRequest) {
-        JPAQuery<BeerDto> jpaQuery = queryFactory.select(new QBeerDto(country, beer, record.feel, memberBeer))
-                .from(beer)
-                .leftJoin(record).on(beer.eq(record.beer))
-                .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
-                .innerJoin(country).on(beer.country.eq(country))
-                .fetchJoin()
-                .where(beer.id.goe(beerId))
-                .limit(PaginationUtil.PAGINATION_SIZE + 1);
+  public BeerRepositoryCustomImpl(EntityManager entityManager) {
+    this.queryFactory = new JPAQueryFactory(entityManager);
+  }
 
-        if (beerFilterSortRequest.getBeerTypes() != null) {
-            jpaQuery = jpaQuery
-                    .where(beer.type.in(beerFilterSortRequest.getBeerTypes()));
-        }
+  @Override
+  public List<BeerResponseDto> findAllWithPageableFilterSort(Long memberId, Long beerId,
+      BeerSearchConditionRequest beerSearchConditionRequest) {
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).fetchJoin().where(beer.id.goe(beerId))
+        .limit(PaginationUtil.PAGINATION_SIZE + 1L);
 
-        if (beerFilterSortRequest.getCountryIds() != null) {
-            jpaQuery = jpaQuery
-                    .where(beer.country.id.in(beerFilterSortRequest.getCountryIds()));
-        }
-
-        if (beerFilterSortRequest.getSortType() == null) return jpaQuery.fetch();
-
-        switch (beerFilterSortRequest.getSortType()) {
-            case NAME:
-                jpaQuery = jpaQuery.orderBy(beer.name.asc());
-                break;
-            case ALCOHOL:
-                jpaQuery = jpaQuery.orderBy(beer.alcohol.asc());
-                break;
-            case REVIEW:
-                jpaQuery = jpaQuery.orderBy(beer.reviews.size().desc());
-                break;
-        }
-
-        return jpaQuery.fetch();
+    if (beerSearchConditionRequest.getBeerTypes() != null) {
+      jpaQuery = jpaQuery.where(beer.type.in(beerSearchConditionRequest.getBeerTypes()));
     }
 
-    @Override
-    public BeerDetail findById(Long memberId, Long beerId) {
-        return queryFactory.select(new QBeerDetail(country, beer, memberBeer))
-                .from(beer)
-                .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
-                .innerJoin(country).on(beer.country.eq(country))
-                .where(beer.id.eq(beerId))
-                .fetchOne();
+    if (beerSearchConditionRequest.getCountryIds() != null) {
+      jpaQuery = jpaQuery.where(beer.country.id.in(beerSearchConditionRequest.getCountryIds()));
     }
+
+    if (!PropertyUtil.isEmpty(beerSearchConditionRequest.getSearchKeyword())) {
+      String searchKeyword = beerSearchConditionRequest.getSearchKeyword();
+      jpaQuery = jpaQuery.where(
+          searchBooleanExpression(searchKeyword));
+    }
+
+    if (beerSearchConditionRequest.getSortType() == null) {
+      return jpaQuery.fetch();
+    }
+
+    switch (beerSearchConditionRequest.getSortType()) {
+      case NAME:
+        jpaQuery = jpaQuery.orderBy(beer.nameKor.asc());
+        break;
+      case ALCOHOL:
+        jpaQuery = jpaQuery.orderBy(beer.alcohol.asc());
+        break;
+      case REVIEW:
+        jpaQuery = jpaQuery.orderBy(beer.records.size().desc());
+        break;
+    }
+
+    return jpaQuery.fetch();
+  }
+
+  @Override
+  public List<BeerResponseDto> findPageWith(Long memberId, ReadRequest readRequest) {
+
+    Filter filter = readRequest.getFilter();
+    List<SortCondition> sortBy = readRequest.getSortBy();
+
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).fetchJoin()
+        .where(beer.deletedAt.isNull())
+        .limit(readRequest.getLimit() + 1L);
+
+    jpaQuery = addOffset(jpaQuery, readRequest.getCursor());
+
+    jpaQuery = addBeerTypesFilter(jpaQuery, filter);
+
+    jpaQuery = addCountryIdsFilter(jpaQuery, filter);
+
+    jpaQuery = jpaQuery.where(
+        searchBooleanExpression(readRequest.getQuery()));
+
+    jpaQuery = addOrderByWith(jpaQuery, sortBy);
+
+    return jpaQuery.fetch();
+  }
+
+  private JPAQuery<BeerResponseDto> addOffset(JPAQuery<BeerResponseDto> jpaQuery, Long cursor) {
+    if (cursor == null) {
+      return jpaQuery;
+    }
+    return jpaQuery.offset(cursor);
+  }
+
+  private JPAQuery<BeerResponseDto> addOrderByWith(JPAQuery<BeerResponseDto> jpaQuery,
+      List<SortCondition> sortBy) {
+    if (CollectionUtils.isEmpty(sortBy)) {
+      return jpaQuery;
+    }
+    for (SortCondition sortCondition : sortBy) {
+      jpaQuery = appendDynamicBuilderWith(jpaQuery, sortCondition);
+    }
+    return jpaQuery;
+  }
+
+  private JPAQuery<BeerResponseDto> addBeerTypesFilter(JPAQuery<BeerResponseDto> jpaQuery,
+      Filter filter) {
+    if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
+      jpaQuery = jpaQuery.where(beer.type.in(filter.getBeerTypes()));
+    }
+    return jpaQuery;
+  }
+
+  private JPAQuery<BeerResponseDto> addCountryIdsFilter(JPAQuery<BeerResponseDto> jpaQuery,
+      Filter filter) {
+    if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
+      jpaQuery = jpaQuery.where(beer.country.id.in(filter.getCountryIds()));
+    }
+    return jpaQuery;
+  }
+
+  private BooleanExpression searchBooleanExpression(String searchKeyword) {
+    if (!PropertyUtil.isEmpty(searchKeyword)) {
+      return null;
+    }
+    return beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
+        .or(beer.country.nameKor.contains(searchKeyword))
+        .or(beer.country.nameEng.contains(searchKeyword))
+        .or(beer.country.continent.name.contains(searchKeyword))
+        .or(beer.content.contains(searchKeyword));
+  }
+
+  @Override
+  public List<BeerResponseDto> findPageWith(Long memberId) {
+
+    return queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1L)
+        .fetch();
+  }
+
+  @Override
+  public List<BeerResponseDto> findBeerNotExistsRecord(Long memberId) {
+
+    return queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(record.isNull())).fetchJoin().fetch();
+  }
+
+  @Override
+  public List<BeerResponseDto> findBeerLikedByMemberId(Long memberId) {
+    return queryFactory
+        .select(new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(memberBeer.isNotNull())).fetchJoin().fetch();
+  }
+
+  private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,
+      SortCondition sortCondition) {
+    if (sortCondition == ID_ASC) {
+      return jpaQuery.orderBy(beer.id.asc());
+    }
+    if (sortCondition == ID_DESC) {
+      return jpaQuery.orderBy(beer.id.desc());
+    }
+    if (sortCondition == NAME_KOR_ASC) {
+      return jpaQuery.orderBy(beer.nameKor.asc());
+    }
+    if (sortCondition == NAME_KOR_DESC) {
+      return jpaQuery.orderBy(beer.nameKor.desc());
+    }
+    if (sortCondition == NAME_ENG_ASC) {
+      return jpaQuery.orderBy(beer.nameEng.asc());
+    }
+    if (sortCondition == NAME_ENG_DESC) {
+      return jpaQuery.orderBy(beer.nameEng.desc());
+    }
+    if (sortCondition == ALCOHOL_ASC) {
+      return jpaQuery.orderBy(beer.alcohol.asc());
+    }
+    if (sortCondition == ALCOHOL_DESC) {
+      return jpaQuery.orderBy(beer.alcohol.desc());
+    }
+    if (sortCondition == RECORD_ASC) {
+      return jpaQuery.orderBy(beer.records.size().asc());
+    }
+    if (sortCondition == RECORD_DESC) {
+      return jpaQuery.orderBy(beer.records.size().desc());
+    }
+    if (sortCondition == UPDATED_AT_ASC) {
+      return jpaQuery.orderBy(beer.updatedAt.asc());
+    }
+    if (sortCondition == UPDATED_AT_DESC) {
+      return jpaQuery.orderBy(beer.updatedAt.desc());
+    }
+    return jpaQuery;
+  }
+
+  @Override
+  public Tuple findById(Long memberId, Long beerId) {
+    return queryFactory.select(country, beer, memberBeer).from(beer)
+        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+        .innerJoin(country).on(beer.country.eq(country)).where(beer.id.eq(beerId)).fetchOne();
+  }
+
+  @Override
+  public Long findBeerCountByMemberId(Long id) {
+    return queryFactory
+        .select(record.beer.id)
+        .from(record)
+        .leftJoin(record.beer, beer)
+        .where(record.member.id.eq(id), beer.deletedAt.isNull())
+        .stream()
+        .distinct()
+        .count();
+  }
+
+  public Integer countWithFilter(ReadRequest readRequest) {
+
+    BooleanBuilder builder = new BooleanBuilder();
+
+    Filter filter = readRequest.getFilter();
+    String query = readRequest.getQuery();
+
+    if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
+      builder.and(beer.type.in(filter.getBeerTypes()));
+    }
+
+    if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
+      builder.and(beer.country.id.in(filter.getCountryIds()));
+    }
+
+    if (!PropertyUtil.isEmpty(query)) {
+      builder.and(searchBooleanExpression(query));
+    }
+
+    return queryFactory.select(beer)
+        .from(beer)
+        .where(builder)
+        .fetch()
+        .size();
+  }
 }

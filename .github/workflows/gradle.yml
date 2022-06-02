@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ dev ]
 
 permissions:
   contents: read
@@ -24,6 +24,17 @@ jobs:
     steps:
     # Actions Sequence
     - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+        submodules: true
+
+    # Submodule Init
+    - name: Git Sumbmodule Init
+      run: git submodule init 
+        
+    # Submodule Update
+    - name: Git Sumbmodule Update
+      run: git submodule update --remote --recursive
     
     # Set JDK Version
     - name: Set up JDK 11
@@ -72,4 +83,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: zeze1004/sulsul:latest 
+        tags: zeze1004/sulsul-app:latest 
