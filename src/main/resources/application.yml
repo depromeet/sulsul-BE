@@ -1,39 +1,33 @@
-#server:
-#  port: 8082
-#
-#spring:
-#  config:
-#    activate:
-#      on-profile: dev
-#  jpa:
-#    database: mysql
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-#    hibernate:
-#      ddl-auto: update
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        format_sql: true
-#    open-in-view: false
-
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  datasource:
-    url: jdbc:h2:~/test-sulsul;
-    driverClassName: org.h2.Driver  # org.h2.Driver
-    username: sa
-    password:
   jpa:
-    #    database: mysql
-    #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-        default_batch_fetch_size: 1000
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAVPAOA5WKLKDZ5UFU
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: sulsul-media-bucket
+    stack:
+      auto: false
