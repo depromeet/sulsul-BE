@@ -11,14 +11,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RecordTicketResponseDto {
   private Long recordId;
-  private String beerNameKor;
-  private String beerNameEng;
-  private LocalDateTime createdAt;
   private Integer feel;
   private String startCountryEng;
   private String endCountryEng;
   private String startCountryKor;
   private String endCountryKor;
+  private LocalDateTime createdAt;
+
+  private String beerNameKor;
+  private String beerNameEng;
 
   @QueryProjection
   public RecordTicketResponseDto(Long recordId, String beerNameKor, String beerNameEng,
