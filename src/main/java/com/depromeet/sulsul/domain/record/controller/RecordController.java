@@ -3,9 +3,15 @@ package com.depromeet.sulsul.domain.record.controller;
 import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
+import com.depromeet.sulsul.domain.record.entity.Record;
+import com.depromeet.sulsul.domain.record.service.RecordService;
+import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
+import java.util.List;
 import com.depromeet.sulsul.domain.record.service.RecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,20 +45,22 @@ public class RecordController {
     return ResponseDto.from(recordService.save(recordRequestDto));
   }
 
-  @PostMapping("/find")
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
-  public ResponseDto<PageableResponseDto<RecordResponseDto>> findAllRecordsWithPageable(
+  @PostMapping("/find")
+  public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
       @RequestBody RecordFindRequestDto recordFindRequestDto) {
-    return ResponseDto.from(recordService.findAllRecordsWithPageable(recordFindRequestDto));
+    // TODO : 임시 유저아이디 사용.
+    Long memberId = 1L;
+    return recordService.findAllRecordsWithPageable(recordFindRequestDto, memberId);
   }
 
   @ApiOperation(value = "기록 삭제 API")
-  @DeleteMapping
-  public ResponseDto<Long> delete(@RequestParam Long recordId) {
+  @DeleteMapping("/{recordId}")
+  public ResponseDto<Long> delete(@PathVariable Long recordId) {
     // TODO : 임시 유저아이디 사용.
-    Long memberIdTemp = 1L;
-    recordService.delete(recordId, memberIdTemp);
-    return ResponseDto.from(recordService.delete(recordId, memberIdTemp));
+    Long memberId = 1L;
+    recordService.delete(recordId, memberId);
+    return ResponseDto.from(recordService.delete(recordId, memberId));
   }
 
   @ApiOperation(value = "유저별 기록 수 조회 API")
@@ -60,4 +68,20 @@ public class RecordController {
   public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id) {
     return ResponseDto.from(recordService.findRecordCountByMemberId(id));
   }
+
+  @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
+  @GetMapping(value = {"/tickets/{recordId}", "/ticket"})
+  public PageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(@PathVariable(name = "recordId", required = false) Long recordId) {
+    // TODO : 임시 유저아이디 사용.
+    Long memberId = 1L;
+    return recordService.findAllRecordsTicketWithPageable(recordId, memberId);
+  }
+
+  @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
+  @GetMapping("/ticket/country/")
+  public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(){
+    Long memberId = 1L;
+    return ResponseDto.from(recordService.findCountryAndCountByMemberId(memberId));
+  }
+
 }

@@ -16,9 +16,13 @@ import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
 import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import com.depromeet.sulsul.domain.flavor.repository.FlavorRepository;
 import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
+import com.depromeet.sulsul.domain.member.entity.Member;
+import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
@@ -85,11 +89,10 @@ public class RecordService {
 
   @Transactional(readOnly = true)
   public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
-      RecordFindRequestDto recordFindRequestDto) {
+      RecordFindRequestDto recordFindRequestDto, Long memberId) {
     List<Record> allRecordWithPageable = recordRepository.findAllRecordsWithPageable(
-        recordFindRequestDto);
+        recordFindRequestDto, memberId);
     List<RecordResponseDto> allRecordDtosWithPageableResponse = new ArrayList<>();
-    PageableResponseDto<RecordResponseDto> recordDtoPageableResponse = new PageableResponseDto<>();
 
     for (Record record : allRecordWithPageable) {
       List<RecordFlavor> recordFlavors = record.getRecordFlavors();
@@ -105,12 +108,7 @@ public class RecordService {
           new RecordResponseDto(record.getContent(), memberRecordDto,
               record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
     }
-    if (isOverPaginationSize(allRecordDtosWithPageableResponse)) {
-      allRecordDtosWithPageableResponse.remove(PAGINATION_SIZE);
-      recordDtoPageableResponse.setHasNext(true);
-    }
-    recordDtoPageableResponse.setContents(allRecordDtosWithPageableResponse);
-    return recordDtoPageableResponse;
+    return PageableResponseDto.of(allRecordDtosWithPageableResponse, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
   }
 
   // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
@@ -124,5 +122,14 @@ public class RecordService {
   @Transactional(readOnly = true)
   public Long findRecordCountByMemberId(Long id) {
     return recordRepository.findRecordCountByMemberId(id);
+  }
+
+  public PageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId){
+    List<RecordTicketResponseDto> allRecordsTicketWithPageable = recordRepository.findAllRecordsTicketWithPageable(recordId, memberId);
+    return PageableResponseDto.of(allRecordsTicketWithPageable, recordId, PAGINATION_SIZE);
+  }
+
+  public RecordCountryAndCountResponseDto findCountryAndCountByMemberId(Long memberId){
+    return recordRepository.findRecordCountryAndCountResponseDto(memberId);
   }
 }

@@ -4,6 +4,7 @@ import com.depromeet.sulsul.oauth2.handler.CustomOAuth2SuccessHandler;
 import com.depromeet.sulsul.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -15,18 +16,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
   @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.ignoring().antMatchers("/h2-console/**");
+  }
+
+  @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeHttpRequests()
-        .antMatchers("/swagger-ui.html", "/h2-console", "/**").permitAll()
-        .anyRequest().authenticated()
+          .antMatchers("/swagger-ui/*","/h2-console/**","/**").permitAll()
+          .anyRequest().authenticated()
         .and()
-        .logout()
-        .logoutSuccessUrl("/")
+          .logout()
+          .logoutSuccessUrl("/")
         .and()
-        .oauth2Login()
-        .userInfoEndpoint().userService(customOAuth2UserService)
+          .oauth2Login()
+          .userInfoEndpoint().userService(customOAuth2UserService)
         .and()
-        .successHandler(customOAuth2SuccessHandler);
+          .successHandler(customOAuth2SuccessHandler);
   }
 }
