@@ -70,7 +70,7 @@ public class RecordController {
   }
 
   @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
-  @GetMapping(value = {"/ticket/{recordId}", "/ticket"})
+  @GetMapping(value = {"/tickets/{recordId}", "/ticket"})
   public PageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(@PathVariable(name = "recordId", required = false) Long recordId) {
     // TODO : 임시 유저아이디 사용.
     Long memberId = 1L;
