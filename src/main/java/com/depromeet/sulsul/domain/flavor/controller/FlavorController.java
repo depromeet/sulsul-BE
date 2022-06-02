@@ -28,12 +28,6 @@ public class FlavorController {
     return ResponseDto.from(flavorService.findAll());
   }
 
-  @ApiOperation(value = "전체 맛 조회 API")
-  @GetMapping
-  public ResponseDto<List<FlavorResponse>> findAll() {
-      return ResponseDto.from(flavorService.findAll());
-  }
-
   @ApiOperation(value = "해당 맥주의 최상위 맛 3개 조회 API")
   @GetMapping("/{beerId}")
   public ResponseDto<List<FlavorResponseDto>> findTopFlavors(@PathVariable("beerId") Long beerId){
