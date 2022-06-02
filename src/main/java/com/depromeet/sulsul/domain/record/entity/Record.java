@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
 @Entity
 @Getter
 @Builder
@@ -83,7 +82,7 @@ public class Record extends BaseEntity {
     this.startCountryKor = "한국";
     this.startCountryEng = "Korea";
   }
-
+  
   public void updateEndCountry(Beer beer) {
     if (beer != null) {
       this.endCountryKor = beer.getCountry().getNameKor();
@@ -97,4 +96,5 @@ public class Record extends BaseEntity {
   public void updateBeer(Beer beer) {
     this.beer = beer;
   }
+
 }
