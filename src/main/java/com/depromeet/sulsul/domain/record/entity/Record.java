@@ -4,9 +4,11 @@ import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,7 +49,7 @@ public class Record extends BaseEntity {
   private Beer beer;
 
   @OneToMany(mappedBy = "record")
-  private final List<RecordFlavor> recordFlavors = new ArrayList<>();
+  private List<RecordFlavor> recordFlavors = new ArrayList<>();
 
   private String content;
   private Boolean isPublic;
@@ -95,6 +97,19 @@ public class Record extends BaseEntity {
 
   public void updateBeer(Beer beer) {
     this.beer = beer;
+  }
+
+  public void updateRecord(RecordUpdateRequestDto recordUpdateRequestDto, List<RecordFlavor> recordFlavors){
+    if(recordUpdateRequestDto.getIsPublic() != null)
+      this.isPublic = recordUpdateRequestDto.getIsPublic();
+    if(recordUpdateRequestDto.getContent() != null)
+      this.content = recordUpdateRequestDto.getContent();
+    if(recordUpdateRequestDto.getFeel() != null)
+      this.feel = recordUpdateRequestDto.getFeel();
+    if(recordUpdateRequestDto.getImageUrl() != null)
+      this.imageUrl = recordUpdateRequestDto.getImageUrl();
+    if(recordFlavors != null)
+      this.recordFlavors = recordFlavors;
   }
 
 }

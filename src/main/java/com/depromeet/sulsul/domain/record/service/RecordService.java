@@ -7,6 +7,7 @@ import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.entity.ImageType;
 import com.depromeet.sulsul.common.error.exception.custom.BeerNotFoundException;
 import com.depromeet.sulsul.common.error.exception.custom.FlavorNotFoundException;
+import com.depromeet.sulsul.common.error.exception.custom.RecordNotFoundException;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
@@ -23,6 +24,7 @@ import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
+import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
@@ -77,15 +79,48 @@ public class RecordService {
       flavorDtos.add(flavor.toDto());
     }
 
-    RecordResponseDto recordResponseDto = RecordResponseDto.toDto(record);
-    BeerResponseDto beerResponseDto = Beer.toDto(beer);
-    recordResponseDto.updateBeerResponseDto(beerResponseDto);
-    recordResponseDto.updateFlavors(flavorDtos);
-    recordResponseDto.updateRecordCount(recordRepository.selectCount());
-
-    return recordResponseDto;
+    return RecordResponseDto.createRecordResponseDto(record, beer, flavorDtos, recordRepository.selectCount());
   }
 
+  @Transactional(readOnly = true)
+  public RecordResponseDto find(Long recordId, Long memberId){
+
+    Record record = recordRepository.findById(recordId)
+        .orElseThrow(RecordNotFoundException::new);;
+
+    Beer beer = beerRepository.findById(record.getBeer().getId())
+        .orElseThrow(BeerNotFoundException::new);
+
+    List<FlavorDto> flavorDtos = new ArrayList<>();
+
+    for(RecordFlavor recordFlavor : record.getRecordFlavors()){
+      flavorDtos.add(recordFlavor.getFlavor().toDto());
+    }
+    return RecordResponseDto.createRecordResponseDto(record, beer, flavorDtos, recordRepository.selectCount());
+  }
+
+  public RecordResponseDto update(RecordUpdateRequestDto recordUpdateRequestDto, Long memeberId){
+
+    // update가 이루어질 record 찾아오기
+    Record savedRecord = recordRepository.findById(recordUpdateRequestDto.getRecordId())
+        .orElseThrow(RecordNotFoundException::new);
+
+    Beer beer = beerRepository.findById(savedRecord.getBeer().getId())
+        .orElseThrow(BeerNotFoundException::new);
+
+    List<RecordFlavor> recordFlavors = new ArrayList<>();
+    List<FlavorDto> flavorDtos = new ArrayList<>();
+
+    for (Long flavorId : recordUpdateRequestDto.getFlavorIds()) {
+      Flavor flavor = flavorRepository.findById(flavorId).orElseThrow(FlavorNotFoundException::new);
+      RecordFlavor recordFlavor = RecordFlavor.of(savedRecord, flavor);
+      recordFlavors.add(recordFlavor);
+      flavorDtos.add(recordFlavor.getFlavor().toDto());
+    }
+
+    savedRecord.updateRecord(recordUpdateRequestDto, recordFlavors);
+    return RecordResponseDto.createRecordResponseDto(savedRecord, beer, flavorDtos, recordRepository.selectCount());
+  }
 
   @Transactional(readOnly = true)
   public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
@@ -132,4 +167,5 @@ public class RecordService {
   public RecordCountryAndCountResponseDto findCountryAndCountByMemberId(Long memberId){
     return recordRepository.findRecordCountryAndCountResponseDto(memberId);
   }
+
 }
