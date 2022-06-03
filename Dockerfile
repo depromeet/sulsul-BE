@@ -3,7 +3,7 @@ FROM openjdk:11-jdk AS build
 WORKDIR /workspace/app
 COPY . /workspace/app
 RUN chmod +x gradlew
-RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build
+RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build -Pprofile=prod
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
 # run
