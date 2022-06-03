@@ -35,6 +35,7 @@ public class MemberLevel {
 
   public static MemberLevelResponseDto toDto(MemberLevel memberLevel){
     return MemberLevelResponseDto.builder()
+        .id(memberLevel.getId())
         .tier(memberLevel.getTier())
         .imageUrl(memberLevel.getImageUrl())
         .req(memberLevel.req)
