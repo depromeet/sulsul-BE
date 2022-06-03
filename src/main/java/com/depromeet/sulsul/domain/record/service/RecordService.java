@@ -11,12 +11,14 @@ import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundExceptio
 import com.depromeet.sulsul.common.error.exception.custom.RecordNotFoundException;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.beer.repository.BeerRepository;
 import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
 import com.depromeet.sulsul.domain.flavor.entity.Flavor;
 import com.depromeet.sulsul.domain.flavor.repository.FlavorRepository;
+import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
+import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
+import com.depromeet.sulsul.domain.memberLevel.service.MemberLevelService;
 import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
@@ -51,6 +53,7 @@ public class RecordService {
   private final FlavorRepository flavorRepository;
   private final RecordFlavorRepository recordFlavorRepository;
   private final MemberRepository memberRepository;
+  private final MemberLevelService memberLevelService;
 
   public ImageDto uploadImage(MultipartFile multipartFile) {
     if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
@@ -82,6 +85,10 @@ public class RecordService {
       flavorDtos.add(flavor.toDto());
     }
 
+    Long recordCountByMemberId = findRecordCountByMemberId(memberId)+1;
+    MemberLevel memberLevel = memberLevelService.findMemberLevelByCount(recordCountByMemberId).toEntity();
+    member.updateLevel(memberLevel);
+
     return RecordResponseDto.createRecordResponseDto(record, beer, flavorDtos, recordRepository.selectCount());
   }
 
@@ -103,7 +110,7 @@ public class RecordService {
     return RecordResponseDto.createRecordResponseDto(record, beer, flavorDtos, recordRepository.selectCount());
   }
 
-  public RecordResponseDto update(RecordUpdateRequestDto recordUpdateRequestDto, Long memeberId){
+  public RecordResponseDto update(RecordUpdateRequestDto recordUpdateRequestDto, Long memberId){
 
     // TODO : memberID를 통한 유저 확인이 이루어져야 함.
 
@@ -116,6 +123,7 @@ public class RecordService {
 
     List<RecordFlavor> recordFlavors = new ArrayList<>();
     List<FlavorDto> flavorDtos = new ArrayList<>();
+
 
     for (Long flavorId : recordUpdateRequestDto.getFlavorIds()) {
       Flavor flavor = flavorRepository.findById(flavorId).orElseThrow(FlavorNotFoundException::new);
@@ -153,7 +161,6 @@ public class RecordService {
   }
 
   // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
-  @Transactional
   public Long delete(Long recordId, Long memberId) {
     Record targetRecord = recordRepository.getById(recordId);
     targetRecord.delete();
@@ -165,11 +172,13 @@ public class RecordService {
     return recordRepository.findRecordCountByMemberId(id);
   }
 
+  @Transactional(readOnly = true)
   public PageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId){
     List<RecordTicketResponseDto> allRecordsTicketWithPageable = recordRepository.findAllRecordsTicketWithPageable(recordId, memberId);
     return PageableResponseDto.of(allRecordsTicketWithPageable, recordId, PAGINATION_SIZE);
   }
 
+  @Transactional(readOnly = true)
   public RecordCountryAndCountResponseDto findCountryAndCountByMemberId(Long memberId){
     return recordRepository.findRecordCountryAndCountResponseDto(memberId);
   }
