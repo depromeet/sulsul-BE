@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecordRequestDto {
 
-  private Long memberId;
   private Long beerId;
   private String imageUrl;
   private String content;

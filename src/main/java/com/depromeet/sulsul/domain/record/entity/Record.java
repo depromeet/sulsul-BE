@@ -75,7 +75,7 @@ public class Record extends BaseEntity {
     this.feel = recordRequestDto.getFeel();
   }
 
-  public void updateStartCountry(Record record) {
+  private void updateStartCountry(Record record) {
     if (record != null) {
       this.startCountryKor = record.getStartCountryKor();
       this.startCountryEng = record.getStartCountryEng();
@@ -84,8 +84,8 @@ public class Record extends BaseEntity {
     this.startCountryKor = "한국";
     this.startCountryEng = "Korea";
   }
-  
-  public void updateEndCountry(Beer beer) {
+
+  private void updateEndCountry(Beer beer) {
     if (beer != null) {
       this.endCountryKor = beer.getCountry().getNameKor();
       this.endCountryEng = beer.getCountry().getNameEng();
@@ -95,8 +95,17 @@ public class Record extends BaseEntity {
     this.endCountryEng = "Korea";
   }
 
-  public void updateBeer(Beer beer) {
+  private void updateBeer(Beer beer) {
     this.beer = beer;
+  }
+
+  private void updateMember(Member member) { this.member = member; }
+
+  public void setRecord(Beer beer, Record lastSavedRecord, Member member){
+    this.updateBeer(beer);
+    this.updateEndCountry(beer);
+    this.updateStartCountry(lastSavedRecord);
+    this.updateMember(member);
   }
 
   public void updateRecord(RecordUpdateRequestDto recordUpdateRequestDto, List<RecordFlavor> recordFlavors){

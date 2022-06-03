@@ -7,6 +7,7 @@ import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.entity.ImageType;
 import com.depromeet.sulsul.common.error.exception.custom.BeerNotFoundException;
 import com.depromeet.sulsul.common.error.exception.custom.FlavorNotFoundException;
+import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
 import com.depromeet.sulsul.common.error.exception.custom.RecordNotFoundException;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
@@ -49,6 +50,7 @@ public class RecordService {
   private final BeerRepository beerRepository;
   private final FlavorRepository flavorRepository;
   private final RecordFlavorRepository recordFlavorRepository;
+  private final MemberRepository memberRepository;
 
   public ImageDto uploadImage(MultipartFile multipartFile) {
     if (!ImageUtil.isValidExtension(multipartFile.getOriginalFilename())) {
@@ -57,18 +59,19 @@ public class RecordService {
     return new ImageDto(awsS3ImageClient.upload(multipartFile, ImageType.RECORD));
   }
 
-  public RecordResponseDto save(RecordRequestDto recordRequestDto) {
+  public RecordResponseDto save(RecordRequestDto recordRequestDto, Long memberId) {
+    // TODO : memberID를 통한 유저 확인이 이루어져야 함.
 
     List<FlavorDto> flavorDtos = new ArrayList<>();
 
     Record lastSavedRecord = recordRepository.findLastSavedCountryName();
     Beer beer = beerRepository.findById(recordRequestDto.getBeerId())
         .orElseThrow(BeerNotFoundException::new);
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(MemberNotFoundException::new);
 
     Record record = recordRequestDto.toEntity();
-    record.updateBeer(beer);
-    record.updateStartCountry(lastSavedRecord);
-    record.updateEndCountry(beer);
+    record.setRecord(beer, lastSavedRecord, member);
 
     Record savedRecord = recordRepository.save(record);
 
@@ -84,6 +87,7 @@ public class RecordService {
 
   @Transactional(readOnly = true)
   public RecordResponseDto find(Long recordId, Long memberId){
+    // TODO : memberID를 통한 유저 확인이 이루어져야 함.
 
     Record record = recordRepository.findById(recordId)
         .orElseThrow(RecordNotFoundException::new);;
@@ -100,6 +104,8 @@ public class RecordService {
   }
 
   public RecordResponseDto update(RecordUpdateRequestDto recordUpdateRequestDto, Long memeberId){
+
+    // TODO : memberID를 통한 유저 확인이 이루어져야 함.
 
     // update가 이루어질 record 찾아오기
     Record savedRecord = recordRepository.findById(recordUpdateRequestDto.getRecordId())

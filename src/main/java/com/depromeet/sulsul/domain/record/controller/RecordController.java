@@ -45,7 +45,9 @@ public class RecordController {
   @ApiOperation(value = "기록 작성 API")
   @PostMapping
   public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
-    return ResponseDto.from(recordService.save(recordRequestDto));
+    // TODO : 임시 유저아이디 사용.
+    Long memberId = 1L;
+    return ResponseDto.from(recordService.save(recordRequestDto, memberId));
   }
 
   @ApiOperation(value = "작성 기록 상세보기 API")
