@@ -1,12 +1,14 @@
 package com.depromeet.sulsul.domain.record.dto;
 
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
 import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecordResponseDto {
 
   private Long id;
@@ -72,15 +74,23 @@ public class RecordResponseDto {
         .build();
   }
 
-  public void updateFlavors(List<FlavorDto> flavorDtos) {
+  public static RecordResponseDto createRecordResponseDto(Record record, Beer beer, List<FlavorDto> flavorDtos, Long recordCount){
+    RecordResponseDto recordResponseDto = RecordResponseDto.toDto(record);
+    recordResponseDto.updateBeerResponseDto(Beer.toDto(beer));
+    recordResponseDto.updateFlavors(flavorDtos);
+    recordResponseDto.updateRecordCount(recordCount);
+    return recordResponseDto;
+  }
+
+  private void updateFlavors(List<FlavorDto> flavorDtos) {
     this.flavorDtos = flavorDtos;
   }
 
-  public void updateRecordCount(Long recordCount) {
+  private void updateRecordCount(Long recordCount) {
     this.recordCount = recordCount;
   }
 
-  public void updateBeerResponseDto(BeerResponseDto beerResponseDto) {
+  private void updateBeerResponseDto(BeerResponseDto beerResponseDto) {
     this.beerResponseDto = beerResponseDto;
   }
 }

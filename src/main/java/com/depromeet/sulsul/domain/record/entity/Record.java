@@ -4,6 +4,7 @@ import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Getter
@@ -48,7 +49,7 @@ public class Record extends BaseEntity {
   private Beer beer;
 
   @OneToMany(mappedBy = "record")
-  private final List<RecordFlavor> recordFlavors = new ArrayList<>();
+  private List<RecordFlavor> recordFlavors = new ArrayList<>();
 
   private String content;
   private Boolean isPublic;
@@ -74,7 +75,7 @@ public class Record extends BaseEntity {
     this.feel = recordRequestDto.getFeel();
   }
 
-  public void updateStartCountry(Record record) {
+  private void updateStartCountry(Record record) {
     if (record != null) {
       this.startCountryKor = record.getStartCountryKor();
       this.startCountryEng = record.getStartCountryEng();
@@ -84,7 +85,7 @@ public class Record extends BaseEntity {
     this.startCountryEng = "Korea";
   }
 
-  public void updateEndCountry(Beer beer) {
+  private void updateEndCountry(Beer beer) {
     if (beer != null) {
       this.endCountryKor = beer.getCountry().getNameKor();
       this.endCountryEng = beer.getCountry().getNameEng();
@@ -94,7 +95,30 @@ public class Record extends BaseEntity {
     this.endCountryEng = "Korea";
   }
 
-  public void updateBeer(Beer beer) {
+  private void updateBeer(Beer beer) {
     this.beer = beer;
   }
+
+  private void updateMember(Member member) { this.member = member; }
+
+  public void setRecord(Beer beer, Record lastSavedRecord, Member member){
+    this.updateBeer(beer);
+    this.updateEndCountry(beer);
+    this.updateStartCountry(lastSavedRecord);
+    this.updateMember(member);
+  }
+
+  public void updateRecord(RecordUpdateRequestDto recordUpdateRequestDto, List<RecordFlavor> recordFlavors){
+    if(recordUpdateRequestDto.getIsPublic() != null)
+      this.isPublic = recordUpdateRequestDto.getIsPublic();
+    if(!StringUtils.isBlank(recordUpdateRequestDto.getContent()))
+      this.content = recordUpdateRequestDto.getContent();
+    if(recordUpdateRequestDto.getFeel() != null)
+      this.feel = recordUpdateRequestDto.getFeel();
+    if(!StringUtils.isBlank(recordUpdateRequestDto.getImageUrl()))
+      this.imageUrl = recordUpdateRequestDto.getImageUrl();
+    if(recordFlavors != null)
+      this.recordFlavors = recordFlavors;
+  }
+
 }

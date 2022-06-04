@@ -46,9 +46,17 @@ public class BeerController {
   }
 
   @GetMapping("/recommend")
+  @ApiOperation(value = "추천 맥주 리스트 조회 API")
   public ResponseDto<BeerResponsesDto> findRecommends() {
     Long memberId = 1L;
     return ResponseDto.from(beerService.findRecommends(memberId));
+  }
+
+  @GetMapping("/liked")
+  @ApiOperation(value = "추천 맥주 리스트 조회(반한 맥주) API")
+  public ResponseDto<BeerResponsesDto> findLikedRecommends() {
+    Long memberId = 1L;
+    return ResponseDto.from(beerService.findLikedRecommends(memberId, true));
   }
 
   @PostMapping("/count")

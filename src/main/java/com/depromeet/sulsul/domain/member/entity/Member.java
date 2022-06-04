@@ -2,6 +2,7 @@ package com.depromeet.sulsul.domain.member.entity;
 
 import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.dto.SocialType;
+import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,9 +15,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +50,10 @@ public class Member {
 
   @Enumerated(EnumType.STRING)
   private SocialType social;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "tier")
+  private MemberLevel memberLevel;
 
   public String getAuthority() {
     return role.getAuthority();
@@ -80,5 +88,8 @@ public class Member {
 
   public void updateRegistrationId(String social) {
     this.social = SocialType.valueOf(social);
+
+  public void updateLevel(MemberLevel memberLevel){
+    this.memberLevel = memberLevel;
   }
 }

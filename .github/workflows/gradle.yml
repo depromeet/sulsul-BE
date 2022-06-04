@@ -27,14 +27,6 @@ jobs:
       with:
         token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
         submodules: true
-
-    # Submodule Init
-    - name: Git Sumbmodule Init
-      run: git submodule init 
-        
-    # Submodule Update
-    - name: Git Sumbmodule Update
-      run: git submodule update --remote --recursive
     
     # Set JDK Version
     - name: Set up JDK 11

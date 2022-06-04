@@ -150,7 +150,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   private BooleanExpression searchBooleanExpression(String searchKeyword) {
-    if (!PropertyUtil.isEmpty(searchKeyword)) {
+    if (PropertyUtil.isEmpty(searchKeyword)) {
       return null;
     }
     return beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
@@ -178,7 +178,16 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).where(record.isNull()).fetchJoin().fetch();
+        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(record.isNull())).fetchJoin().fetch();
+  }
+
+  @Override
+  public List<BeerResponseDto> findBeerLikedByMemberId(Long memberId) {
+    return queryFactory
+        .select(new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(memberBeer.isNotNull())).fetchJoin().fetch();
   }
 
   private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,
