@@ -33,6 +33,11 @@ dependencies {
     // Utility Class Package
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
+    // JWT Token Library
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
     // for processing warning message (javax.annotation.meta.WHEN)
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     runtimeOnly 'mysql:mysql-connector-java'
