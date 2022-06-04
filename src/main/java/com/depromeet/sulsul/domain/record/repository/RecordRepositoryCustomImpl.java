@@ -42,7 +42,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         .innerJoin(record.member, member)
         .where(record.deletedAt.isNull())
         .orderBy(record.id.desc())
-        .fetchOne();
+        .fetchFirst();
   }
 
   @Override
