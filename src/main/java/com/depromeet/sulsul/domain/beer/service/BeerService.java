@@ -120,8 +120,28 @@ public class BeerService {
   public BeerResponsesDto findRecommends(Long memberId) {
     List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeerNotExistsRecord(
         memberId);
-    Collections.shuffle(beerResponseDtos);
+    return shuffleAndSublistIfIsRecommend(true, beerResponseDtos);
+  }
 
+  public BeerResponsesDto findLikedRecommends(Long memberId, boolean isRecommend) {
+    List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeerLikedByMemberId(memberId);
+    return shuffleAndSublistIfIsRecommend(isRecommend, beerResponseDtos);
+  }
+
+  private BeerResponsesDto shuffleAndSublistIfIsRecommend(boolean isRecommend,
+      List<BeerResponseDto> beerResponseDtos) {
+    if (isRecommend) {
+      Collections.shuffle(beerResponseDtos);
+      return subListResponses(beerResponseDtos);
+    }
+
+    return BeerResponsesDto.from(beerResponseDtos);
+  }
+
+  private BeerResponsesDto subListResponses(List<BeerResponseDto> beerResponseDtos) {
+    if (beerResponseDtos.size() < PAGINATION_SIZE) {
+      return BeerResponsesDto.from(beerResponseDtos);
+    }
     return BeerResponsesDto.from(new ArrayList<>(beerResponseDtos.subList(0, PAGINATION_SIZE)));
   }
 

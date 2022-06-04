@@ -8,6 +8,7 @@ import com.depromeet.sulsul.oauth2.handler.CustomOAuth2SuccessHandler;
 import com.depromeet.sulsul.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,11 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final CustomLogoutHandler customLogoutHandler;
 
   @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.ignoring().antMatchers("/h2-console/**");
+  }
+
+  @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .sessionManagement().sessionCreationPolicy(STATELESS)
         .and()
         .authorizeHttpRequests()
+
         .antMatchers("/swagger-ui.html", "/h2-console").permitAll()
         .anyRequest().authenticated()
         .and()
