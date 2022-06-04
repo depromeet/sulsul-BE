@@ -1,6 +1,6 @@
- spring:
+spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+	driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://ec2-13-125-141-181.ap-northeast-2.compute.amazonaws.com:3306/sulsulDB?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowMultiQueries=true&autoReconnection=true&characterEncoding=UTF-8
     username: ec2-user
     password: Sulsul1004~
