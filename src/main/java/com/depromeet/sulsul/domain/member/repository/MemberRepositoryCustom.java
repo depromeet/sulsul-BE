@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface MemberRepositoryCustom {
 
   Optional<MemberDto> selectById(long id);
+  Optional<Member> selectByEmailAndSocial(String email,String social);
 }
