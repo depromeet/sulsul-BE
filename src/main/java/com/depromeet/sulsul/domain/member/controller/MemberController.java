@@ -1,6 +1,7 @@
 package com.depromeet.sulsul.domain.member.controller;
 
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
 import com.depromeet.sulsul.domain.member.service.MemberService;
@@ -23,8 +24,12 @@ public class MemberController {
   private final BeerService beerService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<Object> findMember(@PathVariable final Long id) {
-    return ResponseEntity.ok().body(ResponseDto.from(memberService.findMember(id)));
+  public ResponseDto<MemberDto> findMember(@PathVariable final Long id) {
+    return ResponseDto.from(memberService.findMember(id));
+  }
+  @GetMapping("/level/{id}")
+  public ResponseDto<?> findLevelByMemberId(@PathVariable Long id) {
+    return ResponseDto.from(memberService.findLevelByMemberId(id));
   }
 
   @GetMapping("/{id}/beers")
