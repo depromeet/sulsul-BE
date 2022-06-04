@@ -42,4 +42,10 @@ public class MemberBeerService {
       return false;
     }
   }
+
+  @Transactional(readOnly = true)
+  public Long findMemberBeerCountByMemberId(Long memberId){
+    return memberBeerRepository.findMemberBeerCountByMemberId(memberId);
+  }
+
 }

@@ -35,12 +35,17 @@ public class RequestBeerService {
   public PageableResponseDto<List<RequestBeerResponseDto>> find(Long requestBeerId, Long memberId){
     List<RequestBeerResponseDto> byMemberIdWithPageable = requestBeerRepository.findByMemberIdWithPageable(
         requestBeerId, memberId);
-    Long count = requestBeerRepository.countByMemberId(memberId);
-    System.out.println(count);
+
+    Long count = requestBeerCount(memberId);
 
     return PageableResponseDto.of(
         Collections.singletonList(byMemberIdWithPageable),requestBeerId , PAGINATION_SIZE
     );
+  }
+
+  @Transactional(readOnly = true)
+  public Long requestBeerCount(Long memberId){
+    return requestBeerRepository.countByMemberId(memberId);
   }
 
 }
