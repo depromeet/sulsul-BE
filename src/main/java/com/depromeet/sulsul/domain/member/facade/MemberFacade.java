@@ -3,7 +3,9 @@ package com.depromeet.sulsul.domain.member.facade;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
 import com.depromeet.sulsul.domain.country.service.CountryService;
 import com.depromeet.sulsul.domain.member.dto.MyPageRequestDto;
+import com.depromeet.sulsul.domain.memberBeer.service.MemberBeerService;
 import com.depromeet.sulsul.domain.record.service.RecordService;
+import com.depromeet.sulsul.domain.requestBeer.service.RequestBeerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +18,20 @@ public class MemberFacade {
   private final BeerService beerService;
   private final CountryService countryService;
   private final RecordService recordService;
+  private final MemberBeerService memberBeerService;
+  private final RequestBeerService requestBeerService;
 
   /**
    * - 마신 맥주 count - 기록 갯수 count - 여행한 나라 count - 미등록 맥주 요청 갯수 count - 찜한 맥주 갯수 count
    */
   @Transactional(readOnly = true)
-  public MyPageRequestDto findMyPageByMemberId(Long id) {
-    Long beerCount = beerService.findBeerCountByMemberId(id);
-    Long recordCount = recordService.findRecordCountByMemberId(id);
-    Long countryCount = countryService.findCountryCountByMemberId(id);
+  public MyPageRequestDto findMyPageByMemberId(Long memberId) {
+    Long beerCount = beerService.findBeerCountByMemberId(memberId);
+    Long recordCount = recordService.findRecordCountByMemberId(memberId);
+    Long countryCount = countryService.findCountryCountByMemberId(memberId);
+    Long memberBeerCount = memberBeerService.findMemberBeerCountByMemberId(memberId);
+    Long requestbeerCount = requestBeerService.requestBeerCount(memberId);
 
-    return MyPageRequestDto.of(beerCount, recordCount, countryCount, null, null);
+    return MyPageRequestDto.of(beerCount, recordCount, countryCount, memberBeerCount, requestbeerCount);
   }
 }
