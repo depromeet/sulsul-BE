@@ -24,7 +24,7 @@ public class MyPageController {
   private final MemberFacade memberFacade;
 
   @ApiOperation(value = "count 조회 API")
-  @GetMapping()
+  @GetMapping
   public ResponseDto<MyPageRequestDto> findMyPageByMemberId() {
     Long memberId = 1L;
     return ResponseDto.from(memberFacade.findMyPageByMemberId(memberId));
