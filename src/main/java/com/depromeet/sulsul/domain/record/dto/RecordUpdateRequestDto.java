@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class RecordRequestDto {
-
-  private Long memberId;
-  private Long beerId;
+public class RecordUpdateRequestDto {
+  private Long recordId;
   private String imageUrl;
   private String content;
   private List<Long> FlavorIds = new ArrayList<>();

@@ -1,0 +1,46 @@
+package com.depromeet.sulsul.domain.requestBeer.service;
+
+import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
+
+import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
+import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
+import com.depromeet.sulsul.domain.member.entity.Member;
+import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
+import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
+import com.depromeet.sulsul.domain.requestBeer.entity.RequestBeer;
+import com.depromeet.sulsul.domain.requestBeer.repository.RequestBeerRepository;
+import java.util.Collections;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+@Slf4j
+@RequiredArgsConstructor
+public class RequestBeerService {
+
+  private final RequestBeerRepository requestBeerRepository;
+  private final MemberRepository memberRepository;
+
+  public RequestBeerResponseDto save(RequestBeerRequestDto requestBeerRequestDto, Long memberId){
+    Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+    return new RequestBeerResponseDto(requestBeerRepository.save(new RequestBeer(requestBeerRequestDto, member)));
+  }
+
+  @Transactional(readOnly = true)
+  public PageableResponseDto<List<RequestBeerResponseDto>> find(Long requestBeerId, Long memberId){
+    List<RequestBeerResponseDto> byMemberIdWithPageable = requestBeerRepository.findByMemberIdWithPageable(
+        requestBeerId, memberId);
+    Long count = requestBeerRepository.countByMemberId(memberId);
+    System.out.println(count);
+
+    return PageableResponseDto.of(
+        Collections.singletonList(byMemberIdWithPageable),requestBeerId , PAGINATION_SIZE
+    );
+  }
+
+}
