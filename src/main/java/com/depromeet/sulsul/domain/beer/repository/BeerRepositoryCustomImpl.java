@@ -150,7 +150,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   }
 
   private BooleanExpression searchBooleanExpression(String searchKeyword) {
-    if (!PropertyUtil.isEmpty(searchKeyword)) {
+    if (PropertyUtil.isEmpty(searchKeyword)) {
       return null;
     }
     return beer.nameKor.contains(searchKeyword).or(beer.nameEng.contains(searchKeyword))
