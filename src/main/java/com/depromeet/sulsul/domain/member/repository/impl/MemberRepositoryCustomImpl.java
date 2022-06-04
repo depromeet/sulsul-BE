@@ -2,7 +2,8 @@ package com.depromeet.sulsul.domain.member.repository.impl;
 
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.dto.QMemberDto;
-import com.depromeet.sulsul.domain.member.entity.QMember;
+import com.depromeet.sulsul.domain.member.dto.SocialType;
+import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,14 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
         .from(member)
         .where(member.id.eq(id))
         .fetchOne());
+  }
+
+  @Override
+  public Optional<Member> selectByEmailAndSocial(String email, String social) {
+    return Optional.ofNullable(queryFactory
+        .selectFrom(member)
+        .where(member.email.eq(email),member.social.eq(SocialType.valueOf(social)))
+        .fetchOne()
+    );
   }
 }

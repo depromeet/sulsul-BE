@@ -1,9 +1,12 @@
 package com.depromeet.sulsul.domain.member.dto;
 
-import java.io.Serializable;
-
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -17,6 +20,8 @@ public class MemberDto implements Serializable {
   private String name;
   private String profileUrl;
   private String phoneNumber;
+
+  private String social;
 
   @Builder
   @QueryProjection
