@@ -45,4 +45,3 @@ id_rsa.pub
 
 ### .sql ###
 *.sql
-application-*.yml
