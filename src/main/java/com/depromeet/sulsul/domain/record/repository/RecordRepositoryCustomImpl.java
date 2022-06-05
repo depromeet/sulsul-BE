@@ -23,11 +23,10 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto, Long memberId) {
+  public List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto) {
     return queryFactory.select(record)
         .from(record)
         .where(beerIdEq(recordFindRequestDto.getBeerId())
-            , memberIdEq(memberId)
             , recordIdGoe(recordFindRequestDto.getRecordId())
             , record.deletedAt.isNull()
         )

@@ -4,6 +4,7 @@ import static com.depromeet.sulsul.domain.requestBeer.entity.QRequestBeer.reques
 
 import com.depromeet.sulsul.domain.requestBeer.dto.QRequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
+import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -26,6 +27,7 @@ public class RequestBeerRepositoryCustomImpl implements RequestBeerRepositoryCus
             , requestBeerResponseIdGoe(requestBeerResponseId)
         )
         .orderBy(requestBeer.requestBeerId.asc())
+        .limit(PaginationUtil.PAGINATION_SIZE + 1L)
         .fetch();
   }
 

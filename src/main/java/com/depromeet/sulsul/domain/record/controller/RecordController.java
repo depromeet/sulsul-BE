@@ -79,9 +79,7 @@ public class RecordController {
   @PostMapping("/find")
   public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
       @RequestBody RecordFindRequestDto recordFindRequestDto) {
-    // TODO : 임시 유저아이디 사용.
-    Long memberId = 1L;
-    return recordService.findAllRecordsWithPageable(recordFindRequestDto, memberId);
+    return recordService.findAllRecordsWithPageable(recordFindRequestDto);
   }
 
 
