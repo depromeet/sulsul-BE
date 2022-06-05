@@ -8,14 +8,14 @@ spring:
             scope:
               - profile_nickname
               - account_email
-            redirect-uri: "http://api-dev.beerair.ml/login/oauth2/code/kakao"
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: kakao
           naver:
             client-id: GcVDuQpzijLxjpihXQTL
             client-secret: JTM3XYwtTc
-            redirect-uri: "http://api-dev.beerair.ml/login/oauth2/code/naver"
+            redirect-uri: "http://localhost:8080/login/oauth2/code/naver"
             authorization-grant-type: authorization_code
             scope:
               - name
