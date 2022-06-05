@@ -20,7 +20,7 @@ public class CountryController {
 
   private final CountryService countryService;
 
-  @GetMapping("")
+  @GetMapping
   @ApiOperation(value = "국가 전체 조회 API")
   public ResponseDto<List<CountryDto>> findAll(
       @RequestParam(value = "continentId", required = false) Long continentId) {

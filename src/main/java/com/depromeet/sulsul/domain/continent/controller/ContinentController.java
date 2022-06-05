@@ -19,7 +19,7 @@ public class ContinentController {
 
   private final ContinentService continentService;
 
-  @GetMapping("")
+  @GetMapping
   @ApiOperation(value = "대륙 전체 조회 API")
   public ResponseDto<List<ContinentDto>> findAll() {
     return ResponseDto.from(continentService.findAll());
