@@ -7,9 +7,9 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build -Pprofile=prod
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
 # run
-# FROM zeze1004/sulsul:latest <- 기존 빌드 이미지 
+# FROM zeze1004/sulsul:latest <- 기존 빌드 이미지
 FROM build 
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/build/dependency
 COPY --from=build ${DEPENDENCY} /app/lib
-ENTRYPOINT ["java","-jar","-Dspring.config.additional-location=file:./src/main/resources/application-prod.yml","./build/libs/sulsul-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar"," -Dspring.profiles.active=dev","./build/libs/sulsul-0.0.1-SNAPSHOT.jar"]
