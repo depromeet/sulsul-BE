@@ -161,10 +161,9 @@ public class RecordService {
               , flavorDtos));
     }
 
-    // TODO : count 일단 넣어둠
-    Long count = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
+    Long resultCount = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
 
-    return PageableResponseDto.of(allRecordDtosWithPageableResponse, count, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
+    return PageableResponseDto.of(resultCount, allRecordDtosWithPageableResponse, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
@@ -190,7 +189,7 @@ public class RecordService {
 
     // TODO : count적용
     Long resultCount = findRecordCountByMemberId(memberId);
-    return PageableResponseDto.of(allRecordsTicketWithPageable, resultCount, recordId, PAGINATION_SIZE);
+    return PageableResponseDto.of(resultCount, allRecordsTicketWithPageable, recordId, PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)

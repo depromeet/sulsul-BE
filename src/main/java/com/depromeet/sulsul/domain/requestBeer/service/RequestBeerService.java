@@ -40,7 +40,7 @@ public class RequestBeerService {
     Long resultCount = requestBeerCount(memberId);
 
     return PageableResponseDto.of(
-        byMemberIdWithPageable, resultCount, requestBeerId , PAGINATION_SIZE
+        resultCount, byMemberIdWithPageable, requestBeerId , PAGINATION_SIZE
     );
   }
 
