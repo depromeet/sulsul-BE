@@ -44,6 +44,12 @@ jobs:
     # Build Gradle
     - name: Build with Gradle
       run: ./gradlew build -x test
+    - name: Temporarily save build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifact
+        path: build
+        retention-days: 1
   
   docker:
     name: Deploy Docker Image
