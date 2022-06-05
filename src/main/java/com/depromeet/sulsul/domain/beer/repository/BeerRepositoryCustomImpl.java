@@ -294,7 +294,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
         .select(record.beer.id)
         .from(record)
         .leftJoin(record.beer, beer)
-        .where(record.member.id.eq(id), beer.deletedAt.isNull())
+        .where(record.member.id.eq(id), beer.deletedAt.isNull(), record.deletedAt.isNull())
         .stream()
         .distinct()
         .count();
