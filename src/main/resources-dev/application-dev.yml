@@ -1,12 +1,12 @@
 spring:
   config:
     activate:
-      on-profile: "prod"
+      on-profile: "dev"
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sulsul-real-db.cmygx0mjyxpw.ap-northeast-2.rds.amazonaws.com:3306/sulsulDB?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowMultiQueries=true&autoReconnection=true&characterEncoding=UTF-8
-    username: root
-    password: admin1234
+    url: jdbc:mysql://ec2-43-200-51-198.ap-northeast-2.compute.amazonaws.com:3306/sulsuldb?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowMultiQueries=true&autoReconnection=true&characterEncoding=UTF-8
+    username: admin
+    password: Sulsul1004~
   security:
     oauth2:
       client:
@@ -16,14 +16,14 @@ spring:
             scope:
               - profile_nickname
               - account_email
-            redirect-uri: "https://api.beerair.ml/login/oauth2/code/kakao"
+            redirect-uri: "http://api-dev.beerair.ml/login/oauth2/code/kakao"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: kakao
           naver:
             client-id: GcVDuQpzijLxjpihXQTL
             client-secret: JTM3XYwtTc
-            redirect-uri: "https://api.beerair.ml/login/oauth2/code/naver"
+            redirect-uri: "http://api-dev.beerair.ml/login/oauth2/code/naver"
             authorization-grant-type: authorization_code
             scope:
               - name
