@@ -1,14 +1,11 @@
 package com.depromeet.sulsul.domain.member.controller;
 
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.member.dto.MemberDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.service.MemberService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +27,5 @@ public class MemberController {
   @GetMapping("/level/{id}")
   public ResponseDto<?> findLevelByMemberId(@PathVariable Long id) {
     return ResponseDto.from(memberService.findLevelByMemberId(id));
-  }
-
-  @GetMapping("/{id}/beers")
-  @ApiOperation(value = "반한 맥주 리스트 조회 API")
-  public ResponseDto<BeerResponsesDto> findLikedRecommends() {
-    Long memberId = 1L;
-    return ResponseDto.from(beerService.findLikedRecommends(memberId, false));
   }
 }
