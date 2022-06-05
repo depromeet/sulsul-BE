@@ -6,6 +6,6 @@ public interface MemberLevelRepositoryCustom {
 
   MemberLevelResponseDto findMemberLevelByCount(Long count);
 
-  String findMemberLevel(Long memberId);
+  MemberLevelResponseDto findMemberLevel(Long memberId);
 
 }
