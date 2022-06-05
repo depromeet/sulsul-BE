@@ -43,7 +43,7 @@ jobs:
 
     # Build Gradle
     - name: Build with Gradle
-      run: ./gradlew build -x test
+      run: ./gradlew build -Pprofile=dev
     - name: Temporarily save build artifact
       uses: actions/upload-artifact@v3
       with:
