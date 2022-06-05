@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 public class PageableResponseDto<T> implements Serializable {
 
   private boolean success;
+  private Long resultCount;
   private List<T> contents;
   private Boolean hasNext = false;
   private Long nextCursor;
@@ -24,6 +25,13 @@ public class PageableResponseDto<T> implements Serializable {
 
   private PageableResponseDto(ErrorResponseDto errorResponseDto) {
     this.error = errorResponseDto;
+  }
+
+  private PageableResponseDto(List<T> contents, Long resultCount, Long nextCursor, int paginationSize) {
+    paginate(contents, nextCursor, paginationSize);
+    this.contents = contents;
+    this.resultCount = resultCount;
+    this.success = true;
   }
 
   private PageableResponseDto(List<T> contents, Long nextCursor, int paginationSize) {
@@ -50,6 +58,11 @@ public class PageableResponseDto<T> implements Serializable {
 
   private boolean isOverPaginationSize(List<T> contents, int size) {
     return contents.size() > size;
+  }
+
+  public static <T> PageableResponseDto<T> of(List<T> contents, Long resultCount, Long nextCursor,
+      int paginationSize) {
+    return new PageableResponseDto<>(contents, resultCount, nextCursor, paginationSize);
   }
 
   public static <T> PageableResponseDto<T> of(List<T> contents, Long nextCursor,
