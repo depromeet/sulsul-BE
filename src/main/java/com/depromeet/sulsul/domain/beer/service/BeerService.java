@@ -13,9 +13,11 @@ import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerCountResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseWithCountDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
@@ -75,6 +77,16 @@ public class BeerService {
   }
 
   @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findPageWithReadRequestV2(Long memberId,
+      ReadRequest request) {
+    BeerResponseWithCountDto responseWithCountDto = beerRepositoryCustom.findPageWithV2(memberId,
+        request);
+    return PageableResponseDto.of(responseWithCountDto.getResultCount(),
+        responseWithCountDto.getBeerResponseDtos(), request.getCursor(),
+        request.getLimit());
+  }
+
+  @Transactional(readOnly = true)
   public PageableResponseDto<BeerResponseDto> findAll(Long memberId) {
 
     return PageableResponseDto.of(beerRepositoryCustom.findPageWith(memberId), 0L, PAGINATION_SIZE);
@@ -128,6 +140,15 @@ public class BeerService {
     return shuffleAndSublistIfIsRecommend(isRecommend, beerResponseDtos);
   }
 
+  @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findLikes(Long memberId, ReadRequest request) {
+    BeerResponseWithCountDto responseWithCountDto = beerRepositoryCustom.findBeerLikedByMemberIdV2(
+        memberId, request);
+
+    return PageableResponseDto.of(responseWithCountDto.getResultCount(),
+        responseWithCountDto.getBeerResponseDtos(), request.getCursor(), request.getLimit());
+  }
+
   private BeerResponsesDto shuffleAndSublistIfIsRecommend(boolean isRecommend,
       List<BeerResponseDto> beerResponseDtos) {
     if (isRecommend) {
@@ -152,6 +173,11 @@ public class BeerService {
     }
     Long searchResultCount = (long) beerRepositoryCustom.countWithFilter(readRequest);
     return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
+  }
+
+  public ResponseDto<BeerTotalCountResponseDto> countAllBeers() {
+    Long totalCount = beerRepository.count();
+    return ResponseDto.from(new BeerTotalCountResponseDto(totalCount));
   }
 
   public Long findBeerCountByMemberId(Long id) {

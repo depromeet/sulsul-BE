@@ -31,4 +31,11 @@ public class MemberLevelController {
     return ResponseDto.from(memberLevelService.findMemberLevelByCount(count));
   }
 
+  @ApiOperation(value = "해당 유저의 level 조회 API")
+  @GetMapping
+  public ResponseDto<String> find(){
+    Long memberId = 1L;
+    return ResponseDto.from(memberLevelService.find(memberId));
+  }
+
 }

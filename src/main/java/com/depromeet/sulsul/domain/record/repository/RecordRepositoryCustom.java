@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 public interface RecordRepositoryCustom {
 
-  List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto, Long memberId);
+  List<Record> findAllRecordsWithPageable(RecordFindRequestDto recordFindRequestDto);
 
   Long findRecordCountByMemberId(Long id);
 
@@ -24,4 +24,6 @@ public interface RecordRepositoryCustom {
   Record findLastSavedCountryName();
 
   Long selectCount();
+
+  Long findRecordCountByBeerId(Long beerId);
 }

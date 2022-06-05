@@ -14,31 +14,31 @@ public class MyPageRequestDto implements Serializable {
   private Long beerCount;
   private Long recordCount;
   private Long countryCount;
-  private Long unregisteredBeerCount;
-  private Long favoriteBeerCount;
+  private Long memberBeerCount;
+  private Long requestbeerCount;
 
   private String name;
 
   @Builder
   public MyPageRequestDto(Long beerCount, Long recordCount, Long countryCount,
-      Long unregisteredBeerCount,
-      Long favoriteBeerCount) {
+      Long memberBeerCount,
+      Long requestbeerCount) {
     this.beerCount = beerCount;
     this.recordCount = recordCount;
     this.countryCount = countryCount;
-    this.unregisteredBeerCount = unregisteredBeerCount;
-    this.favoriteBeerCount = favoriteBeerCount;
+    this.memberBeerCount = memberBeerCount;
+    this.requestbeerCount = requestbeerCount;
   }
 
   public static MyPageRequestDto of(Long beerCount, Long recordCount, Long countryCount,
-      Long unregisteredBeerCount,
-      Long favoriteBeerCount) {
+      Long memberBeerCount,
+      Long requestbeerCount) {
     return MyPageRequestDto.builder()
         .beerCount(beerCount)
         .recordCount(recordCount)
         .countryCount(countryCount)
-        .unregisteredBeerCount(unregisteredBeerCount)
-        .favoriteBeerCount(favoriteBeerCount)
+        .memberBeerCount(memberBeerCount)
+        .requestbeerCount(requestbeerCount)
         .build();
   }
 }

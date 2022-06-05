@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,5 +34,12 @@ public class MemberBeerController {
   public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId) {
     Long memberId = 1L; // TODO : 임시 유저아이디 생성
     return ResponseDto.from(memberBeerService.delete(beerId, memberId));
+  }
+
+  @ApiOperation(value = "해당 유저의 좋아요한 맥주 개수 조회 API")
+  @GetMapping
+  public ResponseDto<Long> findMemberBeerCountByMemberId(){
+    Long memberId = 1L;
+    return ResponseDto.from(memberBeerService.findMemberBeerCountByMemberId(memberId));
   }
 }
