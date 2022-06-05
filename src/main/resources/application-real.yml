@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sulsul-real-db.cmygx0mjyxpw.ap-northeast-2.rds.amazonaws.com:3306/sulsul-real-db?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowMultiQueries=true&autoReconnection=true&characterEncoding=UTF-8
+    url: jdbc:mysql://sulsul-real-db.cmygx0mjyxpw.ap-northeast-2.rds.amazonaws.com:3306/sulsulDB?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowMultiQueries=true&autoReconnection=true&characterEncoding=UTF-8
     username: root
     password: admin1234
 cloud:
