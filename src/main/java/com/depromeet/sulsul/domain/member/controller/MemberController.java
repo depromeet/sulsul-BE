@@ -1,7 +1,6 @@
 package com.depromeet.sulsul.domain.member.controller;
 
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.beer.service.BeerService;
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.service.MemberService;
 import io.swagger.annotations.Api;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
   private final MemberService memberService;
-  private final BeerService beerService;
 
   @GetMapping("/{id}")
   public ResponseDto<MemberDto> findMember(@PathVariable final Long id) {
