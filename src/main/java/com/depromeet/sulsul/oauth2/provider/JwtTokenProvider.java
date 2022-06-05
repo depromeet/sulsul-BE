@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.oauth2.provider;
 
+import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.oauth2.CustomOAuth2User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -40,37 +41,45 @@ public class JwtTokenProvider {
   @Value("${authentication.cookie.accessTokenCookieName}")
   private String accessTokenCookieName;
 
+  public String createRefreshToken(Authentication authentication) {
+
+    CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+    return Jwts.builder()
+        .setSubject(oAuth2User.getName())
+        .setClaims(createClaims(oAuth2User.getMemberId()))
+        .setIssuedAt(new Date())
+        .setExpiration(parseExpiration(refreshTokenExpirationSecond))
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
+        .compact();
+  }
+
   public String createAccessToken(Authentication authentication) {
 
     CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
     return Jwts.builder()
-        .setClaims(createClaims(oAuth2User))
-        .setSubject(oAuth2User.getEmail())
+        .setSubject(oAuth2User.getName())
+        .setClaims(createClaims(oAuth2User.getMemberId()))
         .setIssuedAt(new Date())
         .setExpiration(parseExpiration(accessTokenExpirationSecond))
         .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
         .compact();
   }
 
-  public Claims createClaims(CustomOAuth2User oAuth2User) {
-
-    Claims claims = Jwts.claims().setSubject(oAuth2User.getEmail());
-    claims.put("memberId", oAuth2User.getMemberId());
-    claims.put("role", oAuth2User.getAuthorities());
-
-    return claims;
-  }
-
-  public String createRefreshToken(Authentication authentication) {
-    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+  public String createAccessToken(Member member) {
 
     return Jwts.builder()
-        .setSubject(oAuth2User.getName())
+        .setSubject(member.getName())
+        .setClaims(createClaims(member.getId()))
         .setIssuedAt(new Date())
-        .setExpiration(parseExpiration(refreshTokenExpirationSecond))
+        .setExpiration(parseExpiration(accessTokenExpirationSecond))
         .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
         .compact();
+  }
+
+  public Claims createClaims(Long memberId) {
+    return Jwts.claims().setSubject(String.valueOf(memberId));
   }
 
   private Date parseExpiration(Long second) {
@@ -103,8 +112,7 @@ public class JwtTokenProvider {
           .parseClaimsJws(jwtToken);
       return true;
     } catch (SignatureException | MalformedJwtException | ExpiredJwtException |
-             UnsupportedJwtException | IllegalArgumentException ex) {
-      ex.printStackTrace();
+             UnsupportedJwtException | IllegalArgumentException e) {
     }
     return false;
   }
@@ -126,11 +134,7 @@ public class JwtTokenProvider {
   public UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
 
     Claims claims = getAllClaimsFromToken(jwtToken);
-    Collection<? extends GrantedAuthority> authorities =
-        Arrays.stream(new String[]{claims.get("role").toString()})
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
 
-    return new UsernamePasswordAuthenticationToken(claims.get("memberId"), "", authorities);
+    return new UsernamePasswordAuthenticationToken(claims.get("memberId"), "", null);
   }
 }
