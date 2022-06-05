@@ -29,4 +29,9 @@ public class MemberLevelService {
     return memberLevelRepository.findMemberLevelByCount(memberId);
   }
 
+  @Transactional(readOnly = true)
+  public String find(Long memberId){
+    return memberLevelRepository.findMemberLevel(memberId);
+  }
+
 }

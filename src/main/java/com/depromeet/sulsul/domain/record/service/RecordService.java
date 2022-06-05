@@ -138,9 +138,9 @@ public class RecordService {
 
   @Transactional(readOnly = true)
   public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
-      RecordFindRequestDto recordFindRequestDto, Long memberId) {
+      RecordFindRequestDto recordFindRequestDto) {
     List<Record> allRecordWithPageable = recordRepository.findAllRecordsWithPageable(
-        recordFindRequestDto, memberId);
+        recordFindRequestDto);
     List<RecordResponseDto> allRecordDtosWithPageableResponse = new ArrayList<>();
 
     for (Record record : allRecordWithPageable) {
@@ -154,10 +154,22 @@ public class RecordService {
           record.getMember().getName());
 
       allRecordDtosWithPageableResponse.add(
-          new RecordResponseDto(record.getContent(), memberRecordDto,
-              record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
+          new RecordResponseDto(record.getId(), record.getContent(), record.getFeel(), record.getImageUrl()
+              , memberRecordDto, record.getCreatedAt(), record.getUpdatedAt()
+              , record.getStartCountryKor(), record.getEndCountryKor()
+              , record.getStartCountryEng(), record.getEndCountryEng()
+              , flavorDtos));
     }
-    return PageableResponseDto.of(allRecordDtosWithPageableResponse, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
+
+    // TODO : count 일단 넣어둠
+    Long count = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
+
+    return PageableResponseDto.of(allRecordDtosWithPageableResponse, count, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
+  }
+
+  @Transactional(readOnly = true)
+  public Long findRecordCountByBeerId(Long beerId){
+    return recordRepository.findRecordCountByBeerId(beerId);
   }
 
   // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
@@ -175,12 +187,16 @@ public class RecordService {
   @Transactional(readOnly = true)
   public PageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId){
     List<RecordTicketResponseDto> allRecordsTicketWithPageable = recordRepository.findAllRecordsTicketWithPageable(recordId, memberId);
-    return PageableResponseDto.of(allRecordsTicketWithPageable, recordId, PAGINATION_SIZE);
+
+    // TODO : count적용
+    Long resultCount = findRecordCountByMemberId(memberId);
+    return PageableResponseDto.of(allRecordsTicketWithPageable, resultCount, recordId, PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
   public RecordCountryAndCountResponseDto findCountryAndCountByMemberId(Long memberId){
     return recordRepository.findRecordCountryAndCountResponseDto(memberId);
   }
+
 
 }
