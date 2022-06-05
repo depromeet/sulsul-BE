@@ -26,8 +26,10 @@ public class MemberLevelRepositoryCustomImpl implements MemberLevelRepositoryCus
   }
 
   @Override
-  public String findMemberLevel(Long memberId){
-    return queryFactory.select(member.memberLevel.tier)
+  public MemberLevelResponseDto findMemberLevel(Long memberId){
+    return queryFactory.select(new QMemberLevelResponseDto(
+            memberLevel.id, memberLevel.tier, memberLevel.imageUrl, memberLevel.req
+        ))
         .from(member)
         .where(member.id.eq(memberId))
         .fetchFirst();
