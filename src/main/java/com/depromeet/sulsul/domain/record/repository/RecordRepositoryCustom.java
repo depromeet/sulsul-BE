@@ -24,4 +24,6 @@ public interface RecordRepositoryCustom {
   Record findLastSavedCountryName();
 
   Long selectCount();
+
+  Long findRecordCountByBeerId(Long beerId);
 }

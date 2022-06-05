@@ -157,7 +157,16 @@ public class RecordService {
           new RecordResponseDto(record.getContent(), memberRecordDto,
               record.getFeel(), flavorDtos, record.getCreatedAt(), record.getUpdatedAt()));
     }
+
+    // TODO : count 일단 넣어둠
+    Long count = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
+
     return PageableResponseDto.of(allRecordDtosWithPageableResponse, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
+  }
+
+  @Transactional(readOnly = true)
+  public Long findRecordCountByBeerId(Long beerId){
+    return recordRepository.findRecordCountByBeerId(beerId);
   }
 
   // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정

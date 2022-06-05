@@ -102,6 +102,14 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         .fetchOne();
   }
 
+  @Override
+  public Long findRecordCountByBeerId(Long beerId){
+    return queryFactory.selectFrom(record)
+        .where(beerIdEq(beerId)
+              , record.deletedAt.isNull()
+        ).stream().count();
+  }
+
   private BooleanExpression beerIdEq(Long beerId) {
     return beerId != null ? record.beer.id.eq(beerId) : null;
   }
