@@ -88,6 +88,7 @@ public class Member {
 
   public void updateRegistrationId(String social) {
     this.social = SocialType.valueOf(social);
+  }
 
   public void updateLevel(MemberLevel memberLevel){
     this.memberLevel = memberLevel;
