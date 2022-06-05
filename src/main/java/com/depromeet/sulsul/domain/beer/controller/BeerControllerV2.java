@@ -45,7 +45,7 @@ public class BeerControllerV2 {
 
   @GetMapping("/count")
   @ApiOperation(value = "맥주 전체 개수 조회 API")
-  public ResponseDto<BeerTotalCountResponseDto> countWithFilterRequest() {
-    return beerService.countWithFilterRequestV2();
+  public ResponseDto<BeerTotalCountResponseDto> countAllBeers() {
+    return beerService.countAllBeers();
   }
 }

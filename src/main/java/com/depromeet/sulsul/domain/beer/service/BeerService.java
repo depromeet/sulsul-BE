@@ -175,7 +175,7 @@ public class BeerService {
     return ResponseDto.from(new BeerCountResponseDto(searchResultCount, entireResultCount));
   }
 
-  public ResponseDto<BeerTotalCountResponseDto> countWithFilterRequestV2() {
+  public ResponseDto<BeerTotalCountResponseDto> countAllBeers() {
     Long totalCount = beerRepository.count();
     return ResponseDto.from(new BeerTotalCountResponseDto(totalCount));
   }
