@@ -28,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/records")
 @RequiredArgsConstructor
-@Api(tags = "맥주 기록 APIs")
+@Api(tags = "기록 APIs")
 public class RecordController {
 
   private final RecordService recordService;
