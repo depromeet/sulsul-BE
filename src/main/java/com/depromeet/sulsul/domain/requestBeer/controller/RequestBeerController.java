@@ -30,7 +30,7 @@ public class RequestBeerController {
   }
 
   @GetMapping("/{requestBeerId}")
-  public PageableResponseDto<RequestBeerResponseDto> find(@PathVariable  Long requestBeerId){
+  public PageableResponseDto<RequestBeerResponseDto> find(@PathVariable(required = false) Long requestBeerId){
     // TODO : 임시 아이디
     Long memberId = 1L;
     return requestBeerService.find(requestBeerId, memberId);
