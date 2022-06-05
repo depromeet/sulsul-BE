@@ -34,5 +34,4 @@ public class RequestBeerRepositoryCustomImpl implements RequestBeerRepositoryCus
   private BooleanExpression requestBeerResponseIdGoe(Long requestBeerResponseId){
     return requestBeerResponseId != null ? requestBeer.requestBeerId.goe(requestBeerResponseId) : null;
   }
-
 }

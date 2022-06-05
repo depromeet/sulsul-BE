@@ -40,6 +40,13 @@ public class PageableResponseDto<T> implements Serializable {
     this.success = true;
   }
 
+  private PageableResponseDto(long resultCount, List<T> contents, Long nextCursor, int paginationSize) {
+    paginate(contents, nextCursor, paginationSize);
+    this.resultCount = resultCount;
+    this.contents = contents;
+    this.success = true;
+  }
+
   private void paginate(List<T> contents, Long cursor, int paginationSize) {
     if (isOverPaginationSize(contents, paginationSize)) {
       this.hasNext = true;
@@ -68,6 +75,11 @@ public class PageableResponseDto<T> implements Serializable {
   public static <T> PageableResponseDto<T> of(List<T> contents, Long nextCursor,
       int paginationSize) {
     return new PageableResponseDto<>(contents, nextCursor, paginationSize);
+  }
+
+  public static <T> PageableResponseDto<T> of(long resultCount, List<T> contents, Long nextCursor,
+      int paginationSize) {
+    return new PageableResponseDto<>(resultCount, contents, nextCursor, paginationSize);
   }
 
   public static PageableResponseDto<?> ERROR(Throwable throwable, HttpStatus status) {
