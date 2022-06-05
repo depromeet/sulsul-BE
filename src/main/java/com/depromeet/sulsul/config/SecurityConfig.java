@@ -7,6 +7,7 @@ import com.depromeet.sulsul.oauth2.handler.CustomLogoutHandler;
 import com.depromeet.sulsul.oauth2.handler.CustomOAuth2SuccessHandler;
 import com.depromeet.sulsul.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,25 +23,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final CustomOAuth2UserService customOAuth2UserService;
   private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
   private final CustomAccessDeniedHandler customAccessDeniedHandler;
   private final CustomAuthenticationEntryPoint authenticationEntryPoint;
-
   private final CustomLogoutHandler customLogoutHandler;
 
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/h2-console/**");
+    web.ignoring().antMatchers("/h2-console/**",
+        "/v3/api-docs",  "/configuration/ui",
+        "/swagger-resources", "/configuration/security",
+        "/swagger-ui.html", "/webjars/**","/swagger/**");
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
+        .httpBasic().disable()
+        .csrf().disable()
+        .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(STATELESS)
         .and()
         .authorizeHttpRequests()
-
-        .antMatchers("/swagger-ui.html", "/h2-console").permitAll()
+        .antMatchers("/swagger-resources/**","/swagger-ui/**").permitAll()
+        .antMatchers( "/login/oauth2/code/**").permitAll()
+        .antMatchers(HttpMethod.GET,"/api/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .logout()
@@ -55,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .successHandler(customOAuth2SuccessHandler)
         .userInfoEndpoint()
         .userService(customOAuth2UserService);
-
     http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
   }
+
+
 }
