@@ -24,7 +24,7 @@ public class MemberLevel {
   @Column(name = "member_level_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String tier;
+  private Integer tier;
   private String imageUrl;
   private Integer req;
 
