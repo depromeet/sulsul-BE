@@ -85,7 +85,7 @@ public class Member {
   public void updateEmail(String email) {
     this.email = email;
   }
-
+  
   public void updateRegistrationId(String social) {
     this.social = SocialType.valueOf(social);
   }
