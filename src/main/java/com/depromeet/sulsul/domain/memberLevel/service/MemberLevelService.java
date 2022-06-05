@@ -30,7 +30,7 @@ public class MemberLevelService {
   }
 
   @Transactional(readOnly = true)
-  public String find(Long memberId){
+  public MemberLevelResponseDto find(Long memberId){
     return memberLevelRepository.findMemberLevel(memberId);
   }
 

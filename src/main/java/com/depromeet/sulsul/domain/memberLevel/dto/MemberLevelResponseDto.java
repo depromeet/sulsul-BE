@@ -13,12 +13,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberLevelResponseDto {
   private Long id;
-  private String tier;
+  private Integer tier;
   private String imageUrl;
   private Integer req;
 
   @QueryProjection
-  public MemberLevelResponseDto(Long id, String tier, String imageUrl, Integer req) {
+  public MemberLevelResponseDto(Long id, Integer tier, String imageUrl, Integer req) {
     this.id = id;
     this.tier = tier;
     this.imageUrl = imageUrl;

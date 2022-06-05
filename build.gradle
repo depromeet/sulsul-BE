@@ -60,9 +60,25 @@ querydsl {
     jpa = true
     querydslSourcesDir = querydslDir
 }
+
+
+def profile = project.hasProperty("profile") ? project.property("profile").toString() : "local"
+println "profile  : $profile"
+
+
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'dev' : profile
+
 sourceSets {
     main.java.srcDir querydslDir
+    main.resources.srcDirs("src/main/resources", "src/main/resources-$profile")
 }
+
+tasks {
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
 configurations {
     querydsl.extendsFrom compileClasspath
 }
