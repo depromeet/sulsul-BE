@@ -9,10 +9,6 @@ import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
-import com.depromeet.sulsul.domain.record.entity.Record;
-import com.depromeet.sulsul.domain.record.service.RecordService;
-import com.depromeet.sulsul.domain.recordFlavor.dto.RecordFlavorRequest;
-import java.util.List;
 import com.depromeet.sulsul.domain.record.service.RecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -79,9 +75,7 @@ public class RecordController {
   @PostMapping("/find")
   public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
       @RequestBody RecordFindRequestDto recordFindRequestDto) {
-    // TODO : 임시 유저아이디 사용.
-    Long memberId = 1L;
-    return recordService.findAllRecordsWithPageable(recordFindRequestDto, memberId);
+    return recordService.findAllRecordsWithPageable(recordFindRequestDto);
   }
 
 
