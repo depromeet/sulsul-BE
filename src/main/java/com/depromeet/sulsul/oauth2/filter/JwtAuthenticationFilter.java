@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @RequiredArgsConstructor
-@WebFilter(urlPatterns = "/api/*")
+@WebFilter(urlPatterns = {"/api/*"})
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtTokenProvider jwtTokenProvider;

@@ -77,6 +77,14 @@ public class BeerService {
   }
 
   @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findPageWithReadRequestV2(ReadRequest request) {
+    BeerResponseWithCountDto responseWithCountDto = beerRepositoryCustom.findPageWithV2(request);
+    return PageableResponseDto.of(responseWithCountDto.getResultCount(),
+        responseWithCountDto.getBeerResponseDtos(), request.getCursor(),
+        request.getLimit());
+  }
+
+  @Transactional(readOnly = true)
   public PageableResponseDto<BeerResponseDto> findPageWithReadRequestV2(Long memberId,
       ReadRequest request) {
     BeerResponseWithCountDto responseWithCountDto = beerRepositoryCustom.findPageWithV2(memberId,
@@ -84,6 +92,12 @@ public class BeerService {
     return PageableResponseDto.of(responseWithCountDto.getResultCount(),
         responseWithCountDto.getBeerResponseDtos(), request.getCursor(),
         request.getLimit());
+  }
+
+  @Transactional(readOnly = true)
+  public PageableResponseDto<BeerResponseDto> findAll() {
+
+    return PageableResponseDto.of(beerRepositoryCustom.findPageWith(), 0L, PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
@@ -97,6 +111,20 @@ public class BeerService {
     beerRepository.save(new Beer(
         countryRepository.getById(beerRequestDto.getCountryId()),
         beerRequestDto));
+  }
+
+  @Transactional(readOnly = true)
+  public BeerDetailResponseDto findById(Long beerId) {
+    Tuple tuple = beerRepositoryCustom.findById(beerId);
+
+    if (tuple == null) {
+      throw new BeerNotFoundException();
+    }
+    Country country = tuple.get(ZERO, Country.class);
+    Beer beer = tuple.get(ONE, Beer.class);
+
+    return new BeerDetailResponseDto(country, beer, null,
+        new CountryNameDto(DEFAULT_START_COUNTRY_KOR, DEFAULT_START_COUNTRY_ENG));
   }
 
   @Transactional(readOnly = true)
@@ -127,6 +155,11 @@ public class BeerService {
         .stream(BeerType.class.getEnumConstants())
         .map(BeerTypeValue::new)
         .collect(Collectors.toList());
+  }
+
+  public BeerResponsesDto findRecommends() {
+    List<BeerResponseDto> beerResponseDtos = beerRepositoryCustom.findBeers();
+    return shuffleAndSublistIfIsRecommend(true, beerResponseDtos);
   }
 
   public BeerResponsesDto findRecommends(Long memberId) {
