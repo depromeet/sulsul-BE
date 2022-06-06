@@ -15,7 +15,7 @@ public interface RecordRepositoryCustom {
 
   Long findRecordCountByMemberId(Long id);
 
-  List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long beerId, Long memberId);
+  List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId);
 
   RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId);
 
