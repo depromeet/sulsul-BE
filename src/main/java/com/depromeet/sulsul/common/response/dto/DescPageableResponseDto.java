@@ -49,7 +49,7 @@ public class DescPageableResponseDto<T> implements Serializable {
 
   private void setCursor(Long cursor, int paginationSize) {
     if (cursor == null) {
-      this.nextCursor = Integer.toUnsignedLong(paginationSize);
+      this.nextCursor = 0L;
       return;
     }
     this.nextCursor = (cursor-paginationSize > 0 ) ? cursor-paginationSize : 0;
