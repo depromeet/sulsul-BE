@@ -163,9 +163,9 @@ public class RecordService {
     }
 
     Long resultCount = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
-
+    Long cursor = allRecordDtosWithPageableResponse.isEmpty() ? null : allRecordDtosWithPageableResponse.get(0).getId();
     return DescPageableResponseDto.of(resultCount, allRecordDtosWithPageableResponse
-        , allRecordDtosWithPageableResponse.get(0).getId(), PAGINATION_SIZE);
+        , cursor, PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
@@ -191,7 +191,9 @@ public class RecordService {
 
     // TODO : count적용
     Long resultCount = findRecordCountByMemberId(memberId);
-    return DescPageableResponseDto.of(resultCount, allRecordsTicketWithPageable, allRecordsTicketWithPageable.get(0).getRecordId(), PAGINATION_SIZE);
+
+    Long cursor = allRecordsTicketWithPageable.isEmpty() ? null : allRecordsTicketWithPageable.get(0).getRecordId();
+    return DescPageableResponseDto.of(resultCount, allRecordsTicketWithPageable, cursor, PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
