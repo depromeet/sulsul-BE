@@ -10,6 +10,7 @@ import com.depromeet.sulsul.common.error.exception.custom.FlavorNotFoundExceptio
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
 import com.depromeet.sulsul.common.error.exception.custom.RecordNotFoundException;
 import com.depromeet.sulsul.common.external.AwsS3ImageClient;
+import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.entity.Beer;
@@ -137,7 +138,7 @@ public class RecordService {
   }
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
+  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
       RecordFindRequestDto recordFindRequestDto) {
     List<Record> allRecordWithPageable = recordRepository.findAllRecordsWithPageable(
         recordFindRequestDto);
@@ -163,7 +164,8 @@ public class RecordService {
 
     Long resultCount = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
 
-    return PageableResponseDto.of(resultCount, allRecordDtosWithPageableResponse, recordFindRequestDto.getRecordId(), PAGINATION_SIZE);
+    return DescPageableResponseDto.of(resultCount, allRecordDtosWithPageableResponse
+        , allRecordDtosWithPageableResponse.get(0).getId(), PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
@@ -184,12 +186,12 @@ public class RecordService {
   }
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId){
+  public DescPageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId){
     List<RecordTicketResponseDto> allRecordsTicketWithPageable = recordRepository.findAllRecordsTicketWithPageable(recordId, memberId);
 
     // TODO : count적용
     Long resultCount = findRecordCountByMemberId(memberId);
-    return PageableResponseDto.of(resultCount, allRecordsTicketWithPageable, recordId, PAGINATION_SIZE);
+    return DescPageableResponseDto.of(resultCount, allRecordsTicketWithPageable, allRecordsTicketWithPageable.get(0).getRecordId(), PAGINATION_SIZE);
   }
 
   @Transactional(readOnly = true)
