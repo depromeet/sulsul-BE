@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ real ]
   pull_request:
-    branches: [ dev ]
+    branches: [ real ]
 
 permissions:
   contents: read
@@ -43,7 +43,7 @@ jobs:
 
     # Build Gradle
     - name: Build with Gradle
-      run: ./gradlew build -Pprofile=dev
+      run: ./gradlew build -Pprofile=prod
     - name: Temporarily save build artifact
       uses: actions/upload-artifact@v3
       with:
@@ -75,4 +75,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: zeze1004/sulsul-app:latest 
+        tags: zeze1004/sulsul-prod:latest 
