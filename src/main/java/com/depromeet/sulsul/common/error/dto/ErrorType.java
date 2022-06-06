@@ -12,7 +12,7 @@ public enum ErrorType {
   FLAVOR_NOT_FOUND("일치하는 맛 정보가 없습니다."),
   RECORD_NOT_FOUND("일치하는 기록 정보가 없습니다."),
   MEMBER_LEVEL_NOT_FOUND("일치하는 멤버 레벨 정보가 없습니다."),
-
+  UNAUTHORIZED("액세스 토큰이 만료되었거나 유효하지 않습니다"),
   UNEXPECTED_ERROR("예상치 못한 에러가 발생했습니다."),
   REFRESH_TOKEN_EXPIRED("리프레시 토큰이 만료되었습니다");
 
