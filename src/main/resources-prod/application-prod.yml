@@ -48,3 +48,6 @@ spring:
     cookie:
       accessTokenCookieName: accessToken
       refreshTokenCookieName: refreshToken
+swagger:
+  url: ec2-3-34-23-26.ap-northeast-2.compute.amazonaws.com
+  desc: for prod usage
