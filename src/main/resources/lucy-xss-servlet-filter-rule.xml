@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config xmlns="http://www.navercorp.com/lucy-xss-servlet">
+  <defenders>
+    <!-- XssPreventer 등록 -->
+    <defender>
+      <name>xssPreventerDefender</name>
+      <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
+    </defender>
+
+    <!-- XssSaxFilter 등록 -->
+    <defender>
+      <name>xssSaxFilterDefender</name>
+      <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender</class>
+      <init-param>
+        <param-value>lucy-xss-superset-sax.xml</param-value>   <!-- lucy-xss-filter의 sax용 설정파일 -->
+        <param-value>false</param-value>        <!-- 필터링된 코멘트를 남길지 여부, 성능 효율상 false 추천 -->
+      </init-param>
+    </defender>
+
+    <!-- XssFilter 등록 -->
+    <defender>
+      <name>xssFilterDefender</name>
+      <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender</class>
+      <init-param>
+        <param-value>lucy-xss.xml</param-value>    <!-- lucy-xss-filter의 dom용 설정파일 -->
+        <param-value>false</param-value>         <!-- 필터링된 코멘트를 남길지 여부, 성능 효율상 false 추천 -->
+      </init-param>
+    </defender>
+  </defenders>
+
+  <!-- default defender 선언, 필터링 시 지정한 defender가 없으면 여기 정의된 default defender를 사용해 필터링 한다. -->
+  <default>
+    <defender>xssPreventerDefender</defender>
+  </default>
+
+  <!-- global 필터링 룰 선언 -->
+  <global>
+    <!-- 모든 url에서 들어오는 globalParameter 파라메터는 필터링 되지 않으며
+            또한 globalPrefixParameter1로 시작하는 파라메터도 필터링 되지 않는다.
+            globalPrefixParameter2는 필터링 되며 globalPrefixParameter3은 필터링 되지 않지만
+            더 정확한 표현이 가능하므로 globalPrefixParameter2, globalPrefixParameter3과 같은 불분명한 표현은 사용하지 않는 것이 좋다. -->
+    <params>
+      <param name="globalParameter" useDefender="false" />
+      <param name="globalPrefixParameter1" usePrefix="true" useDefender="false" />
+      <param name="globalPrefixParameter2" usePrefix="true" />
+      <param name="globalPrefixParameter3" usePrefix="false" useDefender="false" />
+    </params>
+  </global>
+
+  <!-- url 별 필터링 룰 선언 -->
+  <url-rule-set>
+
+    <!-- url disable이 true이면 지정한 url 내의 모든 파라메터는 필터링 되지 않는다. -->
+    <!-- <url-rule>
+        <url disable="true">/login/login/loginAjax</url>
+    </url-rule> -->
+
+  </url-rule-set>
+</config>
