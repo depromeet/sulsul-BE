@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.oauth2.filter;
 
+import com.depromeet.sulsul.common.error.dto.ErrorType;
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -24,11 +25,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     String jwtToken = jwtTokenProvider.getJwtToken(request);
 
-    if (jwtTokenProvider.validateToken(jwtToken)) {
-      UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(jwtToken);
-      authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+    if (!jwtTokenProvider.validateToken(jwtToken)) {
+      ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, ErrorType.UNAUTHORIZED.getMessage());
+      return;
     }
+    UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(jwtToken);
+    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    SecurityContextHolder.getContext().setAuthentication(authentication);
     filterChain.doFilter(request, response);
   }
 }
