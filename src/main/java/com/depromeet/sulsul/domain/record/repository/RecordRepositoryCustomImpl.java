@@ -27,9 +27,10 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     return queryFactory.select(record)
         .from(record)
         .where(beerIdEq(recordFindRequestDto.getBeerId())
-            , recordIdGoe(recordFindRequestDto.getRecordId())
+            , recordIdLoe(recordFindRequestDto.getRecordId())
             , record.deletedAt.isNull()
         )
+        .orderBy(record.createdAt.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
   }
@@ -79,9 +80,10 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         )).from(record)
         .where(
             memberIdEq(memberId)
-            , recordIdGoe(recordId)
+            , recordIdLoe(recordId)
             , record.deletedAt.isNull()
         )
+        .orderBy(record.createdAt.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
   }
@@ -117,8 +119,8 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     return memberId != null ? record.member.id.eq(memberId) : null;
   }
 
-  private BooleanExpression recordIdGoe(Long recordId) {
-    return recordId != null ? record.id.goe(recordId) : null;
+  private BooleanExpression recordIdLoe(Long recordId) {
+    return recordId != null ? record.id.loe(recordId) : null;
   }
 
 }

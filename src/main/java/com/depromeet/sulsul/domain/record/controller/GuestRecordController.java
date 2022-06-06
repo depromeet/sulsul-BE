@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.record.controller;
 
+import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
@@ -21,7 +22,7 @@ public class GuestRecordController {
 
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
   @PostMapping("/find")
-  public PageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
+  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
       @RequestBody RecordFindRequestDto recordFindRequestDto) {
     return recordService.findAllRecordsWithPageable(recordFindRequestDto);
   }
