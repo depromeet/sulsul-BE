@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RequestBeerRepositoryCustom {
-  List<RequestBeerResponseDto> findByMemberIdWithPageable(Long requestBeerResponseId, Long memberId);
+  List<RequestBeerResponseDto> findByMemberIdWithPageable(Long requestBeerId, Long memberId);
 }
