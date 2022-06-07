@@ -22,11 +22,6 @@ public class AccessControlAllowFilter implements Filter {
     HttpServletRequest request = (HttpServletRequest) req;
     HttpServletResponse response = (HttpServletResponse) res;
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Headers", "*");
-    response.setHeader("Access-Control-Allow-Methods", "*");
-    response.setHeader("Access-Control-Expose-Headers", "jwt");
-
     if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
       response.setStatus(HttpStatus.OK.value());
     } else {
