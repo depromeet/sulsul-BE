@@ -4,25 +4,29 @@ import com.depromeet.sulsul.domain.requestBeer.entity.RequestBeer;
 import com.depromeet.sulsul.domain.requestBeer.entity.RequestBeerStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestBeerResponseDto {
+  private Long beerId;
   private String beerName;
-  private String beerImageUrl;
+  private List<String> beerImageUrls;
   private LocalDateTime requestCompletedAt;
   private String requestRejectionReason;
   private RequestBeerStatus status;
 
   private LocalDateTime createAt;
 
-  @QueryProjection
   public RequestBeerResponseDto(RequestBeer requestBeer) {
+    this.beerId = requestBeer.getRequestBeerId();
     this.beerName = requestBeer.getBeerName();
-    this.beerImageUrl = requestBeer.getBeerImageUrl();
+    this.beerImageUrls = setBeerImageUrls(requestBeer.getBeerImageUrlFirst(), requestBeer.getBeerImageUrlSecond());
     this.requestCompletedAt = requestBeer.getRequestCompletedAt();
     this.requestRejectionReason = requestBeer.getRequestRejectionReason();
     this.status = requestBeer.getStatus();
@@ -30,14 +34,22 @@ public class RequestBeerResponseDto {
   }
 
   @QueryProjection
-  public RequestBeerResponseDto(String beerName, String beerImageUrl,
+  public RequestBeerResponseDto(Long beerId, String beerName, String beerImageUrlFirst, String beerImageUrlSecond,
       LocalDateTime requestCompletedAt, String requestRejectionReason,
       RequestBeerStatus status, LocalDateTime createAt) {
+    this.beerId = beerId;
     this.beerName = beerName;
-    this.beerImageUrl = beerImageUrl;
+    this.beerImageUrls = setBeerImageUrls(beerImageUrlFirst, beerImageUrlSecond);
     this.requestCompletedAt = requestCompletedAt;
     this.requestRejectionReason = requestRejectionReason;
     this.status = status;
     this.createAt = createAt;
+  }
+
+  private List<String> setBeerImageUrls(String imageUrlFirst, String imageUrlSecond){
+    List<String> beerImageUrls = new ArrayList<>();
+    if(!StringUtils.isBlank(imageUrlFirst)) beerImageUrls.add(imageUrlFirst);
+    if(!StringUtils.isBlank(imageUrlSecond)) beerImageUrls.add(imageUrlSecond);
+    return beerImageUrls;
   }
 }
