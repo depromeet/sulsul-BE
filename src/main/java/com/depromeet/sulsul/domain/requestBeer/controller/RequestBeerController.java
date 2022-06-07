@@ -6,7 +6,6 @@ import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.service.RequestBeerService;
 import io.swagger.annotations.Api;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/reqeustbeers")
+@RequestMapping("/api/v1/reqeust-beers")
 @RequiredArgsConstructor
-@Api(tags = "맥주 기록 request APIs")
+@Api(tags = "미등록 맥주 APIs")
 public class RequestBeerController {
   private final RequestBeerService requestBeerService;
 

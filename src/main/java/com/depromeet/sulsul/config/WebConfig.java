@@ -25,14 +25,14 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**") // CORS 를 적용할 URL 패턴
-        .allowedOrigins("*") // 자원 공유를 허락할 Origin 지정; 모든 Origin 허락
+        .allowedOrigins("http://localhost:3000", "http://localhost", "https://beerair.ml/") // 자원 공유를 허락할 Origin 지정; 모든 Origin 허락
         .allowedMethods( // 허용할 HTTP method 지정
             HttpMethod.GET.name(),
             HttpMethod.HEAD.name(),
             HttpMethod.POST.name(),
             HttpMethod.PUT.name(),
             HttpMethod.PATCH.name(),
-            HttpMethod.DELETE.name()
-        );
+            HttpMethod.DELETE.name())
+        .allowCredentials(true);
   }
 }
