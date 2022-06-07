@@ -2,7 +2,6 @@ package com.depromeet.sulsul.domain.record.controller;
 
 import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
-import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
@@ -29,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/records")
 @RequiredArgsConstructor
-@Api(tags = "기록 APIs")
+@Api(tags = "기록 APIs (version 1)")
 public class RecordController {
 
   private final RecordService recordService;

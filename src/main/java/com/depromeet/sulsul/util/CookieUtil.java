@@ -35,6 +35,8 @@ public class CookieUtil {
     cookie.setMaxAge((int) (accessTokenExpirationSecond / 1000));
     cookie.setHttpOnly(true);
     cookie.setPath("/");
+    cookie.setDomain("localhost:3000");
+
 
     return cookie;
   }
@@ -45,6 +47,7 @@ public class CookieUtil {
     cookie.setMaxAge((int) (refreshTokenExpirationSecond / 1000));
     cookie.setHttpOnly(true);
     cookie.setPath("/");
+    cookie.setDomain("localhost:3000");
 
     return cookie;
   }
@@ -55,6 +58,7 @@ public class CookieUtil {
     cookie.setMaxAge(0);
     cookie.setHttpOnly(true);
     cookie.setPath("/");
+    cookie.setDomain("localhost:3000");
 
     response.addCookie(cookie);
   }
@@ -65,7 +69,8 @@ public class CookieUtil {
     cookie.setMaxAge(0);
     cookie.setHttpOnly(true);
     cookie.setPath("/");
-
+    cookie.setDomain("localhost:3000");
+    
     response.addCookie(cookie);
   }
 }
