@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/member-levels")
-@Api(tags = "멤버 레벨 관련 API")
+@Api(tags = "멤버 레벨 APIs (version)")
 @RequiredArgsConstructor
 public class MemberLevelController {
   private final MemberLevelService memberLevelService;
