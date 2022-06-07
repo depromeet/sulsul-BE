@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ real, dev ]
   pull_request:
-    branches: [ dev ]
+    branches: [ real, dev ]
 
 permissions:
   contents: read
@@ -41,15 +41,15 @@ jobs:
     - name: Test with Gradle # test application build
       run: ./gradlew test
 
-    # Build Gradle
+    # Build Gradle - prod
     - name: Build with Gradle
+      if: github.ref == 'refs/heads/real'
+      run: ./gradlew build -Pprofile=prod
+
+    # Build Gradle - dev
+    - name: Build with Gradle
+      if: github.ref == 'refs/heads/dev'
       run: ./gradlew build -Pprofile=dev
-    - name: Temporarily save build artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifact
-        path: build
-        retention-days: 1
   
   docker:
     name: Deploy Docker Image
@@ -57,20 +57,24 @@ jobs:
     needs: build
     env:
       REPO: ${{ secrets.DOCKER_REPO }}
-    steps:
-    - uses: actions/checkout@v3
-    - name: Retrieve built
-      uses: actions/download-artifact@v3
-      with:
-        name: build-artifact
-        path: build
+
         
     # Login DockerHub
     - name: Docker Hub Sign-in
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       
-    # Build Docker Container
+    # Build Docker Container - prod
     - name: Docker image build and push
+      if: github.ref == 'refs/heads/real'
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: zeze1004/sulsul-prod:latest 
+        
+    # Build Docker Container - dev
+    - name: Docker image build and push
+      if: github.ref == 'refs/heads/dev'
       uses: docker/build-push-action@v2
       with:
         context: .
