@@ -69,7 +69,7 @@ def profile = project.hasProperty("profile") ? project.property("profile").toStr
 println "profile  : $profile"
 
 
-ext.profile = (!project.hasProperty('profile') || !profile) ? 'dev' : profile
+ext.profile = (!project.hasProperty('profile') || !profile) ? "$profile" : profile
 
 sourceSets {
     main.java.srcDir querydslDir
