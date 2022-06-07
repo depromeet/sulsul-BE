@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/swagger-resources/**","/swagger-ui/**").permitAll()
         .antMatchers( "/login/oauth2/code/**").permitAll()
         .antMatchers( "/login/oauth2/code/**","/token/**").permitAll()
-        .anyRequest().authenticated()
+        .antMatchers("/guest/**").permitAll()
         .and()
         .logout()
         .logoutSuccessUrl("/")

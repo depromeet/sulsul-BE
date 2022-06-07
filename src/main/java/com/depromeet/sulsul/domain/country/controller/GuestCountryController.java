@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "국가 APIs (version 1)")
-@RequestMapping("/api/v1/countries")
-public class CountryController {
+@Api(tags = "국가 APIs (게스트용, version 1)")
+@RequestMapping("/guest/api/v1/countries")
+public class GuestCountryController {
 
   private final CountryService countryService;
 

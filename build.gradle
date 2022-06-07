@@ -40,6 +40,9 @@ dependencies {
 
     // for processing warning message (javax.annotation.meta.WHEN)
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    //lucy
+    implementation group: 'com.navercorp.lucy', name: 'lucy-xss-servlet', version: '2.0.1'
     runtimeOnly 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
