@@ -6,7 +6,7 @@ import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.service.RequestBeerService;
 import io.swagger.annotations.Api;
-import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +23,7 @@ public class RequestBeerController {
   private final RequestBeerService requestBeerService;
 
   @PostMapping
-  public ResponseDto<RequestBeerResponseDto> save(@RequestBody RequestBeerRequestDto requestBeerRequestDto){
+  public ResponseDto<RequestBeerResponseDto> save(@Valid @RequestBody RequestBeerRequestDto requestBeerRequestDto){
     // TODO : 임시 아이디
     Long memberId = 1L;
     return ResponseDto.from(requestBeerService.save(requestBeerRequestDto, memberId));

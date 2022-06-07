@@ -2,7 +2,6 @@ package com.depromeet.sulsul.domain.record.controller;
 
 import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
-import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
@@ -13,6 +12,7 @@ import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
 import com.depromeet.sulsul.domain.record.service.RecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +41,7 @@ public class RecordController {
 
   @ApiOperation(value = "기록 작성 API")
   @PostMapping
-  public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
+  public ResponseDto<RecordResponseDto> save(@Valid @RequestBody RecordRequestDto recordRequestDto) {
     // TODO : 임시 유저아이디 사용.
     Long memberId = 1L;
     return ResponseDto.from(recordService.save(recordRequestDto, memberId));
@@ -57,7 +57,7 @@ public class RecordController {
 
   @ApiOperation(value = "기록 업데이트 API")
   @PatchMapping("/{recordId}")
-  public ResponseDto<RecordResponseDto> update(@RequestBody RecordUpdateRequestDto recordUpdateRequestDto) {
+  public ResponseDto<RecordResponseDto> update(@Valid @RequestBody RecordUpdateRequestDto recordUpdateRequestDto) {
     // TODO : 임시 유저아이디 사용.
     Long memberId = 1L;
     return ResponseDto.from(recordService.update(recordUpdateRequestDto, memberId));
