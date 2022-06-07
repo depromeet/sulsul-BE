@@ -1,18 +1,19 @@
-package com.depromeet.sulsul.oauth2.controller;
+package com.depromeet.sulsul.domain.token.controller;
 
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.oauth2.service.JwtTokenService;
+import com.depromeet.sulsul.domain.token.service.JwtTokenService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "토큰 APIs")
 @RestController
+@Api(tags = "토큰 APIs")
 @RequestMapping("/api/v1/token")
 @RequiredArgsConstructor
 public class TokenController {
@@ -25,5 +26,13 @@ public class TokenController {
                                            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
         jwtTokenService.publishAccessToken(response, refreshToken);
         return ResponseDto.OK();
+  }
+
+  @ApiOperation(value = "토큰 갱신(Request Header)", notes = "refresh 토큰으로 accessToken 갱신 (Request Header)")
+  @GetMapping("/refresh/use-header")
+  public ResponseDto<?> updateRefreshTokenUseHeader(HttpServletResponse response,
+      @RequestHeader(name = "refreshToken", required = false) String refreshToken) {
+    jwtTokenService.publishAccessToken(response, refreshToken);
+    return ResponseDto.OK();
   }
 }
