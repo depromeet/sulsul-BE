@@ -22,7 +22,7 @@ public class AccessControlAllowFilter implements Filter {
     HttpServletRequest request = (HttpServletRequest) req;
     HttpServletResponse response = (HttpServletResponse) res;
 
-    response.setHeader("Access-Control-Allow-Headers", "localhost:3000, localhost, beerair.ml");
+    response.setHeader("Access-Control-Allow-Origin", "localhost:3000");
     response.setHeader("Access-Control-Allow-Methods", "*");
     response.setHeader("Access-Control-Expose-Headers", "jwt");
     response.setHeader("Access-Control-Allow-Credentials", "true");
