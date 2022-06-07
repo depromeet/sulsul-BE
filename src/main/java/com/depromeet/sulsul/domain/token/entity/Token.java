@@ -1,4 +1,4 @@
-package com.depromeet.sulsul.oauth2.entity;
+package com.depromeet.sulsul.domain.token.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

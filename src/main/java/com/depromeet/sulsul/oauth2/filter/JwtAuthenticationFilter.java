@@ -1,6 +1,11 @@
 package com.depromeet.sulsul.oauth2.filter;
 
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
+import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -11,12 +16,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -24,6 +23,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Value("${client.url}")
   private String urlOfEnv;
+
+  @Value("${authentication.cookie.accessTokenCookieName}")
+  private String accessTokenCookieName;
+
+  @Value("${authentication.cookie.refreshTokenCookieName}")
+  private String refreshTokenCookieName;
+
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       return;
     }
 
-    String jwtToken = jwtTokenProvider.getJwtToken(request);
+    String jwtToken = request.getHeader(accessTokenCookieName);
 
     if (jwtTokenProvider.validateToken(jwtToken)) {
       UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(jwtToken);
