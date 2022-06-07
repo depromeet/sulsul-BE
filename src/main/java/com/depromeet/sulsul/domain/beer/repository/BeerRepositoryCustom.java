@@ -16,15 +16,23 @@ public interface BeerRepositoryCustom {
 
   List<BeerResponseDto> findPageWith(Long memberId, ReadRequest request);
 
+  BeerResponseWithCountDto findPageWithV2(ReadRequest readRequest);
+
   BeerResponseWithCountDto findPageWithV2(Long memberId, ReadRequest request);
 
   List<BeerResponseDto> findPageWith(Long memberId);
+
+  List<BeerResponseDto> findPageWith();
+
+  List<BeerResponseDto> findBeers();
 
   List<BeerResponseDto> findBeerNotExistsRecord(Long memberId);
 
   List<BeerResponseDto> findBeerLikedByMemberId(Long memberId);
 
   BeerResponseWithCountDto findBeerLikedByMemberIdV2(Long memberId, ReadRequest request);
+
+  Tuple findById(Long beerId);
 
   Tuple findById(Long memberId, Long beerId);
 
