@@ -5,8 +5,6 @@ import com.depromeet.sulsul.domain.memberBeer.service.MemberBeerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/beer/liked")
-@Api(tags = "찜하기 관련 API")
+@Api(tags = "찜하기 APIs (version 1)")
 public class MemberBeerController {
 
   private final MemberBeerService memberBeerService;
