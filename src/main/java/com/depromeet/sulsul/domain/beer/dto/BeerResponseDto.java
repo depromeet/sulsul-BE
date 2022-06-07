@@ -40,6 +40,25 @@ public class BeerResponseDto {
   //COMMENT: MEMBER_BEER로 부터 얻는 정보
   private Boolean isLiked = false;
 
+
+  @QueryProjection
+  public BeerResponseDto(Country country, Beer beer) {
+    this.id = beer.getId();
+    this.country = new CountryDetail(country.getId(), country.getNameKor(), country.getNameEng(),
+        country.getImageUrl(), country.getBackgroundImageUrl(),
+        new ContinentDto(country.getContinent()));
+    this.type = new BeerTypeValue(beer.getType());
+    this.nameKor = beer.getNameKor();
+    this.nameEng = beer.getNameEng();
+    this.imageUrl = beer.getImageUrl();
+    this.content = beer.getContent();
+    this.alcohol = beer.getAlcohol();
+    this.price = beer.getPrice();
+    this.volume = beer.getVolume();
+    this.createdAt = beer.getCreatedAt();
+    this.updatedAt = beer.getUpdatedAt();
+  }
+
   @QueryProjection
   public BeerResponseDto(Country country, Beer beer, Integer feel, MemberBeer memberBeer) {
     this.id = beer.getId();
