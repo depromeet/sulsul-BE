@@ -2,19 +2,16 @@ package com.depromeet.sulsul.oauth2.service;
 
 import com.depromeet.sulsul.common.error.exception.custom.AuthenticationEntryPointException;
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
-import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
-import com.depromeet.sulsul.domain.member.service.MemberService;
 import com.depromeet.sulsul.oauth2.entity.Token;
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
 import com.depromeet.sulsul.oauth2.repository.JwtTokenRepository;
 import com.depromeet.sulsul.util.CookieUtil;
 import io.jsonwebtoken.Claims;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +40,5 @@ public class JwtTokenService {
     String newAccessToken = jwtTokenProvider.createAccessToken(member);
 
     cookieUtil.addAccessTokenCookie(response, newAccessToken);
-
   }
 }

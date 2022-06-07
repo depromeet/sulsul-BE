@@ -2,6 +2,9 @@ package com.depromeet.sulsul.oauth2.filter;
 
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,8 +22,21 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtTokenProvider jwtTokenProvider;
 
+  @Value("${client.url}")
+  private String urlOfEnv;
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+    response.setHeader("Access-Control-Allow-Origin", urlOfEnv);
+    response.setHeader("Access-Control-Allow-Methods", "*");
+    response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+
+    if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+      response.setStatus(HttpStatus.OK.value());
+      return;
+    }
 
     String jwtToken = jwtTokenProvider.getJwtToken(request);
 
