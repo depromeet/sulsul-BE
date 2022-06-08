@@ -48,3 +48,5 @@ spring:
     cookie:
       accessTokenCookieName: accessToken
       refreshTokenCookieName: refreshToken
+client:
+  url: https://beerair.ml

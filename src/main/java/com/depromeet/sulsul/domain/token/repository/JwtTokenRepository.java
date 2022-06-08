@@ -1,6 +1,6 @@
-package com.depromeet.sulsul.oauth2.repository;
+package com.depromeet.sulsul.domain.token.repository;
 
-import com.depromeet.sulsul.oauth2.entity.Token;
+import com.depromeet.sulsul.domain.token.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JwtTokenRepository extends JpaRepository<Token,Long> {
