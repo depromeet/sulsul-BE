@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ prod, dev ]
   pull_request:
-    branches: [ dev ]
+    branches: [ prod, dev ]
 
 permissions:
   contents: read
@@ -20,11 +20,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    
     # Actions Sequence
     - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-        submodules: true
     
     # Set JDK Version
     - name: Set up JDK 11
@@ -36,41 +34,82 @@ jobs:
     # Modify Permission
     - name: Build with Gradle
       run: chmod +x gradlew
-    - name: Test with Gradle # test application build
-      run: ./gradlew test
-
-    # Build Gradle
-    - name: Build with Gradle
-      run: ./gradlew build -Pprofile=dev
-    - name: Temporarily save build artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifact
-        path: build
-        retention-days: 1
-  
-  docker:
-    name: Deploy Docker Image
-    runs-on: ubuntu-latest
-    needs: build
-    env:
-      REPO: ${{ secrets.DOCKER_REPO }}
-    steps:
-    - uses: actions/checkout@v3
-    - name: Retrieve built
-      uses: actions/download-artifact@v3
-      with:
-        name: build-artifact
-        path: build
-        
-    # Login DockerHub
-    - name: Docker Hub Sign-in
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       
-    # Build Docker Container
-    - name: Docker image build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: zeze1004/sulsul-app:latest 
+#     Test application build
+#     - name: Test with Gradle 
+#       run: ./gradlew test
+
+    # Create application-prod.yml
+    - name: create application-prod.yml
+      if: contains(github.ref, 'prod')
+      run: |
+          cd ./src/main/resources
+          touch ./application-prod.yml
+          echo "${{ secrets.PROD_YML }}" > ./application-prod.yml
+      shell: bash
+
+    # Create application-dev.yml
+    - name: create application-dev.yml
+      if: contains(github.ref, 'dev')
+      run: |
+        cd ./src/main/resources
+        touch ./application-dev.yml
+        echo "${{ secrets.DEV_YML }}" > ./application-dev.yml
+      shell: bash
+
+    # Build Gradle - prod
+    - name: Build with Gradle
+      if: contains(github.ref, 'prod')
+      run: ./gradlew build
+
+    # Build Gradle - dev
+    - name: Build with Gradle
+      if: contains(github.ref, 'dev')
+      run: ./gradlew build
+
+    # Docker build & push to prod
+    - name: Docker build & push to prod
+      if: contains(github.ref, 'prod')
+      run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile-prod -t ${{ secrets.DOCKER_REPO }}/sulsul-prod .
+          docker push ${{ secrets.DOCKER_REPO }}/sulsul-prod
+          
+    # Docker build & push to dev
+    - name: Docker build & push to dev
+      if: contains(github.ref, 'dev')
+      run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_REPO }}/sulsul-dev .
+          docker push ${{ secrets.DOCKER_REPO }}/sulsul-dev
+      
+#     # Deploy to prod
+#     - name: Deploy to prod
+#       uses: appleboy/ssh-action@master
+#       id: deploy-prod
+#       if: contains(github.ref, 'prod')
+#       with:
+#           host: ${{ secrets.HOST_PROD }}
+#           username: ec2-user
+#           key: ${{ secrets.PRIVATE_KEY_PROD }}
+#           envs: GITHUB_SHA
+#           script: |
+#               sudo docker rm -f $(docker ps -qa)
+#               sudo docker pull ${{ secrets.DOCKER_REPO }}/sulsul-prod
+#               docker run -d -p --name prod 8080:8080 ${{ secrets.DOCKER_REPO }}/sulsul-prod
+ 
+#     # Deploy to dev
+#     - name: Deploy to dev
+#       uses: appleboy/ssh-action@master
+#       id: deploy-dev
+#       if: contains(github.ref, 'dev')
+#       with:
+#           host: ${{ secrets.HOST_DEV }}
+#           username: ec2-user
+#           key: ${{ secrets.PRIVATE_KEY_DEV }}
+#           envs: GITHUB_SHA
+#           script: |
+#               sudo docker rm -f $(docker ps -qa)
+#               sudo docker pull ${{ secrets.DOCKER_REPO }}/sulsul-dev
+#               docker run -d -p --name dev 80:8080 ${{ secrets.DOCKER_REPO }}/sulsul-dev
+ 
