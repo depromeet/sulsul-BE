@@ -48,8 +48,12 @@ public class RequestBeerResponseDto {
 
   private List<String> setBeerImageUrls(String imageUrlFirst, String imageUrlSecond){
     List<String> beerImageUrls = new ArrayList<>();
-    if(!StringUtils.isBlank(imageUrlFirst)) beerImageUrls.add(imageUrlFirst);
-    if(!StringUtils.isBlank(imageUrlSecond)) beerImageUrls.add(imageUrlSecond);
+    if(!StringUtils.isBlank(imageUrlFirst)){
+      beerImageUrls.add(imageUrlFirst);
+    }
+    if(!StringUtils.isBlank(imageUrlSecond)){
+      beerImageUrls.add(imageUrlSecond);
+    }
     return beerImageUrls;
   }
 }
