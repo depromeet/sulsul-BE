@@ -95,8 +95,8 @@ jobs:
           envs: GITHUB_SHA
           script: |
               sudo docker rm -f $(docker ps -qa)
-              sudo docker pull zeze1004/sulsul-prod
-              docker run -d -p --name prod 8080:8080 zeze1004/sulsul-prod:latest
+              sudo docker pull zeze1004/sulsul-prod:latest
+              docker run -d -p 8080:8080 --name prod zeze1004/sulsul-prod:latest
  
     # Deploy to dev
     - name: Deploy to dev
@@ -110,6 +110,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
               sudo docker rm -f $(docker ps -qa)
-              sudo docker pull zeze1004/sulsul-dev
-              docker run -d -p --name dev 80:8080 zeze1004/sulsul-dev:latest
+              sudo docker pull zeze1004/sulsul-dev:latest
+              docker run -d -p 80:8080 --name dev zeze1004/sulsul-dev:latest
  
