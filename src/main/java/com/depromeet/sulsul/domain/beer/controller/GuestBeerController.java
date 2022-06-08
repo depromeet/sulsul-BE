@@ -5,7 +5,6 @@ import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
@@ -41,8 +40,8 @@ public class GuestBeerController {
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 리스트 조회 API")
-  public ResponseDto<BeerResponsesDto> findRecommends() {
-    return ResponseDto.from(beerService.findRecommends());
+  public ResponseDto<List<BeerResponseDto>> findRecommends() {
+    return ResponseDto.from(beerService.findRecommends().getBeerResponseDtos());
   }
 
   @GetMapping("/{beerId}")
