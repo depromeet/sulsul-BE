@@ -72,16 +72,16 @@ jobs:
       if: contains(github.ref, 'prod')
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile-prod -t ${{ secrets.DOCKER_REPO }}/sulsul-prod .
-          docker push ${{ secrets.DOCKER_REPO }}/sulsul-prod
+          docker build -f Dockerfile-prod -t ${{ secrets.DOCKER_REPO }}/sulsul-prod:latest .
+          docker push ${{ secrets.DOCKER_REPO }}/sulsul-prod:latest
           
     # Docker build & push to dev
     - name: Docker build & push to dev
       if: contains(github.ref, 'dev')
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_REPO }}/sulsul-dev .
-          docker push ${{ secrets.DOCKER_REPO }}/sulsul-dev
+          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_REPO }}/sulsul-dev:latest .
+          docker push ${{ secrets.DOCKER_REPO }}/sulsul-dev:latest
       
 #     # Deploy to prod
 #     - name: Deploy to prod
@@ -96,7 +96,7 @@ jobs:
 #           script: |
 #               sudo docker rm -f $(docker ps -qa)
 #               sudo docker pull ${{ secrets.DOCKER_REPO }}/sulsul-prod
-#               docker run -d -p --name prod 8080:8080 ${{ secrets.DOCKER_REPO }}/sulsul-prod
+#               docker run -d -p --name prod 8080:8080 ${{ secrets.DOCKER_REPO }}/sulsul-prod:latest
  
 #     # Deploy to dev
 #     - name: Deploy to dev
@@ -111,5 +111,5 @@ jobs:
 #           script: |
 #               sudo docker rm -f $(docker ps -qa)
 #               sudo docker pull ${{ secrets.DOCKER_REPO }}/sulsul-dev
-#               docker run -d -p --name dev 80:8080 ${{ secrets.DOCKER_REPO }}/sulsul-dev
+#               docker run -d -p --name dev 80:8080 ${{ secrets.DOCKER_REPO }}/sulsul-dev:latest
  
