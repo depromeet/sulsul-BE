@@ -33,9 +33,6 @@ public class CookieUtil {
 
     Cookie cookie = new Cookie(accessTokenCookieName, token);
     setPropertyOfCookie(cookie, accessTokenExpirationSecond / 1000);
-    System.out.println("@@@@@@@@@@@@@@");
-    System.out.println(cookie.getName());
-    System.out.println(cookie.getValue());
     return cookie;
   }
 
