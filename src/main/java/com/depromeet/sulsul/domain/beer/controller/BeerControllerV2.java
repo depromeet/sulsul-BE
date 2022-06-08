@@ -3,11 +3,12 @@ package com.depromeet.sulsul.domain.beer.controller;
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,13 @@ public class BeerControllerV2 {
       return beerService.findAll(memberId);
     }
     return beerService.findPageWithReadRequest(memberId, readRequest);
+  }
+
+  @GetMapping("/recommend")
+  @ApiOperation(value = "추천 맥주 조회 API")
+  public ResponseDto<List<BeerResponseDto>> findRecommends() {
+    Long memberId = 1L;
+    return ResponseDto.from(beerService.findRecommends(memberId).getBeerResponseDtos());
   }
 
   @PostMapping("/liked")
