@@ -83,33 +83,33 @@ jobs:
           docker build -f Dockerfile-dev -t zeze1004/sulsul-dev:latest .
           docker push zeze1004/sulsul-dev:latest
       
-#     # Deploy to prod
-#     - name: Deploy to prod
-#       uses: appleboy/ssh-action@master
-#       id: deploy-prod
-#       if: contains(github.ref, 'prod')
-#       with:
-#           host: ${{ secrets.HOST_PROD }}
-#           username: ec2-user
-#           key: ${{ secrets.PRIVATE_KEY_PROD }}
-#           envs: GITHUB_SHA
-#           script: |
-#               sudo docker rm -f $(docker ps -qa)
-#               sudo docker pull zeze1004/sulsul-prod
-#               docker run -d -p --name prod 8080:8080 zeze1004/sulsul-prod:latest
+    # Deploy to prod
+    - name: Deploy to prod
+      uses: appleboy/ssh-action@master
+      id: deploy-prod
+      if: contains(github.ref, 'prod')
+      with:
+          host: ${{ secrets.HOST_PROD }}
+          username: ec2-user
+          key: ${{ secrets.PRIVATE_KEY_PROD }}
+          envs: GITHUB_SHA
+          script: |
+              sudo docker rm -f $(docker ps -qa)
+              sudo docker pull zeze1004/sulsul-prod
+              docker run -d -p --name prod 8080:8080 zeze1004/sulsul-prod:latest
  
-#     # Deploy to dev
-#     - name: Deploy to dev
-#       uses: appleboy/ssh-action@master
-#       id: deploy-dev
-#       if: contains(github.ref, 'dev')
-#       with:
-#           host: ${{ secrets.HOST_DEV }}
-#           username: ec2-user
-#           key: ${{ secrets.PRIVATE_KEY_DEV }}
-#           envs: GITHUB_SHA
-#           script: |
-#               sudo docker rm -f $(docker ps -qa)
-#               sudo docker pull zeze1004/sulsul-dev
-#               docker run -d -p --name dev 80:8080 zeze1004/sulsul-dev:latest
+    # Deploy to dev
+    - name: Deploy to dev
+      uses: appleboy/ssh-action@master
+      id: deploy-dev
+      if: contains(github.ref, 'dev')
+      with:
+          host: ${{ secrets.HOST_DEV }}
+          username: ec2-user
+          key: ${{ secrets.PRIVATE_KEY_DEV }}
+          envs: GITHUB_SHA
+          script: |
+              sudo docker rm -f $(docker ps -qa)
+              sudo docker pull zeze1004/sulsul-dev
+              docker run -d -p --name dev 80:8080 zeze1004/sulsul-dev:latest
  
