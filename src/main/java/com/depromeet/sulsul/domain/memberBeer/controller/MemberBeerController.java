@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,21 +27,27 @@ public class MemberBeerController {
   @PostMapping("/{beerId}")
   @ApiOperation(value = "찜하기 API")
   public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId) {
-    Long memberId = 1L; // TODO : 임시 유저아이디 생성
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(memberBeerService.save(beerId, memberId));
   }
 
   @ApiOperation(value = "찜하기 취소 API")
   @DeleteMapping("/{beerId}")
   public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId) {
-    Long memberId = 1L; // TODO : 임시 유저아이디 생성
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(memberBeerService.delete(beerId, memberId));
   }
 
   @ApiOperation(value = "해당 유저의 좋아요한 맥주 개수 조회 API")
   @GetMapping
   public ResponseDto<Long> findMemberBeerCountByMemberId(){
-    Long memberId = 1L;
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(memberBeerService.findMemberBeerCountByMemberId(memberId));
   }
 }

@@ -9,6 +9,8 @@ import com.depromeet.sulsul.domain.beer.service.BeerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +30,9 @@ public class BeerControllerV2 {
   @ApiOperation(value = "맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
-    Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     if (readRequest == null) {
       return beerService.findAll(memberId);
     }
@@ -39,7 +43,9 @@ public class BeerControllerV2 {
   @ApiOperation(value = "반한 맥주 API")
   public PageableResponseDto<BeerResponseDto> findLikes(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
-    Long memberId = 1L;
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return beerService.findLikes(memberId, readRequest);
   }
 
