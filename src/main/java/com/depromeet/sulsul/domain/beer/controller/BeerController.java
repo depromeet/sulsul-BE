@@ -7,12 +7,17 @@ import com.depromeet.sulsul.domain.beer.dto.*;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import com.depromeet.sulsul.oauth2.CustomOAuth2User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +44,9 @@ public class BeerController {
       @RequestParam(required = false) SortType sortType,
       @RequestParam(value = "keyword", required = false) String searchKeyword
   ) {
-    Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(
         beerTypes, countryIds, sortType, searchKeyword);
     return beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest);
@@ -47,15 +54,20 @@ public class BeerController {
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 리스트 조회 API")
-  public ResponseDto<List<BeerResponseDto>> findRecommends() {
-    Long memberId = 1L;
-    return ResponseDto.from(beerService.findRecommends(memberId).getBeerResponseDtos());
+  public ResponseDto<BeerResponsesDto> findRecommends() {
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
+
+    return ResponseDto.from(beerService.findRecommends(memberId));
   }
 
   @GetMapping("/liked")
   @ApiOperation(value = "추천 맥주 리스트 조회(반한 맥주) API")
   public ResponseDto<BeerResponsesDto> findLikedRecommends() {
-    Long memberId = 1L;
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(beerService.findLikedRecommends(memberId, true));
   }
 
@@ -69,7 +81,9 @@ public class BeerController {
   @GetMapping("/{beerId}")
   @ApiOperation(value = "맥주 상세 조회 API")
   public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId) {
-    Long memberId = 1L; //TODO: (임시 param) 로그인 구현 시 제거
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(beerService.findById(memberId, beerId));
   }
 

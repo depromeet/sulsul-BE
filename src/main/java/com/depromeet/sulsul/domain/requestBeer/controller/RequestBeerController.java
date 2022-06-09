@@ -9,6 +9,8 @@ import com.depromeet.sulsul.domain.requestBeer.service.RequestBeerService;
 import io.swagger.annotations.Api;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,16 +27,15 @@ public class RequestBeerController {
 
   @PostMapping
   public ResponseDto<RequestBeerResponseDto> save(@RequestBody RequestBeerRequestDto requestBeerRequestDto){
-    // TODO : 임시 아이디
-    Long memberId = 1L;
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(requestBeerService.save(requestBeerRequestDto, memberId));
   }
 
   @GetMapping("/{requestBeerId}")
-  public DescPageableResponseDto<RequestBeerResponseDto> find(@PathVariable Long requestBeerId){
-    // TODO : 임시 아이디
-    Long memberId = 1L;
+  public PageableResponseDto<RequestBeerResponseDto> find(@PathVariable(required = false) Long requestBeerId){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return requestBeerService.find(requestBeerId, memberId);
   }
-
 }
