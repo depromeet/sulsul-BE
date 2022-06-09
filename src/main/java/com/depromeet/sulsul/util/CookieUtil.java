@@ -44,7 +44,7 @@ public class CookieUtil {
 
   private ResponseCookie createAccessTokenResponseCookie(String token) {
     ResponseCookie cookie = ResponseCookie.from("accessToken", token).path("/").secure(false)
-        .sameSite("None").httpOnly(true).maxAge(accessTokenExpirationSecond / 1000)
+        .sameSite("None").httpOnly(true).domain("beerair.ml").maxAge(accessTokenExpirationSecond / 1000)
         .build();
 
     return cookie;
