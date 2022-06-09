@@ -128,9 +128,7 @@ public class JwtTokenProvider {
   }
 
   public UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
-
     Claims claims = getAllClaimsFromToken(jwtToken);
-
-    return new UsernamePasswordAuthenticationToken(claims.get("memberId"), "", null);
+    return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", null);
   }
 }
