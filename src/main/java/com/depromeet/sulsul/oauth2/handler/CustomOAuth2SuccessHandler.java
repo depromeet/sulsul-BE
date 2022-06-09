@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -18,9 +19,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+
+  @Value("${client.url}")
+  private String urlOfEnv;
+
   private final JwtTokenProvider jwtTokenProvider;
   private final CookieUtil cookieUtil;
-
   private final JwtTokenService jwtTokenService;
 
   @Override
@@ -39,7 +43,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     jwtTokenService.saveRefreshToken(accessToken, oAuth2User.getMemberId());
 
     String targetUrl;
-    targetUrl = UriComponentsBuilder.fromUriString("https://beerair.ml")
+    targetUrl = UriComponentsBuilder.fromUriString(urlOfEnv)
         .build()
         .toUriString();
 

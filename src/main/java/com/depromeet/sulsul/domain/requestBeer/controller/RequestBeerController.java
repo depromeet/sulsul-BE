@@ -1,13 +1,11 @@
 package com.depromeet.sulsul.domain.requestBeer.controller;
 
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
-import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.service.RequestBeerService;
 import io.swagger.annotations.Api;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +31,7 @@ public class RequestBeerController {
   }
 
   @GetMapping("/{requestBeerId}")
-  public PageableResponseDto<RequestBeerResponseDto> find(@PathVariable(required = false) Long requestBeerId){
+  public DescPageableResponseDto<RequestBeerResponseDto> find(@PathVariable(required = false) Long requestBeerId){
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Long memberId = Long.parseLong(authentication.getName());
     return requestBeerService.find(requestBeerId, memberId);
