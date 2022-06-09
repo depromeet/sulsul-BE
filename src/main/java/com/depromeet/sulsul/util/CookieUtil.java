@@ -32,19 +32,14 @@ public class CookieUtil {
   private Cookie createAccessTokenCookie(String token) {
 
     Cookie cookie = new Cookie(accessTokenCookieName, token);
-    cookie.setMaxAge((int) (accessTokenExpirationSecond / 1000));
-    cookie.setHttpOnly(true);
-    cookie.setPath("/");
-
+    setPropertyOfCookie(cookie, accessTokenExpirationSecond / 1000);
     return cookie;
   }
 
   private Cookie createRefreshTokenCookie(String token) {
 
     Cookie cookie = new Cookie(refreshTokenCookieName, token);
-    cookie.setMaxAge((int) (refreshTokenExpirationSecond / 1000));
-    cookie.setHttpOnly(true);
-    cookie.setPath("/");
+    setPropertyOfCookie(cookie, refreshTokenExpirationSecond / 1000);
 
     return cookie;
   }
@@ -52,9 +47,7 @@ public class CookieUtil {
   public void deleteAccessTokenCookie(HttpServletResponse response) {
 
     Cookie cookie = new Cookie(accessTokenCookieName, null);
-    cookie.setMaxAge(0);
-    cookie.setHttpOnly(true);
-    cookie.setPath("/");
+    setPropertyOfCookie(cookie, 0L);
 
     response.addCookie(cookie);
   }
@@ -62,10 +55,14 @@ public class CookieUtil {
   public void deleteRefreshTokenCookie(HttpServletResponse response) {
 
     Cookie cookie = new Cookie(refreshTokenCookieName, null);
-    cookie.setMaxAge(0);
-    cookie.setHttpOnly(true);
-    cookie.setPath("/");
+    setPropertyOfCookie(cookie, 0L);
 
     response.addCookie(cookie);
+  }
+
+  private void setPropertyOfCookie(Cookie cookie, long maxAge) {
+    cookie.setMaxAge((int) maxAge);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
   }
 }
