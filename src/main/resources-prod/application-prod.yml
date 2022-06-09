@@ -49,4 +49,4 @@ spring:
       accessTokenCookieName: accessToken
       refreshTokenCookieName: refreshToken
 client:
-  url: https://beerair.ml
+  url: beerair.ml

@@ -39,6 +39,8 @@ public class JwtTokenService {
 
     String newAccessToken = jwtTokenProvider.createAccessToken(member);
 
-    cookieUtil.addAccessTokenCookie(response, newAccessToken);
+    //TODO
+//    cookieUtil.addAccessTokenCookie(response, newAccessToken);
+    cookieUtil.addAccessTokenResponseCookie(response, newAccessToken);
   }
 }

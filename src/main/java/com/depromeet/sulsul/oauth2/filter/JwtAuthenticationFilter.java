@@ -38,13 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     response.setHeader("Access-Control-Allow-Methods", "*");
     response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Expose-Headers", "Set-Cookie, Cookie");
 
     if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
       response.setStatus(HttpStatus.OK.value());
       return;
     }
 
-    String jwtToken = request.getHeader(accessTokenCookieName);
+    // TODO
+//    String jwtToken = request.getHeader(accessTokenCookieName);
+    String jwtToken = jwtTokenProvider.getJwtToken(request);
+
 
     if (jwtTokenProvider.validateToken(jwtToken)) {
       UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(jwtToken);
