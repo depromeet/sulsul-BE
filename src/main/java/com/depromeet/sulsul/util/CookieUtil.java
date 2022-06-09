@@ -1,13 +1,16 @@
 package com.depromeet.sulsul.util;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CookieUtil {
+
+  @Value("${client.url}")
+  private String urlOfEnv;
 
   @Value("${authentication.cookie.accessTokenCookieName}")
   private String accessTokenCookieName;
@@ -25,14 +28,25 @@ public class CookieUtil {
     response.addCookie(createAccessTokenCookie(token));
   }
 
+  public void addAccessTokenResponseCookie(HttpServletResponse response, String token) {
+    response.setHeader("Set-Cookie", createAccessTokenResponseCookie(token).toString());
+  }
+
   public void addRefreshTokenCookie(HttpServletResponse response, String token) {
     response.addCookie(createRefreshTokenCookie(token));
   }
 
   private Cookie createAccessTokenCookie(String token) {
-
     Cookie cookie = new Cookie(accessTokenCookieName, token);
     setPropertyOfCookie(cookie, accessTokenExpirationSecond / 1000);
+    return cookie;
+  }
+
+  private ResponseCookie createAccessTokenResponseCookie(String token) {
+    ResponseCookie cookie = ResponseCookie.from("accessToken", token).path("/").secure(false)
+        .sameSite("None").httpOnly(true).maxAge(accessTokenExpirationSecond / 1000)
+        .build();
+
     return cookie;
   }
 
@@ -48,7 +62,6 @@ public class CookieUtil {
 
     Cookie cookie = new Cookie(accessTokenCookieName, null);
     setPropertyOfCookie(cookie, 0L);
-
     response.addCookie(cookie);
   }
 

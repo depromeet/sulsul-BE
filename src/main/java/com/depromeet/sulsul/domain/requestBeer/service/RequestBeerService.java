@@ -1,18 +1,15 @@
 package com.depromeet.sulsul.domain.requestBeer.service;
 
 import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
-import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
-import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.entity.RequestBeer;
 import com.depromeet.sulsul.domain.requestBeer.repository.RequestBeerRepository;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
