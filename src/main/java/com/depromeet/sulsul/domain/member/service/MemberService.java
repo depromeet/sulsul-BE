@@ -31,4 +31,8 @@ public class MemberService {
   public Long findLevelByMemberId(Long id) {
     return memberRepository.findLevelById(id);
   }
+
+  public void deleteById(Long id) {
+    memberRepository.deleteById(id);
+  }
 }
