@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/beer/liked")
-@Api(tags = "찜하기 관련 API")
+@Api(tags = "찜하기 APIs (version 1)")
 public class MemberBeerController {
 
   private final MemberBeerService memberBeerService;

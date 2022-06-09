@@ -1,7 +1,6 @@
 package com.depromeet.sulsul.domain.record.controller;
 
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
-import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
 import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.service.RecordService;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "맥주 기록 APIs (게스트용)")
+@Api(tags = "기록 APIs (게스트용)")
 @RequestMapping("/guest/api/v1/records")
 public class GuestRecordController {
   private final RecordService recordService;

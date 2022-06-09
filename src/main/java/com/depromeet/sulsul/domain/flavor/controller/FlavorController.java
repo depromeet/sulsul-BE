@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/flavors")
-@Api(tags = "맛 조회 API")
+@Api(tags = "맛 조회 APIs (version 1)")
 public class FlavorController {
 
   private final FlavorService flavorService;
