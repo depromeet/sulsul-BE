@@ -1,11 +1,13 @@
 package com.depromeet.sulsul.domain.requestBeer.controller;
 
+import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.service.RequestBeerService;
 import io.swagger.annotations.Api;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/reqeust-beers")
+@RequestMapping("/api/v1/request-beers")
 @RequiredArgsConstructor
 @Api(tags = "미등록 맥주 APIs")
 public class RequestBeerController {
@@ -29,7 +31,7 @@ public class RequestBeerController {
   }
 
   @GetMapping("/{requestBeerId}")
-  public PageableResponseDto<RequestBeerResponseDto> find(@PathVariable(required = false) Long requestBeerId){
+  public DescPageableResponseDto<RequestBeerResponseDto> find(@PathVariable Long requestBeerId){
     // TODO : 임시 아이디
     Long memberId = 1L;
     return requestBeerService.find(requestBeerId, memberId);

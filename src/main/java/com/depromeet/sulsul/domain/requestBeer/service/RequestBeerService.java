@@ -4,6 +4,7 @@ import static com.depromeet.sulsul.util.PaginationUtil.PAGINATION_SIZE;
 import static com.depromeet.sulsul.util.PaginationUtil.isOverPaginationSize;
 
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
+import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
@@ -33,14 +34,15 @@ public class RequestBeerService {
   }
 
   @Transactional(readOnly = true)
-  public PageableResponseDto<RequestBeerResponseDto> find(Long requestBeerId, Long memberId){
+  public DescPageableResponseDto<RequestBeerResponseDto> find(Long requestBeerId, Long memberId){
     List<RequestBeerResponseDto> byMemberIdWithPageable = requestBeerRepository.findByMemberIdWithPageable(
         requestBeerId, memberId);
 
     Long resultCount = requestBeerCount(memberId);
+    Long cursor = byMemberIdWithPageable.isEmpty() ? null : byMemberIdWithPageable.get(byMemberIdWithPageable.size()-1).getBeerId();
 
-    return PageableResponseDto.of(
-        resultCount, byMemberIdWithPageable, requestBeerId , PAGINATION_SIZE
+    return DescPageableResponseDto.of(
+        resultCount, byMemberIdWithPageable, cursor, PAGINATION_SIZE
     );
   }
 
