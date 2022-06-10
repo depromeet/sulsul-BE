@@ -26,4 +26,6 @@ public interface RecordRepositoryCustom {
   Long selectCount();
 
   Long findRecordCountByBeerId(Long beerId);
+
+  void updateDeletedAtByMemberId(Long id);
 }
