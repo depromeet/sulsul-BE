@@ -38,7 +38,7 @@ public class MemberLevelController {
   @GetMapping
   public ResponseDto<MemberLevelResponseDto> find(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberLevelService.find(Long.parseLong(user.getUsername())));
+    return ResponseDto.from(memberLevelService.find(Long.parseUnsignedLong(user.getUsername())));
   }
 
 }

@@ -35,9 +35,9 @@ public class BeerControllerV2 {
 
     User user = (User) authentication.getPrincipal();
     if (readRequest == null) {
-      return beerService.findAll(Long.parseLong(user.getUsername()));
+      return beerService.findAll(Long.parseUnsignedLong(user.getUsername()));
     }
-    return beerService.findPageWithReadRequest(Long.parseLong(user.getUsername()), readRequest);
+    return beerService.findPageWithReadRequest(Long.parseUnsignedLong(user.getUsername()), readRequest);
   }
 
   @GetMapping("/recommend")
@@ -52,7 +52,7 @@ public class BeerControllerV2 {
   public PageableResponseDto<BeerResponseDto> findLikes(
       @RequestBody(required = false) @Validated ReadRequest readRequest, Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return beerService.findLikes(Long.parseLong(user.getUsername()), readRequest);
+    return beerService.findLikes(Long.parseUnsignedLong(user.getUsername()), readRequest);
   }
 
   @GetMapping("/count")

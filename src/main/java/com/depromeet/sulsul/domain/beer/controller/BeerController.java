@@ -52,21 +52,21 @@ public class BeerController {
     User user = (User) authentication.getPrincipal();
     BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(
         beerTypes, countryIds, sortType, searchKeyword);
-    return beerService.findPageWithFilterRequest(Long.parseLong(user.getUsername()), beerId, beerSearchConditionRequest);
+    return beerService.findPageWithFilterRequest(Long.parseUnsignedLong(user.getUsername()), beerId, beerSearchConditionRequest);
   }
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 리스트 조회 API")
   public ResponseDto<BeerResponsesDto> findRecommends(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(beerService.findRecommends(Long.parseLong(user.getUsername())));
+    return ResponseDto.from(beerService.findRecommends(Long.parseUnsignedLong(user.getUsername())));
   }
 
   @GetMapping("/liked")
   @ApiOperation(value = "추천 맥주 리스트 조회(반한 맥주) API")
   public ResponseDto<BeerResponsesDto> findLikedRecommends(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(beerService.findLikedRecommends(Long.parseLong(user.getUsername()), true));
+    return ResponseDto.from(beerService.findLikedRecommends(Long.parseUnsignedLong(user.getUsername()), true));
   }
 
   @PostMapping("/count")
@@ -81,7 +81,7 @@ public class BeerController {
   public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId,
                                                      Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(beerService.findById(Long.parseLong(user.getUsername()), beerId));
+    return ResponseDto.from(beerService.findById(Long.parseUnsignedLong(user.getUsername()), beerId));
   }
 
   @GetMapping("/types")
