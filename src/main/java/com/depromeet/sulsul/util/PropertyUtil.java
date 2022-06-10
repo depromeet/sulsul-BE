@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyUtil {
@@ -30,4 +32,10 @@ public class PropertyUtil {
   public static EnumValue toEnumValue(EnumModel enumModel) {
     return new EnumValue(enumModel);
   }
+
+  public static Long getMemberIdFromAuthentication() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return Long.parseLong(authentication.getName());
+  }
+
 }

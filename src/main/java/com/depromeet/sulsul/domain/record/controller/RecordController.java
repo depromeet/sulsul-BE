@@ -10,11 +10,10 @@ import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
 import com.depromeet.sulsul.domain.record.service.RecordService;
+import com.depromeet.sulsul.util.PropertyUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -43,36 +42,31 @@ public class RecordController {
   @ApiOperation(value = "기록 작성 API")
   @PostMapping
   public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return ResponseDto.from(recordService.save(recordRequestDto, memberId));
   }
 
   @ApiOperation(value = "작성 기록 상세보기 API")
   @GetMapping("/{recordId}")
-  public ResponseDto<RecordResponseDto> find(@PathVariable(name = "recordId", required = false) Long recordId) {
+  public ResponseDto<RecordResponseDto> find(
+      @PathVariable(name = "recordId", required = false) Long recordId) {
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return ResponseDto.from(recordService.find(recordId, memberId));
   }
 
   @ApiOperation(value = "기록 업데이트 API")
   @PatchMapping("/{recordId}")
-  public ResponseDto<RecordResponseDto> update(@RequestBody RecordUpdateRequestDto recordUpdateRequestDto) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+  public ResponseDto<RecordResponseDto> update(
+      @RequestBody RecordUpdateRequestDto recordUpdateRequestDto) {
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return ResponseDto.from(recordService.update(recordUpdateRequestDto, memberId));
   }
 
   @ApiOperation(value = "기록 삭제 API")
   @DeleteMapping("/{recordId}")
   public ResponseDto<Long> delete(@PathVariable Long recordId) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     recordService.delete(recordId, memberId);
     return ResponseDto.from(recordService.delete(recordId, memberId));
   }
@@ -93,18 +87,16 @@ public class RecordController {
 
   @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
   @GetMapping(value = {"/tickets/{recordId}", "/ticket"})
-  public DescPageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(@PathVariable(name = "recordId", required = false) Long recordId) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+  public DescPageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(
+      @PathVariable(name = "recordId", required = false) Long recordId) {
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return recordService.findAllRecordsTicketWithPageable(recordId, memberId);
   }
 
   @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
   @GetMapping("/ticket/country/")
-  public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+  public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId() {
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return ResponseDto.from(recordService.findCountryAndCountByMemberId(memberId));
   }
 

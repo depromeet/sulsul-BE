@@ -6,12 +6,11 @@ import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import com.depromeet.sulsul.util.PropertyUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +30,7 @@ public class BeerControllerV2 {
   @ApiOperation(value = "맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     if (readRequest == null) {
       return beerService.findAll(memberId);
     }
@@ -43,7 +40,7 @@ public class BeerControllerV2 {
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 조회 API")
   public ResponseDto<List<BeerResponseDto>> findRecommends() {
-    Long memberId = 1L;
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return ResponseDto.from(beerService.findRecommends(memberId).getBeerResponseDtos());
   }
 
@@ -52,8 +49,7 @@ public class BeerControllerV2 {
   public PageableResponseDto<BeerResponseDto> findLikes(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     return beerService.findLikes(memberId, readRequest);
   }
 

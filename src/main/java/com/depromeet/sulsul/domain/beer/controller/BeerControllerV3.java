@@ -4,11 +4,10 @@ import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import com.depromeet.sulsul.util.PropertyUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +27,7 @@ public class BeerControllerV3 {
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest) {
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
     if (readRequest == null) {
       return beerService.findAll(memberId);
     }
