@@ -3,21 +3,24 @@ package com.depromeet.sulsul.domain.beer.controller;
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
-import com.depromeet.sulsul.domain.beer.dto.*;
+import com.depromeet.sulsul.domain.beer.dto.BeerCountResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerDetailResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerResponsesDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerSearchConditionRequest;
+import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
-import com.depromeet.sulsul.oauth2.CustomOAuth2User;
+import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,33 +47,26 @@ public class BeerController {
       @RequestParam(required = false) List<BeerType> beerTypes,
       @RequestParam(required = false) List<Long> countryIds,
       @RequestParam(required = false) SortType sortType,
-      @RequestParam(value = "keyword", required = false) String searchKeyword
-  ) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+      @RequestParam(value = "keyword", required = false) String searchKeyword,
+      Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
     BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(
         beerTypes, countryIds, sortType, searchKeyword);
-    return beerService.findPageWithFilterRequest(memberId, beerId, beerSearchConditionRequest);
+    return beerService.findPageWithFilterRequest(Long.parseLong(user.getUsername()), beerId, beerSearchConditionRequest);
   }
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 리스트 조회 API")
-  public ResponseDto<BeerResponsesDto> findRecommends() {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
-
-    return ResponseDto.from(beerService.findRecommends(memberId));
+  public ResponseDto<BeerResponsesDto> findRecommends(Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
+    return ResponseDto.from(beerService.findRecommends(Long.parseLong(user.getUsername())));
   }
 
   @GetMapping("/liked")
   @ApiOperation(value = "추천 맥주 리스트 조회(반한 맥주) API")
-  public ResponseDto<BeerResponsesDto> findLikedRecommends() {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
-    return ResponseDto.from(beerService.findLikedRecommends(memberId, true));
+  public ResponseDto<BeerResponsesDto> findLikedRecommends(Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
+    return ResponseDto.from(beerService.findLikedRecommends(Long.parseLong(user.getUsername()), true));
   }
 
   @PostMapping("/count")
@@ -80,11 +78,10 @@ public class BeerController {
 
   @GetMapping("/{beerId}")
   @ApiOperation(value = "맥주 상세 조회 API")
-  public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
-    return ResponseDto.from(beerService.findById(memberId, beerId));
+  public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId,
+                                                     Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
+    return ResponseDto.from(beerService.findById(Long.parseLong(user.getUsername()), beerId));
   }
 
   @GetMapping("/types")
