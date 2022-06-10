@@ -45,7 +45,7 @@ public class RecordController {
   public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto,
                                              Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.save(recordRequestDto, Long.parseLong(user.getUsername())));
+    return ResponseDto.from(recordService.save(recordRequestDto, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "작성 기록 상세보기 API")
@@ -53,7 +53,7 @@ public class RecordController {
   public ResponseDto<RecordResponseDto> find(@PathVariable(name = "recordId", required = false) Long recordId,
                                              Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.find(recordId, Long.parseLong(user.getUsername())));
+    return ResponseDto.from(recordService.find(recordId, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "기록 업데이트 API")
@@ -61,15 +61,15 @@ public class RecordController {
   public ResponseDto<RecordResponseDto> update(@RequestBody RecordUpdateRequestDto recordUpdateRequestDto,
                                                Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.update(recordUpdateRequestDto, Long.parseLong(user.getUsername())));
+    return ResponseDto.from(recordService.update(recordUpdateRequestDto, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "기록 삭제 API")
   @DeleteMapping("/{recordId}")
   public ResponseDto<Long> delete(@PathVariable Long recordId, Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    recordService.delete(recordId, Long.parseLong(user.getUsername()));
-    return ResponseDto.from(recordService.delete(recordId, Long.parseLong(user.getUsername())));
+    recordService.delete(recordId, Long.parseUnsignedLong(user.getUsername()));
+    return ResponseDto.from(recordService.delete(recordId, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
@@ -91,14 +91,14 @@ public class RecordController {
       @PathVariable(name = "recordId", required = false) Long recordId,
       Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return recordService.findAllRecordsTicketWithPageable(recordId, Long.parseLong(user.getUsername()));
+    return recordService.findAllRecordsTicketWithPageable(recordId, Long.parseUnsignedLong(user.getUsername()));
   }
 
   @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
   @GetMapping("/ticket/country/")
   public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.findCountryAndCountByMemberId(Long.parseLong(user.getUsername())));
+    return ResponseDto.from(recordService.findCountryAndCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
   }
 
 }

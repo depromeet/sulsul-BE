@@ -30,8 +30,8 @@ public class BeerControllerV3 {
       @RequestBody(required = false) @Validated ReadRequest readRequest, Authentication authentication) {
     User user = (User) authentication.getPrincipal();
     if (readRequest == null) {
-      return beerService.findAll(Long.parseLong(user.getUsername()));
+      return beerService.findAll(Long.parseUnsignedLong(user.getUsername()));
     }
-    return beerService.findPageWithReadRequestV2(Long.parseLong(user.getUsername()), readRequest);
+    return beerService.findPageWithReadRequestV2(Long.parseUnsignedLong(user.getUsername()), readRequest);
   }
 }

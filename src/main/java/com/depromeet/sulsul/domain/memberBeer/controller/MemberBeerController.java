@@ -26,7 +26,7 @@ public class MemberBeerController {
   @ApiOperation(value = "찜하기 API")
   public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId, Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberBeerService.save(beerId, Long.parseLong(user.getUsername())));
+    return ResponseDto.from(memberBeerService.save(beerId, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "찜하기 취소 API")
@@ -34,13 +34,13 @@ public class MemberBeerController {
   public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId, Authentication authentication) {
 
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberBeerService.delete(beerId, Long.parseLong(user.getUsername())));
+    return ResponseDto.from(memberBeerService.delete(beerId, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "해당 유저의 좋아요한 맥주 개수 조회 API")
   @GetMapping
   public ResponseDto<Long> findMemberBeerCountByMemberId(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberBeerService.findMemberBeerCountByMemberId(Long.parseLong(user.getUsername())));
+    return ResponseDto.from(memberBeerService.findMemberBeerCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
   }
 }

@@ -30,7 +30,7 @@ public class MyPageController {
   @GetMapping
   public ResponseDto<MyPageRequestDto> findMyPageByMemberId(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberFacade.findMyPageByMemberId(Long.parseLong(user.getUsername())));
+    return ResponseDto.from(memberFacade.findMyPageByMemberId(Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "닉네임 update API")
