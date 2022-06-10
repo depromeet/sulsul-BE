@@ -34,7 +34,7 @@ public class SwaggerConfig {
         .apiInfo(apiInfo())
         .select()
         .apis(RequestHandlerSelectors.basePackage("com.depromeet.sulsul.domain"))
-        .paths(PathSelectors.ant("/api/**"))
+        .paths(PathSelectors.regex("/(api|guest)/.*"))
         .build();
   }
 

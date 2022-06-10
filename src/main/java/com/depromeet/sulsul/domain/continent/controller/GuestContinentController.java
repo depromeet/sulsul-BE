@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "대륙 APIs (version 1)")
-@RequestMapping("/api/v1/continents")
-public class ContinentController {
+@Api(tags = "대륙 APIs (게스트용)")
+@RequestMapping("/guest/api/v1/continents")
+public class GuestContinentController {
 
   private final ContinentService continentService;
 

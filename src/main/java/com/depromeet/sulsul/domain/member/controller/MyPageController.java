@@ -7,6 +7,8 @@ import com.depromeet.sulsul.domain.member.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/profile")
-@Api(tags = "마이페이지 APIs")
+@Api(tags = "마이페이지 APIs (version 1)")
 public class MyPageController {
 
   private final MemberService memberService;
@@ -26,7 +28,9 @@ public class MyPageController {
   @ApiOperation(value = "count 조회 API")
   @GetMapping
   public ResponseDto<MyPageRequestDto> findMyPageByMemberId() {
-    Long memberId = 1L;
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(memberFacade.findMyPageByMemberId(memberId));
   }
 
