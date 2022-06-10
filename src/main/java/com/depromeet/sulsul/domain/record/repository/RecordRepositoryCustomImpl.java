@@ -14,6 +14,8 @@ import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -109,6 +111,14 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         .where(beerIdEq(beerId)
               , record.deletedAt.isNull()
         ).stream().count();
+  }
+
+  @Override
+  public void updateDeletedAtByMemberId(Long id) {
+    queryFactory.update(record)
+        .set(record.deletedAt, LocalDateTime.now())
+        .where(record.member.id.eq(id))
+        .execute();
   }
 
   private BooleanExpression beerIdEq(Long beerId) {

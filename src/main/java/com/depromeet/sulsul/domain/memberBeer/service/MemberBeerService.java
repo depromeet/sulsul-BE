@@ -48,4 +48,7 @@ public class MemberBeerService {
     return memberBeerRepository.findMemberBeerCountByMemberId(memberId);
   }
 
+  public void updateDeletedAtByMemberId(Long id) {
+    memberBeerRepository.updateDeletedAtByMemberId(id);
+  }
 }

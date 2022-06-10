@@ -202,4 +202,7 @@ public class RecordService {
   }
 
 
+  public void updateDeletedAtByMemberId(Long id) {
+    recordRepository.updateDeletedAtByMemberId(id);
+  }
 }

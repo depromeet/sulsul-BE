@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.memberBeerFlavor.entity;
 
+import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beerFlavor.entity.BeerFlavor;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(exclude = {"beer", "flavor", "memberBeerFlavors"})
 @EqualsAndHashCode(exclude = {"beer", "flavor", "memberBeerFlavors"})
-public class MemberBeerFlavor {
+public class MemberBeerFlavor extends BaseEntity {
 
   @Id
   @Column(name = "member_beer_flavor_id")
