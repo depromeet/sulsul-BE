@@ -48,5 +48,8 @@ spring:
     cookie:
       accessTokenCookieName: accessToken
       refreshTokenCookieName: refreshToken
+swagger:
+  url: https://api.beerair.ml
+  desc: for prod usage
 client:
   url: beerair.ml
