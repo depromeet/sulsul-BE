@@ -86,7 +86,7 @@ public class RecordController {
   }
 
   @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
-  @GetMapping(value = {"/tickets/{recordId}", "/ticket"})
+  @GetMapping(value = {"/tickets/{recordId}", "/tickets"})
   public DescPageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(
       @PathVariable(name = "recordId", required = false) Long recordId,
       Authentication authentication) {
