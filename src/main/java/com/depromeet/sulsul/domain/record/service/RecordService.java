@@ -186,7 +186,7 @@ public class RecordService {
     // TODO : count적용
     Long resultCount = findRecordCountByMemberId(memberId);
 
-    Long cursor = allRecordsTicketWithPageable.isEmpty() ? null : allRecordsTicketWithPageable.get(allRecordsTicketWithPageable.size()-1).getRecordId();
+    Long cursor = allRecordsTicketWithPageable.isEmpty() ? null : allRecordsTicketWithPageable.get(allRecordsTicketWithPageable.size()-1).getId();
     return DescPageableResponseDto.of(resultCount, allRecordsTicketWithPageable, cursor, PAGINATION_SIZE);
   }
 
