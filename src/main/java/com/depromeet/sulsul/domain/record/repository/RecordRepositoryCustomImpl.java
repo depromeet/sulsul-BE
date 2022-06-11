@@ -77,8 +77,8 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   @Override
   public List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId) {
     return queryFactory.select(new QRecordTicketResponseDto(
-            record.id, record.beer.nameKor, record.beer.nameEng, record.createdAt, record.feel
-            , record.startCountryEng, record.endCountryEng, record.startCountryKor, record.endCountryKor
+            record.id, record.beer, record.createdAt, record.feel
+            , record.startCountryEng, record.endCountryEng, record.startCountryKor, record.endCountryKor, record.imageUrl
         )).from(record)
         .where(
             memberIdEq(memberId)
