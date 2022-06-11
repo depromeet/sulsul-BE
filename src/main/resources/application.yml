@@ -36,6 +36,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
+      default_batch_fetch_size: 1000
       ddl-auto: update
     properties:
       hibernate:
