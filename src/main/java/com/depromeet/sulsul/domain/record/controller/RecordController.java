@@ -28,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@RequestMapping("/guest/1/api/v1/records")
+@RequestMapping("/api/v1/records")
 @RequiredArgsConstructor
 @Api(tags = "기록 APIs (version 1)")
 public class RecordController {
@@ -91,8 +91,7 @@ public class RecordController {
       @PathVariable(name = "recordId", required = false) Long recordId,
       Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-//    return recordService.findAllRecordsTicketWithPageable(recordId, Long.parseUnsignedLong(user.getUsername()));
-    return recordService.findAllRecordsTicketWithPageable(recordId, 1L);
+    return recordService.findAllRecordsTicketWithPageable(recordId, Long.parseUnsignedLong(user.getUsername()));
   }
 
   @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
