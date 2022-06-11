@@ -28,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@RequestMapping("/api/v1/records")
+@RequestMapping("/guest/1/api/v1/records")
 @RequiredArgsConstructor
 @Api(tags = "기록 APIs (version 1)")
 public class RecordController {
@@ -100,5 +100,4 @@ public class RecordController {
     User user = (User) authentication.getPrincipal();
     return ResponseDto.from(recordService.findCountryAndCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
   }
-
 }
