@@ -4,6 +4,7 @@ import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.dto.MyPageRequestDto;
 import com.depromeet.sulsul.domain.member.facade.MemberFacade;
 import com.depromeet.sulsul.domain.member.service.MemberService;
+import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,9 @@ public class MyPageController {
 
   @ApiOperation(value = "count 조회 API")
   @GetMapping
-  public ResponseDto<MyPageRequestDto> findMyPageByMemberId() {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
-    return ResponseDto.from(memberFacade.findMyPageByMemberId(memberId));
+  public ResponseDto<MyPageRequestDto> findMyPageByMemberId(Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
+    return ResponseDto.from(memberFacade.findMyPageByMemberId(Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "닉네임 update API")

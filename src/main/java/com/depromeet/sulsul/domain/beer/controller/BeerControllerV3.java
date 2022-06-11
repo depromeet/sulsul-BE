@@ -4,6 +4,7 @@ import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
+import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,11 @@ public class BeerControllerV3 {
   @PostMapping
   @ApiOperation(value = "맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
-      @RequestBody(required = false) @Validated ReadRequest readRequest) {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long memberId = Long.parseLong(authentication.getName());
+      @RequestBody(required = false) @Validated ReadRequest readRequest, Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
     if (readRequest == null) {
-      return beerService.findAll(memberId);
+      return beerService.findAll(Long.parseUnsignedLong(user.getUsername()));
     }
-    return beerService.findPageWithReadRequestV2(memberId, readRequest);
+    return beerService.findPageWithReadRequestV2(Long.parseUnsignedLong(user.getUsername()), readRequest);
   }
 }
