@@ -3,6 +3,7 @@ package com.depromeet.sulsul.domain.record.dto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ public class RecordUpdateRequestDto {
   private Long recordId;
   private String imageUrl;
   private String content;
+  @Size(min = 1, max = 3)
   private List<Long> FlavorIds = new ArrayList<>();
   private Boolean isPublic;
   private Integer feel;

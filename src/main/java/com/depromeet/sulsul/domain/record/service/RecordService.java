@@ -94,8 +94,7 @@ public class RecordService {
   }
 
   @Transactional(readOnly = true)
-  public RecordResponseDto find(Long recordId, Long memberId){
-    // TODO : memberID를 통한 유저 확인이 이루어져야 함.
+  public RecordResponseDto find(Long recordId){
 
     Record record = recordRepository.findById(recordId)
         .orElseThrow(RecordNotFoundException::new);;
@@ -124,7 +123,6 @@ public class RecordService {
 
     List<RecordFlavor> recordFlavors = new ArrayList<>();
     List<FlavorDto> flavorDtos = new ArrayList<>();
-
 
     for (Long flavorId : recordUpdateRequestDto.getFlavorIds()) {
       Flavor flavor = flavorRepository.findById(flavorId).orElseThrow(FlavorNotFoundException::new);
