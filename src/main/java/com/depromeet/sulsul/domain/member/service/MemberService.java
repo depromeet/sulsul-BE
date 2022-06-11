@@ -1,7 +1,6 @@
 package com.depromeet.sulsul.domain.member.service;
 
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
-import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.dto.MyPageRequestDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
@@ -18,7 +17,7 @@ public class MemberService {
   private final MemberRepository memberRepository;
 
   @Transactional(readOnly = true)
-  public MemberDto findMember(final long id) {
+  public MemberDto findById(final long id) {
     return memberRepository.selectById(id).orElseThrow(MemberNotFoundException::new);
   }
 
@@ -32,7 +31,7 @@ public class MemberService {
     return memberRepository.findLevelById(id);
   }
 
-  public void deleteById(Long id) {
-    memberRepository.deleteById(id);
+  public void updateDeletedAtById(Long id) {
+    memberRepository.updateDeletedAtById(id);
   }
 }

@@ -48,4 +48,7 @@ public class RequestBeerService {
     return requestBeerRepository.countByMemberId(memberId);
   }
 
+  public void updateDeletedAtByMemberId(Long id) {
+    requestBeerRepository.updateDeletedAtByMemberId(id);
+  }
 }

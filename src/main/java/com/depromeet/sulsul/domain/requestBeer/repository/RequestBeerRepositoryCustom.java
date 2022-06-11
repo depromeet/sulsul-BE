@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RequestBeerRepositoryCustom {
   List<RequestBeerResponseDto> findByMemberIdWithPageable(Long requestBeerId, Long memberId);
+
+  void updateDeletedAtByMemberId(Long id);
 }

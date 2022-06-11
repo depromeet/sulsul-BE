@@ -10,7 +10,6 @@ import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +34,6 @@ public class BeerControllerV2 {
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
       @RequestBody(required = false) @Validated ReadRequest readRequest,
       Authentication authentication) {
-
     if (readRequest == null) {
       return beerService.findAll(getMemberIdFromPrincipal(authentication));
     }

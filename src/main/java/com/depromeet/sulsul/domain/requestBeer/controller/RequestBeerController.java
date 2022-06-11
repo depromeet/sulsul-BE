@@ -26,14 +26,15 @@ public class RequestBeerController {
   private final RequestBeerService requestBeerService;
 
   @PostMapping
-  public ResponseDto<RequestBeerResponseDto> save(@RequestBody RequestBeerRequestDto requestBeerRequestDto,
-                                                  Authentication authentication) {
-    return ResponseDto.from(requestBeerService.save(requestBeerRequestDto, getMemberIdFromPrincipal(authentication)));
+  public ResponseDto<RequestBeerResponseDto> save(
+      @RequestBody RequestBeerRequestDto requestBeerRequestDto, Authentication authentication) {
+    return ResponseDto.from(
+        requestBeerService.save(requestBeerRequestDto, getMemberIdFromPrincipal(authentication)));
   }
 
   @GetMapping("/{requestBeerId}")
-  public DescPageableResponseDto<RequestBeerResponseDto> find(@PathVariable(required = false) Long requestBeerId,
-                                                              Authentication authentication) {
+  public DescPageableResponseDto<RequestBeerResponseDto> find(
+      @PathVariable(required = false) Long requestBeerId, Authentication authentication) {
     return requestBeerService.find(requestBeerId, getMemberIdFromPrincipal(authentication));
   }
 }

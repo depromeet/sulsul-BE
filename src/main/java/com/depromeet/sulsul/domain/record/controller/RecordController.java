@@ -76,8 +76,7 @@ public class RecordController {
 
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
   @PostMapping("/find")
-  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
-      @RequestBody RecordFindRequestDto recordFindRequestDto) {
+  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(@RequestBody RecordFindRequestDto recordFindRequestDto) {
     return recordService.findAllRecordsWithPageable(recordFindRequestDto);
   }
 
