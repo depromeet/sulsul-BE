@@ -98,11 +98,17 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
             record.endCountryEng.eq(
                 queryFactory.select(record.endCountryEng)
                     .from(record)
-                    .where(record.deletedAt.isNull())
+                    .where(
+                          record.deletedAt.isNull()
+                          , memberIdEq(memberId)
+                    )
                     .orderBy(record.createdAt.desc())
                     .fetchFirst()
             )
+            , record.deletedAt.isNull()
+            , memberIdEq(memberId)
         )
+        .groupBy(record.endCountryEng, record.endCountryKor)
         .fetchOne();
   }
 
