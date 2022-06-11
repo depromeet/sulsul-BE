@@ -102,7 +102,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
                           record.deletedAt.isNull()
                           , memberIdEq(memberId)
                     )
-                    .orderBy(record.createdAt.desc())
+                    .orderBy(record.id.desc())
                     .fetchFirst()
             )
             , record.deletedAt.isNull()
