@@ -17,7 +17,7 @@ public class MemberService {
   private final MemberRepository memberRepository;
 
   @Transactional(readOnly = true)
-  public MemberDto findMember(final long id) {
+  public MemberDto findById(final long id) {
     return memberRepository.selectById(id).orElseThrow(MemberNotFoundException::new);
   }
 
