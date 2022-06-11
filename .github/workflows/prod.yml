@@ -79,4 +79,4 @@ jobs:
             script: |
                 sudo docker rm -f $(docker ps -qa)
                 sudo docker pull ${{ steps.docker_meta.outputs.tags }}
-                docker run -d -p 80:8080 --name prod ${{ steps.docker_meta.outputs.tags }}
+                docker run -d -p 8080:8080 --name prod ${{ steps.docker_meta.outputs.tags }}
