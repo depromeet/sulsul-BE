@@ -43,25 +43,29 @@ public class RecordController {
   @ApiOperation(value = "기록 작성 API")
   @PostMapping
   public ResponseDto<RecordResponseDto> save(@RequestBody RecordRequestDto recordRequestDto,
-                                             Authentication authentication) {
+      Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.save(recordRequestDto, Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(
+        recordService.save(recordRequestDto, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "작성 기록 상세보기 API")
   @GetMapping("/{recordId}")
-  public ResponseDto<RecordResponseDto> find(@PathVariable(name = "recordId", required = false) Long recordId,
-                                             Authentication authentication) {
+  public ResponseDto<RecordResponseDto> find(
+      @PathVariable(name = "recordId", required = false) Long recordId,
+      Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.find(recordId, Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(
+        recordService.find(recordId, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "기록 업데이트 API")
   @PatchMapping("/{recordId}")
-  public ResponseDto<RecordResponseDto> update(@RequestBody RecordUpdateRequestDto recordUpdateRequestDto,
-                                               Authentication authentication) {
+  public ResponseDto<RecordResponseDto> update(
+      @RequestBody RecordUpdateRequestDto recordUpdateRequestDto, Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.update(recordUpdateRequestDto, Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(
+        recordService.update(recordUpdateRequestDto, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "기록 삭제 API")
@@ -69,12 +73,14 @@ public class RecordController {
   public ResponseDto<Long> delete(@PathVariable Long recordId, Authentication authentication) {
     User user = (User) authentication.getPrincipal();
     recordService.delete(recordId, Long.parseUnsignedLong(user.getUsername()));
-    return ResponseDto.from(recordService.delete(recordId, Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(
+        recordService.delete(recordId, Long.parseUnsignedLong(user.getUsername())));
   }
 
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
   @PostMapping("/find")
-  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(@RequestBody RecordFindRequestDto recordFindRequestDto) {
+  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
+      @RequestBody RecordFindRequestDto recordFindRequestDto) {
     return recordService.findAllRecordsWithPageable(recordFindRequestDto);
   }
 
@@ -91,14 +97,16 @@ public class RecordController {
       @PathVariable(name = "recordId", required = false) Long recordId,
       Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return recordService.findAllRecordsTicketWithPageable(recordId, Long.parseUnsignedLong(user.getUsername()));
+    return recordService.findAllRecordsTicketWithPageable(recordId,
+        Long.parseUnsignedLong(user.getUsername()));
   }
 
   @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
   @GetMapping("/recently-visited-country")
-  public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(Authentication authentication) {
+  public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(
+      Authentication authentication) {
     User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(recordService.findCountryAndCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(
+        recordService.findCountryAndCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
   }
-
 }
