@@ -5,6 +5,8 @@ import static com.depromeet.sulsul.domain.memberBeer.entity.QMemberBeer.memberBe
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 public class MemberBeerRepositoryCustomImpl implements MemberBeerRepositoryCustom {
   private final JPAQueryFactory queryFactory;
@@ -20,4 +22,11 @@ public class MemberBeerRepositoryCustomImpl implements MemberBeerRepositoryCusto
         .count();
   }
 
+  @Override
+  public void updateDeletedAtByMemberId(Long id) {
+    queryFactory.update(memberBeer)
+        .set(memberBeer.deletedAt, LocalDateTime.now())
+        .where(memberBeer.member.id.eq(id))
+        .execute();
+  }
 }
