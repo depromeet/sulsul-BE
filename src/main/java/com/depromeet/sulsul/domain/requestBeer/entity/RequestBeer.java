@@ -36,7 +36,8 @@ public class RequestBeer extends BaseEntity {
   private Member member;
 
   private String beerName;
-  private String beerImageUrl;
+  private String beerImageUrlFirst;
+  private String beerImageUrlSecond;
 
   private LocalDateTime requestCompletedAt;
 
@@ -47,7 +48,12 @@ public class RequestBeer extends BaseEntity {
 
   public RequestBeer(RequestBeerRequestDto requestBeerRequestDto, Member member){
     this.beerName = requestBeerRequestDto.getBeerName();
-    this.beerImageUrl = requestBeerRequestDto.getBeerImageUrl();
+    if(requestBeerRequestDto.getBeerImageUrls().size()>0){
+      this.beerImageUrlFirst = requestBeerRequestDto.getBeerImageUrls().get(0);
+    }
+    if(requestBeerRequestDto.getBeerImageUrls().size()>1){
+      this.beerImageUrlSecond = requestBeerRequestDto.getBeerImageUrls().get(1);
+    }
     this.member = member;
   }
 

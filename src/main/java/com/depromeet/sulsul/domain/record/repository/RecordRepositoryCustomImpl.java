@@ -30,7 +30,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
             , recordIdLoe(recordFindRequestDto.getRecordId())
             , record.deletedAt.isNull()
         )
-        .orderBy(record.createdAt.desc())
+        .orderBy(record.id.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
   }
