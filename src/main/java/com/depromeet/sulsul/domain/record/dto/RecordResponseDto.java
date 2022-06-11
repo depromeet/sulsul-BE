@@ -45,24 +45,22 @@ public class RecordResponseDto {
     this.updatedAt = updatedAt;
   }
 
-  public RecordResponseDto(Long id, String content, Integer feel, String imageUrl,
-      MemberRecordDto memberRecordDto, LocalDateTime createdAt, LocalDateTime updatedAt,
-      String startCountryKor, String startCountryEng, String endCountryKor,
-      String endCountryEng,
-      List<FlavorDto> flavorDtos) {
-    this.id = id;
-    this.content = content;
-    this.feel = feel;
-    this.imageUrl = imageUrl;
+  // TODO : 변경
+  public RecordResponseDto(Record record, MemberRecordDto memberRecordDto, List<FlavorDto> flavorDtos) {
+    this.id = record.getId();
+    this.content = record.getContent();
+    this.feel = record.getFeel();
+    this.imageUrl = record.getImageUrl();
+    this.createdAt = record.getCreatedAt();
+    this.updatedAt = record.getUpdatedAt();
+    this.startCountryKor = record.getStartCountryKor();
+    this.startCountryEng = record.getStartCountryEng();
+    this.endCountryKor = record.getStartCountryKor();
+    this.endCountryEng = record.getEndCountryEng();
     this.memberRecordDto = memberRecordDto;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.startCountryKor = startCountryKor;
-    this.startCountryEng = startCountryEng;
-    this.endCountryKor = endCountryKor;
-    this.endCountryEng = endCountryEng;
     this.flavorDtos = flavorDtos;
   }
+
 
   @Builder
   public RecordResponseDto(Long id, String content, Integer feel, String imageUrl,

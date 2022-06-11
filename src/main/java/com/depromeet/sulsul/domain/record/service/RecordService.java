@@ -144,26 +144,20 @@ public class RecordService {
         recordFindRequestDto);
     List<RecordResponseDto> allRecordDtosWithPageableResponse = new ArrayList<>();
 
-    for (Record record : allRecordWithPageable) {
-      List<RecordFlavor> recordFlavors = record.getRecordFlavors();
+    allRecordWithPageable.forEach(record -> {
       List<FlavorDto> flavorDtos = new ArrayList<>();
-      for (RecordFlavor recordFlavor : recordFlavors) {
-        flavorDtos.add(
-            new FlavorDto(recordFlavor.getFlavor().getId(), recordFlavor.getFlavor().getContent()));
-      }
+      record.getRecordFlavors().forEach(recordFlavor -> {
+        flavorDtos.add(new FlavorDto(recordFlavor.getFlavor().getId(), recordFlavor.getFlavor().getContent()));
+      });
       MemberRecordDto memberRecordDto = new MemberRecordDto(record.getMember().getId(),
           record.getMember().getName());
 
       allRecordDtosWithPageableResponse.add(
-          new RecordResponseDto(record.getId(), record.getContent(), record.getFeel(), record.getImageUrl()
-              , memberRecordDto, record.getCreatedAt(), record.getUpdatedAt()
-              , record.getStartCountryKor(), record.getEndCountryKor()
-              , record.getStartCountryEng(), record.getEndCountryEng()
-              , flavorDtos));
-    }
+          new RecordResponseDto(record, memberRecordDto, flavorDtos));
+    });
 
     Long resultCount = findRecordCountByBeerId(recordFindRequestDto.getBeerId());
-    Long cursor = allRecordDtosWithPageableResponse.isEmpty() ? null : allRecordDtosWithPageableResponse.get(0).getId();
+    Long cursor = allRecordDtosWithPageableResponse.isEmpty() ? null : allRecordDtosWithPageableResponse.get(allRecordDtosWithPageableResponse.size()-1).getId();
     return DescPageableResponseDto.of(resultCount, allRecordDtosWithPageableResponse
         , cursor, PAGINATION_SIZE);
   }
@@ -192,7 +186,7 @@ public class RecordService {
     // TODO : count적용
     Long resultCount = findRecordCountByMemberId(memberId);
 
-    Long cursor = allRecordsTicketWithPageable.isEmpty() ? null : allRecordsTicketWithPageable.get(0).getRecordId();
+    Long cursor = allRecordsTicketWithPageable.isEmpty() ? null : allRecordsTicketWithPageable.get(allRecordsTicketWithPageable.size()-1).getId();
     return DescPageableResponseDto.of(resultCount, allRecordsTicketWithPageable, cursor, PAGINATION_SIZE);
   }
 
@@ -202,4 +196,7 @@ public class RecordService {
   }
 
 
+  public void updateDeletedAtByMemberId(Long id) {
+    recordRepository.updateDeletedAtByMemberId(id);
+  }
 }

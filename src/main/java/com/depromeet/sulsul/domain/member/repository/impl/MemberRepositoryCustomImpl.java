@@ -8,6 +8,7 @@ import com.depromeet.sulsul.domain.member.repository.MemberRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.depromeet.sulsul.domain.member.entity.QMember.member;
@@ -33,5 +34,14 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
         .where(member.email.eq(email),member.social.eq(SocialType.valueOf(social)))
         .fetchOne()
     );
+  }
+
+  @Override
+  public void updateDeletedAtById(Long id) {
+    queryFactory
+        .update(member)
+        .set(member.deletedAt, LocalDateTime.now())
+        .where(member.id.eq(id))
+        .execute();
   }
 }

@@ -14,6 +14,8 @@ import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +32,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
             , recordIdLoe(recordFindRequestDto.getRecordId())
             , record.deletedAt.isNull()
         )
-        .orderBy(record.createdAt.desc())
+        .orderBy(record.id.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
   }
@@ -75,31 +77,38 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   @Override
   public List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId) {
     return queryFactory.select(new QRecordTicketResponseDto(
-            record.id, record.beer.nameKor, record.beer.nameEng, record.createdAt, record.feel
-            , record.startCountryEng, record.endCountryEng, record.startCountryKor, record.endCountryKor
+            record.id, record.beer, record.createdAt, record.feel
+            , record.startCountryEng, record.endCountryEng, record.startCountryKor, record.endCountryKor, record.imageUrl
         )).from(record)
         .where(
             memberIdEq(memberId)
             , recordIdLoe(recordId)
             , record.deletedAt.isNull()
         )
-        .orderBy(record.createdAt.desc())
+        .orderBy(record.id.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
   }
 
   @Override
   public RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId){
-    return queryFactory.select(new QRecordCountryAndCountResponseDto(record.endCountryEng, record.count()))
+    return queryFactory.select(new QRecordCountryAndCountResponseDto(record.endCountryKor, record.endCountryEng, record.count()))
         .from(record)
         .where(
             record.endCountryEng.eq(
                 queryFactory.select(record.endCountryEng)
                     .from(record)
-                    .orderBy(record.createdAt.desc())
+                    .where(
+                          record.deletedAt.isNull()
+                          , memberIdEq(memberId)
+                    )
+                    .orderBy(record.id.desc())
                     .fetchFirst()
             )
+            , record.deletedAt.isNull()
+            , memberIdEq(memberId)
         )
+        .groupBy(record.endCountryEng, record.endCountryKor)
         .fetchOne();
   }
 
@@ -109,6 +118,14 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         .where(beerIdEq(beerId)
               , record.deletedAt.isNull()
         ).stream().count();
+  }
+
+  @Override
+  public void updateDeletedAtByMemberId(Long id) {
+    queryFactory.update(record)
+        .set(record.deletedAt, LocalDateTime.now())
+        .where(record.member.id.eq(id))
+        .execute();
   }
 
   private BooleanExpression beerIdEq(Long beerId) {

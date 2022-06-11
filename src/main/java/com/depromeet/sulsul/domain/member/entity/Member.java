@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.domain.member.entity;
 
+import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.dto.SocialType;
 import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
@@ -30,7 +31,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "records")
 @EqualsAndHashCode(exclude = "records")
-public class Member {
+public class Member extends BaseEntity {
 
   @Id
   @Column(name = "member_id")

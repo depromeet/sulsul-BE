@@ -43,16 +43,16 @@ public class DescPageableResponseDto<T> implements Serializable {
     if (isOverPaginationSize(contents, paginationSize)) {
       this.hasNext = true;
       contents.remove(paginationSize);
-      setCursor(cursor, paginationSize);
+      setCursor(cursor);
     }
   }
 
-  private void setCursor(Long cursor, int paginationSize) {
+  private void setCursor(Long cursor) {
     if (cursor == null) {
       this.nextCursor = null;
       return;
     }
-    this.nextCursor = (cursor-paginationSize > 0 ) ? cursor-paginationSize : 0;
+    this.nextCursor = (cursor > 0) ? cursor : 0;
   }
 
   private boolean isOverPaginationSize(List<T> contents, int size) {

@@ -9,4 +9,6 @@ public interface MemberRepositoryCustom {
 
   Optional<MemberDto> selectById(long id);
   Optional<Member> selectByEmailAndSocial(String email,String social);
+
+  void updateDeletedAtById(Long id);
 }

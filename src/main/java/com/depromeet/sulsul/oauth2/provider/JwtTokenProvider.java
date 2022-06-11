@@ -1,7 +1,9 @@
 package com.depromeet.sulsul.oauth2.provider;
 
+import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.oauth2.CustomOAuth2User;
+import com.depromeet.sulsul.oauth2.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,15 +12,19 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -130,7 +136,8 @@ public class JwtTokenProvider {
   public UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
 
     Claims claims = getAllClaimsFromToken(jwtToken);
+    List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(RoleType.USER.getAuthority()));
 
-    return new UsernamePasswordAuthenticationToken(claims.get("memberId"), "", null);
+    return new UsernamePasswordAuthenticationToken(new User(claims.getSubject()), "", authorities);
   }
 }
