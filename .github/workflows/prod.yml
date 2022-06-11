@@ -5,6 +5,8 @@ on:
     branches: [ prod ]
   pull_request:
     branches: [ prod ]
+    paths-ignore:
+      - "**.md"
 
 permissions:
   contents: read
