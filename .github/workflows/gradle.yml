@@ -63,7 +63,7 @@ jobs:
       run: ./gradlew build
 
     # Build Gradle - dev
-    - name: Build with Gradle-prod
+    - name: Build with Gradle-dev
       if: contains(github.ref, 'dev')
       run: ./gradlew build
 
