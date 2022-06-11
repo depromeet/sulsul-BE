@@ -1,16 +1,18 @@
 package com.depromeet.sulsul.domain.beer.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
-import com.depromeet.sulsul.util.PropertyUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,28 +31,29 @@ public class BeerControllerV2 {
   @PostMapping
   @ApiOperation(value = "맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
-      @RequestBody(required = false) @Validated ReadRequest readRequest) {
-    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
+      @RequestBody(required = false) @Validated ReadRequest readRequest,
+      Authentication authentication) {
+
     if (readRequest == null) {
-      return beerService.findAll(memberId);
+      return beerService.findAll(getMemberIdFromPrincipal(authentication));
     }
-    return beerService.findPageWithReadRequest(memberId, readRequest);
+    return beerService.findPageWithReadRequest(getMemberIdFromPrincipal(authentication),
+        readRequest);
   }
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 조회 API")
-  public ResponseDto<List<BeerResponseDto>> findRecommends() {
-    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
-    return ResponseDto.from(beerService.findRecommends(memberId).getBeerResponseDtos());
+  public ResponseDto<List<BeerResponseDto>> findRecommends(Authentication authentication) {
+    return ResponseDto.from(
+        beerService.findRecommends(getMemberIdFromPrincipal(authentication)).getBeerResponseDtos());
   }
 
   @PostMapping("/liked")
   @ApiOperation(value = "반한 맥주 API")
   public PageableResponseDto<BeerResponseDto> findLikes(
-      @RequestBody(required = false) @Validated ReadRequest readRequest) {
-
-    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
-    return beerService.findLikes(memberId, readRequest);
+      @RequestBody(required = false) @Validated ReadRequest readRequest,
+      Authentication authentication) {
+    return beerService.findLikes(getMemberIdFromPrincipal(authentication), readRequest);
   }
 
   @GetMapping("/count")

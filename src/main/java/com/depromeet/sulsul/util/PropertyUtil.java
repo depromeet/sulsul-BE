@@ -2,6 +2,7 @@ package com.depromeet.sulsul.util;
 
 import com.depromeet.sulsul.common.dto.EnumModel;
 import com.depromeet.sulsul.common.dto.EnumValue;
+import com.depromeet.sulsul.oauth2.User;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyUtil {
@@ -33,9 +33,7 @@ public class PropertyUtil {
     return new EnumValue(enumModel);
   }
 
-  public static Long getMemberIdFromAuthentication() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return Long.parseLong(authentication.getName());
+  public static long getMemberIdFromPrincipal(Authentication authentication) {
+    return Long.parseUnsignedLong(((User) authentication.getPrincipal()).getUsername());
   }
-
 }

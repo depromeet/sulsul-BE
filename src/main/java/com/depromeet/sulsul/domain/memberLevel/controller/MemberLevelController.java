@@ -1,13 +1,15 @@
 package com.depromeet.sulsul.domain.memberLevel.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.service.MemberLevelService;
-import com.depromeet.sulsul.util.PropertyUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +37,8 @@ public class MemberLevelController {
 
   @ApiOperation(value = "해당 유저의 level 조회 API")
   @GetMapping
-  public ResponseDto<MemberLevelResponseDto> find() {
-
-    Long memberId = PropertyUtil.getMemberIdFromAuthentication();
-    return ResponseDto.from(memberLevelService.find(memberId));
+  public ResponseDto<MemberLevelResponseDto> find(Authentication authentication) {
+    return ResponseDto.from(memberLevelService.find(getMemberIdFromPrincipal(authentication)));
   }
 
 }
