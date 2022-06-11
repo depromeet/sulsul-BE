@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RecordTicketResponseDto {
-  private Long recordId;
+  private Long id;
   private Integer feel;
   private String startCountryEng;
   private String endCountryEng;
@@ -27,7 +27,7 @@ public class RecordTicketResponseDto {
   public RecordTicketResponseDto(Long recordId, Beer beer,
       LocalDateTime createdAt, Integer feel, String startCountryEng, String endCountryEng,
       String startCountryKor, String endCountryKor, String imageUrl) {
-    this.recordId = recordId;
+    this.id = recordId;
     this.beerResponseDto = Beer.toDto(beer);
     this.createdAt = createdAt;
     this.feel = feel;
