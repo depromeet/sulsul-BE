@@ -32,7 +32,7 @@ jobs:
         distribution: 'temurin'
     
     # Modify Permission
-    - name: Build with Gradle
+    - name: Modify Permission
       run: chmod +x gradlew
       
 #     Test application build
