@@ -92,7 +92,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
 
   @Override
   public RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId){
-    return queryFactory.select(new QRecordCountryAndCountResponseDto(record.endCountryEng, record.count()))
+    return queryFactory.select(new QRecordCountryAndCountResponseDto(record.endCountryKor, record.endCountryEng, record.count()))
         .from(record)
         .where(
             record.endCountryEng.eq(

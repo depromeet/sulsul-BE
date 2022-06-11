@@ -95,7 +95,7 @@ public class RecordController {
   }
 
   @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
-  @GetMapping("/ticket/country/")
+  @GetMapping("/recently-visited-country")
   public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
     return ResponseDto.from(recordService.findCountryAndCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
