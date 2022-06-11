@@ -98,6 +98,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
             record.endCountryEng.eq(
                 queryFactory.select(record.endCountryEng)
                     .from(record)
+                    .where(record.deletedAt.isNull())
                     .orderBy(record.createdAt.desc())
                     .fetchFirst()
             )
