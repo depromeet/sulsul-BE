@@ -16,22 +16,22 @@ public class RequestBeerRepositoryCustomImpl implements RequestBeerRepositoryCus
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public List<RequestBeerResponseDto> findByMemberIdWithPageable(Long requestBeerResponseId, Long memberId){
+  public List<RequestBeerResponseDto> findByMemberIdWithPageable(Long requestBeerId, Long memberId){
     return queryFactory.select(new QRequestBeerResponseDto(
-            requestBeer.beerName, requestBeer.beerImageUrl, requestBeer.requestCompletedAt, requestBeer.requestRejectionReason
+            requestBeer.requestBeerId, requestBeer.beerName, requestBeer.beerImageUrlFirst, requestBeer.beerImageUrlSecond, requestBeer.requestCompletedAt, requestBeer.requestRejectionReason
             , requestBeer.status, requestBeer.createdAt
         ))
         .from(requestBeer)
         .where(
             requestBeer.member.id.eq(memberId)
-            , requestBeerResponseIdGoe(requestBeerResponseId)
+            , requestBeerResponseIdLoe(requestBeerId)
         )
-        .orderBy(requestBeer.requestBeerId.asc())
+        .orderBy(requestBeer.requestBeerId.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1L)
         .fetch();
   }
 
-  private BooleanExpression requestBeerResponseIdGoe(Long requestBeerResponseId){
-    return requestBeerResponseId != null ? requestBeer.requestBeerId.goe(requestBeerResponseId) : null;
+  private BooleanExpression requestBeerResponseIdLoe(Long requestBeerId){
+    return requestBeerId != null ? requestBeer.requestBeerId.loe(requestBeerId) : null;
   }
 }

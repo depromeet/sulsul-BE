@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/member-levels")
-@Api(tags = "멤버 레벨 APIs (version)")
+@Api(tags = "멤버 레벨 APIs (version 1)")
 @RequiredArgsConstructor
 public class MemberLevelController {
   private final MemberLevelService memberLevelService;
@@ -34,7 +36,9 @@ public class MemberLevelController {
   @ApiOperation(value = "해당 유저의 level 조회 API")
   @GetMapping
   public ResponseDto<MemberLevelResponseDto> find(){
-    Long memberId = 1L;
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long memberId = Long.parseLong(authentication.getName());
     return ResponseDto.from(memberLevelService.find(memberId));
   }
 
