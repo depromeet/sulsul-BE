@@ -23,9 +23,15 @@ public class MemberController {
   private final MemberService memberService;
   private final MemberFacade memberFacade;
 
+  @GetMapping
+  public ResponseDto<MemberDto> findMember(Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
+    return ResponseDto.from(memberService.findById(Long.parseLong(user.getUsername())));
+  }
+
   @GetMapping("/{id}")
-  public ResponseDto<MemberDto> findMember(@PathVariable final Long id) {
-    return ResponseDto.from(memberService.findMember(id));
+  public ResponseDto<MemberDto> findMemberById(@PathVariable final Long id) {
+    return ResponseDto.from(memberService.findById(id));
   }
 
   @GetMapping("/level/{id}")
