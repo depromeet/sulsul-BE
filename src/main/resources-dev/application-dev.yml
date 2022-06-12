@@ -9,7 +9,8 @@ spring:
     password: Sulsul1004~
   jpa:
     properties:
-      hibernate.default_batch_fetch_size: 1000
+      hibernate:
+        default_batch_fetch_size: 100
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
