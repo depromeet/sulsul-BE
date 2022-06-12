@@ -15,6 +15,7 @@ import com.depromeet.sulsul.common.error.exception.custom.RecordNotFoundExceptio
 import com.depromeet.sulsul.common.error.exception.custom.RequestSizeExceedException;
 import com.depromeet.sulsul.common.error.exception.custom.UnAuthorizedException;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       RecordNotFoundException.class, MemberNotFoundException.class,})
   protected ResponseDto<?> handleBadRequestException(final BusinessException e) {
     log.error("BusinessException : {}", e.toString());
-    e.printStackTrace();
+    Sentry.captureException(e);
     return ResponseDto.ERROR(e, BAD_REQUEST);
   }
 
@@ -37,21 +38,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       UnAuthorizedException.class})
   protected ResponseDto<?> handleAuthenticationException(final BusinessException e) {
     log.error("BusinessException : {}", e.toString());
-    e.printStackTrace();
+    Sentry.captureException(e);
     return ResponseDto.ERROR(e, UNAUTHORIZED);
   }
 
   @ExceptionHandler(BusinessException.class)
   protected ResponseDto<?> handleBusinessException(final BusinessException e) {
     log.error("BusinessException : {}", e.toString());
-    e.printStackTrace();
+    Sentry.captureException(e);
     return ResponseDto.ERROR(e, INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(Exception.class)
   protected ResponseDto<?> handleException(final Exception e) {
     log.error("Exception : {}", e.toString());
-    e.printStackTrace();
+    Sentry.captureException(e);
     return ResponseDto.ERROR(e, INTERNAL_SERVER_ERROR);
   }
 }

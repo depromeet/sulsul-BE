@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Swagger 3.0.0
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
@@ -50,6 +51,9 @@ dependencies {
 
     // validate
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Sentry
+    implementation("io.sentry:sentry-spring-boot-starter:6.0.0")
 
     implementation 'junit:junit:4.13.1'
 

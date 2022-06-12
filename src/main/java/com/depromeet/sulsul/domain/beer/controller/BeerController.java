@@ -1,5 +1,7 @@
 package com.depromeet.sulsul.domain.beer.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
@@ -13,14 +15,12 @@ import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.beer.entity.BeerType;
 import com.depromeet.sulsul.domain.beer.entity.SortType;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
-import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,30 +43,28 @@ public class BeerController {
   @GetMapping
   @ApiOperation(value = "(deprecated) 맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
-      @RequestParam("beerId") Long beerId,
-      @RequestParam(required = false) List<BeerType> beerTypes,
+      @RequestParam("beerId") Long beerId, @RequestParam(required = false) List<BeerType> beerTypes,
       @RequestParam(required = false) List<Long> countryIds,
       @RequestParam(required = false) SortType sortType,
       @RequestParam(value = "keyword", required = false) String searchKeyword,
       Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
     BeerSearchConditionRequest beerSearchConditionRequest = new BeerSearchConditionRequest(
         beerTypes, countryIds, sortType, searchKeyword);
-    return beerService.findPageWithFilterRequest(Long.parseUnsignedLong(user.getUsername()), beerId, beerSearchConditionRequest);
+    return beerService.findPageWithFilterRequest(getMemberIdFromPrincipal(authentication), beerId,
+        beerSearchConditionRequest);
   }
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 리스트 조회 API")
   public ResponseDto<BeerResponsesDto> findRecommends(Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(beerService.findRecommends(Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(beerService.findRecommends(getMemberIdFromPrincipal(authentication)));
   }
 
   @GetMapping("/liked")
   @ApiOperation(value = "추천 맥주 리스트 조회(반한 맥주) API")
   public ResponseDto<BeerResponsesDto> findLikedRecommends(Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(beerService.findLikedRecommends(Long.parseUnsignedLong(user.getUsername()), true));
+    return ResponseDto.from(
+        beerService.findLikedRecommends(getMemberIdFromPrincipal(authentication), true));
   }
 
   @PostMapping("/count")
@@ -79,9 +77,9 @@ public class BeerController {
   @GetMapping("/{beerId}")
   @ApiOperation(value = "맥주 상세 조회 API")
   public ResponseDto<BeerDetailResponseDto> findById(@PathVariable("beerId") Long beerId,
-                                                     Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(beerService.findById(Long.parseUnsignedLong(user.getUsername()), beerId));
+      Authentication authentication) {
+    return ResponseDto.from(
+        beerService.findById(getMemberIdFromPrincipal(authentication), beerId));
   }
 
   @GetMapping("/types")
