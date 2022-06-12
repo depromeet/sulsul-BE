@@ -7,7 +7,7 @@ RUN target=/root/.gradle ./gradlew clean build -Pprofile=prod
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
 # run
-FROM build  
+FROM build
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/build/dependency
 COPY --from=build ${DEPENDENCY} /app/lib
