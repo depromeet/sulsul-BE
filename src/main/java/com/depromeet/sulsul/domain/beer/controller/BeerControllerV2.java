@@ -1,12 +1,13 @@
 package com.depromeet.sulsul.domain.beer.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.request.ReadRequest;
 import com.depromeet.sulsul.common.response.dto.PageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTotalCountResponseDto;
 import com.depromeet.sulsul.domain.beer.service.BeerService;
-import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,28 +32,28 @@ public class BeerControllerV2 {
   @PostMapping
   @ApiOperation(value = "맥주 조회 API (검색/필터/정렬 포함)")
   public PageableResponseDto<BeerResponseDto> findPageWithFilterRequest(
-      @RequestBody(required = false) @Validated ReadRequest readRequest, Authentication authentication) {
-
-    User user = (User) authentication.getPrincipal();
+      @RequestBody(required = false) @Validated ReadRequest readRequest,
+      Authentication authentication) {
     if (readRequest == null) {
-      return beerService.findAll(Long.parseUnsignedLong(user.getUsername()));
+      return beerService.findAll(getMemberIdFromPrincipal(authentication));
     }
-    return beerService.findPageWithReadRequest(Long.parseUnsignedLong(user.getUsername()), readRequest);
+    return beerService.findPageWithReadRequest(getMemberIdFromPrincipal(authentication),
+        readRequest);
   }
 
   @GetMapping("/recommend")
   @ApiOperation(value = "추천 맥주 조회 API")
-  public ResponseDto<List<BeerResponseDto>> findRecommends() {
-    Long memberId = 1L;
-    return ResponseDto.from(beerService.findRecommends(memberId).getBeerResponseDtos());
+  public ResponseDto<List<BeerResponseDto>> findRecommends(Authentication authentication) {
+    return ResponseDto.from(
+        beerService.findRecommends(getMemberIdFromPrincipal(authentication)).getBeerResponseDtos());
   }
 
   @PostMapping("/liked")
   @ApiOperation(value = "반한 맥주 API")
   public PageableResponseDto<BeerResponseDto> findLikes(
-      @RequestBody(required = false) @Validated ReadRequest readRequest, Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return beerService.findLikes(Long.parseUnsignedLong(user.getUsername()), readRequest);
+      @RequestBody(required = false) @Validated ReadRequest readRequest,
+      Authentication authentication) {
+    return beerService.findLikes(getMemberIdFromPrincipal(authentication), readRequest);
   }
 
   @GetMapping("/count")
