@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.depromeet.sulsul.common.entity.ImageType;
+import com.depromeet.sulsul.common.error.exception.custom.MediaFileProcessException;
 import com.depromeet.sulsul.util.ImageUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -72,8 +73,8 @@ public class AwsS3ImageClient {
     try {
       ImageIO.write(resize(multipartFile), ext, outputStream);
     } catch (IOException e) {
-      log.error("[ERROR] Exception occured during IO: {}", e.getMessage());
-      e.printStackTrace();
+      log.error(e.getMessage(), e);
+      throw new MediaFileProcessException();
     }
   }
 
