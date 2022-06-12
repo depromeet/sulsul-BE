@@ -1,8 +1,9 @@
 package com.depromeet.sulsul.domain.memberBeer.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.memberBeer.service.MemberBeerService;
-import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,23 +25,24 @@ public class MemberBeerController {
 
   @PostMapping("/{beerId}")
   @ApiOperation(value = "찜하기 API")
-  public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId, Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberBeerService.save(beerId, Long.parseUnsignedLong(user.getUsername())));
+  public ResponseDto<Boolean> save(@PathVariable("beerId") Long beerId,
+      Authentication authentication) {
+    return ResponseDto.from(
+        memberBeerService.save(beerId, getMemberIdFromPrincipal(authentication)));
   }
 
   @ApiOperation(value = "찜하기 취소 API")
   @DeleteMapping("/{beerId}")
-  public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId, Authentication authentication) {
-
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberBeerService.delete(beerId, Long.parseUnsignedLong(user.getUsername())));
+  public ResponseDto<Boolean> delete(@PathVariable("beerId") Long beerId,
+      Authentication authentication) {
+    return ResponseDto.from(
+        memberBeerService.delete(beerId, getMemberIdFromPrincipal(authentication)));
   }
 
   @ApiOperation(value = "해당 유저의 좋아요한 맥주 개수 조회 API")
   @GetMapping
   public ResponseDto<Long> findMemberBeerCountByMemberId(Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberBeerService.findMemberBeerCountByMemberId(Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(
+        memberBeerService.findMemberBeerCountByMemberId(getMemberIdFromPrincipal(authentication)));
   }
 }
