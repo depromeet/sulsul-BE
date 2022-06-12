@@ -51,8 +51,8 @@ spring:
   authentication:
     jwt:
       secretKey: 가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하
-      accessTokenExpirationSecond: 25920000000 #18000 3sec #3600000 #25920000000 10 days
-      refreshTokenExpirationSecond: 2592000000000 #1800000 5min # 86400000 1 days
+      accessTokenExpirationSecond: 86400000 #18000 3sec #3600000 #86400000 1 days
+      refreshTokenExpirationSecond: 1209600000 #1800000 5min # 86400000 #1209600000 14 days
     cookie:
       accessTokenCookieName: accessToken
       refreshTokenCookieName: refreshToken
