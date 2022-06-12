@@ -85,7 +85,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
             , recordIdLoe(recordId)
             , record.deletedAt.isNull()
         )
-        .orderBy(record.createdAt.desc())
+        .orderBy(record.id.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
         .fetch();
   }
@@ -98,11 +98,17 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
             record.endCountryEng.eq(
                 queryFactory.select(record.endCountryEng)
                     .from(record)
-                    .where(record.deletedAt.isNull())
-                    .orderBy(record.createdAt.desc())
+                    .where(
+                          record.deletedAt.isNull()
+                          , memberIdEq(memberId)
+                    )
+                    .orderBy(record.id.desc())
                     .fetchFirst()
             )
+            , record.deletedAt.isNull()
+            , memberIdEq(memberId)
         )
+        .groupBy(record.endCountryEng, record.endCountryKor)
         .fetchOne();
   }
 

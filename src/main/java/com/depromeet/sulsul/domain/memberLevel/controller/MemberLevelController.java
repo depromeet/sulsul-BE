@@ -1,9 +1,10 @@
 package com.depromeet.sulsul.domain.memberLevel.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.service.MemberLevelService;
-import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
 @Api(tags = "멤버 레벨 APIs (version 1)")
 @RequiredArgsConstructor
 public class MemberLevelController {
+
   private final MemberLevelService memberLevelService;
 
   @ApiOperation(value = "전체 level 정보 조회 API")
@@ -37,8 +39,7 @@ public class MemberLevelController {
   @ApiOperation(value = "해당 유저의 level 조회 API")
   @GetMapping
   public ResponseDto<MemberLevelResponseDto> find(Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return ResponseDto.from(memberLevelService.find(Long.parseUnsignedLong(user.getUsername())));
+    return ResponseDto.from(memberLevelService.find(getMemberIdFromPrincipal(authentication)));
   }
 
 }

@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Swagger 3.0.0
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
@@ -44,8 +45,16 @@ dependencies {
     //lucy
     implementation group: 'com.navercorp.lucy', name: 'lucy-xss-servlet', version: '2.0.1'
     implementation 'com.navercorp.lucy:lucy-xss:1.6.3'
+
     //StringEscapeUtils 를 사용하기 위해 commons-text 의존성 추가
     implementation 'org.apache.commons:commons-text:1.8'
+
+    // validate
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Sentry
+    implementation("io.sentry:sentry-spring-boot-starter:6.0.0")
+
     implementation 'junit:junit:4.13.1'
 
     runtimeOnly 'mysql:mysql-connector-java'

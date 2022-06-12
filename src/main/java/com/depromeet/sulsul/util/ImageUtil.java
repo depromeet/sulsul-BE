@@ -50,7 +50,6 @@ public class ImageUtil {
   }
 
   public static boolean isValidExtension(String fileName) {
-    System.out.println(extractExt(fileName));
     if (EnumUtils.isValidEnum(ImageExt.class, extractExt(fileName).toUpperCase())) {
       return true;
     }
