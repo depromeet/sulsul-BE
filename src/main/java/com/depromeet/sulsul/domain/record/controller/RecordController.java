@@ -76,7 +76,8 @@ public class RecordController {
 
   @ApiOperation(value = "'이 맥주는 어때요' 관련 맥주 정보 조회 API")
   @PostMapping("/find")
-  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(@RequestBody RecordFindRequestDto recordFindRequestDto) {
+  public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
+      @RequestBody RecordFindRequestDto recordFindRequestDto) {
     return recordService.findAllRecordsWithPageable(recordFindRequestDto);
   }
 
@@ -88,7 +89,7 @@ public class RecordController {
   }
 
   @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
-  @GetMapping(value = {"/tickets/{recordId}", "/ticket"})
+  @GetMapping(value = {"/tickets/{recordId}", "/tickets"})
   public DescPageableResponseDto<RecordTicketResponseDto> findAllRecordsTicketWithPageable(
       @PathVariable(name = "recordId", required = false) Long recordId,
       Authentication authentication) {
@@ -97,7 +98,7 @@ public class RecordController {
   }
 
   @ApiOperation(value = "해당 유저 최신 작성 record 국가 개수 조회 API")
-  @GetMapping("/ticket/country/")
+  @GetMapping("/recently-visited-country")
   public ResponseDto<RecordCountryAndCountResponseDto> findCountryAndCountByMemberId(
       Authentication authentication) {
     return ResponseDto.from(
