@@ -52,4 +52,9 @@ swagger:
   url: https://api.beerair.ml
   desc: for prod usage
 client:
-  url: beerair.ml
+  url: https://beerair.ml
+sentry:
+  dsn: https://7b7e7ae9e5e64c4182fb1cd8d3c1b9c1@o1285474.ingest.sentry.io/6497128
+  enable-tracing: true
+  traces-sample-rate: 1.0
+  environment: prod
