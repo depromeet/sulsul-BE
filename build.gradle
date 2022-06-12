@@ -57,6 +57,8 @@ dependencies {
 
     implementation 'junit:junit:4.13.1'
 
+    compile group: 'com.newrelic.agent.java', name: 'newrelic-agent', version: '7.6.0'
+    compile group: 'com.newrelic.agent.java', name: 'newrelic-api', version: '7.6.0'
     runtimeOnly 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

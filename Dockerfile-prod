@@ -11,4 +11,4 @@ FROM build
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/build/dependency
 COPY --from=build ${DEPENDENCY} /app/lib
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","./build/libs/sulsul-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-javaagent:./newrelic/newrelic.jar","-jar","-Dspring.profiles.active=prod","./build/libs/sulsul-0.0.1-SNAPSHOT.jar"]
