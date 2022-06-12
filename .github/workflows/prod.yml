@@ -1,0 +1,97 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ prod ]
+  pull_request:
+    branches: [ prod ]
+    paths-ignore:
+      - "**.md"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # Set JDK Version
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      
+      # Modify Permission
+      - name: Modify Permission
+        run: chmod +x gradlew
+        
+  #     Test application build
+  #     - name: Test with Gradle 
+  #       run: ./gradlew test
+
+      - name: create application-prod.yml
+        run: |
+          cd ./src/main/resources
+          touch ./application-prod.yml
+          echo "${{ secrets.PROD_YML }}" > ./application-prod.yml
+        shell: bash
+
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: zeze1004/sulsul-prod
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      # Login AWS 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download from S3
+        run: aws s3 cp --region ap-northeast-2 s3://sulsul-config/newrelic.zip newrelic.zip
+      - name: unzip zip file
+        run: unzip newrelic.zip -d ./
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-prod
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+
+      - name: echo tag - prod
+        run: echo ${{ steps.docker_meta.outputs.tags }}
+
+      # Deploy to prod
+      - name: Deploy to 
+        uses: appleboy/ssh-action@master
+        id: deploy-prod
+        with:
+            host: ${{ secrets.HOST_PROD }}
+            username: ec2-user
+            key: ${{ secrets.PRIVATE_KEY_PROD }}
+            envs: GITHUB_SHA
+            script: |
+                sudo docker rm -f $(docker ps -qa)
+                sudo docker pull ${{ steps.docker_meta.outputs.tags }}
+                docker run -d -p 8080:8080 --name prod ${{ steps.docker_meta.outputs.tags }}

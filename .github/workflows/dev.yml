@@ -1,0 +1,84 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+    paths-ignore:
+      - "**.md"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # Set JDK Version
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      
+      # Modify Permission
+      - name: Modify Permission
+        run: chmod +x gradlew
+        
+  #     Test application build
+  #     - name: Test with Gradle 
+  #       run: ./gradlew test
+
+      - name: create application-dev.yml
+        run: |
+          cd ./src/main/resources
+          touch ./application-dev.yml
+          echo "${{ secrets.DEV_YML }}" > ./application-dev.yml
+        shell: bash
+
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: zeze1004/sulsul-dev
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-dev
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+
+      - name: echo tag - dev
+        run: echo ${{ steps.docker_meta.outputs.tags }}
+
+      # Deploy to dev
+      - name: Deploy to dev
+        uses: appleboy/ssh-action@master
+        id: deploy-dev
+        with:
+            host: ${{ secrets.HOST_DEV }}
+            username: ec2-user
+            key: ${{ secrets.PRIVATE_KEY_DEV }}
+            envs: GITHUB_SHA
+            script: |
+                sudo docker rm -f $(docker ps -qa)
+                sudo docker pull ${{ steps.docker_meta.outputs.tags }}
+                docker run -d -p 80:8080 --name dev ${{ steps.docker_meta.outputs.tags }}
