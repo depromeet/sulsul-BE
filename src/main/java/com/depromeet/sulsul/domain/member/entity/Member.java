@@ -5,13 +5,8 @@ import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.dto.SocialType;
 import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.depromeet.sulsul.domain.record.entity.Record;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,8 +18,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -50,7 +49,9 @@ public class Member extends BaseEntity {
   private String phoneNumber;
 
   @Enumerated(EnumType.STRING)
-  private SocialType social;
+  private SocialType socialType;
+
+  private String socialId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "tier")
@@ -62,7 +63,7 @@ public class Member extends BaseEntity {
 
   @Builder
   public Member(Long id, List<Record> records, RoleType role, String email, String name,
-                String profileUrl, String phoneNumber, String social) {
+      String profileUrl, String phoneNumber, String socialType, String socialId) {
     this.id = id;
     this.records = records;
     this.role = role;
@@ -70,7 +71,8 @@ public class Member extends BaseEntity {
     this.name = name;
     this.profileUrl = profileUrl;
     this.phoneNumber = phoneNumber;
-    this.social = SocialType.valueOf(social.toUpperCase());
+    this.socialType = SocialType.valueOf(socialType.toUpperCase());
+    this.socialId = socialId;
   }
 
   public Member update(String name, String email) {
@@ -86,12 +88,12 @@ public class Member extends BaseEntity {
   public void updateEmail(String email) {
     this.email = email;
   }
-  
+
   public void updateRegistrationId(String social) {
-    this.social = SocialType.valueOf(social);
+    this.socialType = SocialType.valueOf(social);
   }
 
-  public void updateLevel(MemberLevel memberLevel){
+  public void updateLevel(MemberLevel memberLevel) {
     this.memberLevel = memberLevel;
   }
 }
