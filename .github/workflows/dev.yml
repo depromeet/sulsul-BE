@@ -41,7 +41,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: zeze1004/sulsul-test
+          images: zeze1004/sulsul-dev
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
@@ -67,18 +67,18 @@ jobs:
         run: echo ${{ steps.docker_meta.outputs.tags }}
 
       # Deploy to dev
-      # - name: Deploy to dev
-      #   uses: appleboy/ssh-action@master
-      #   id: deploy-dev
-      #   with:
-      #       host: ${{ secrets.HOST_DEV }}
-      #       username: ec2-user
-      #       key: ${{ secrets.PRIVATE_KEY_DEV }}
-      #       envs: GITHUB_SHA
-      #       script: |
-      #           sudo docker rm -f $(docker ps -qa)
-      #           sudo docker pull ${{ steps.docker_meta.outputs.tags }}
-      #           docker run -d -p 80:8080 --name dev ${{ steps.docker_meta.outputs.tags }}
+      - name: Deploy to dev
+        uses: appleboy/ssh-action@master
+        id: deploy-dev
+        with:
+            host: ${{ secrets.HOST_DEV }}
+            username: ec2-user
+            key: ${{ secrets.PRIVATE_KEY_DEV }}
+            envs: GITHUB_SHA
+            script: |
+                sudo docker rm -f $(docker ps -qa)
+                sudo docker pull ${{ steps.docker_meta.outputs.tags }}
+                docker run -d -p 80:8080 --name dev ${{ steps.docker_meta.outputs.tags }}
 
   # slack
   action-slack:
