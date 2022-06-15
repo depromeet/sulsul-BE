@@ -1,5 +1,7 @@
 package com.depromeet.sulsul.domain.member.dto;
 
+import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
+import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,14 +25,17 @@ public class MemberDto implements Serializable {
 
   private String social;
 
+  private MemberLevelResponseDto memberLevelResponseDto;
+
   @Builder
   @QueryProjection
-  public MemberDto(Long id, String role, String email, String name, String profileUrl, String phoneNumber) {
+  public MemberDto(Long id, String role, String email, String name, String profileUrl, String phoneNumber, MemberLevel memberLevel) {
     this.id = id;
     this.role = role;
     this.email = email;
     this.name = name;
     this.profileUrl = profileUrl;
     this.phoneNumber = phoneNumber;
+    this.memberLevelResponseDto = MemberLevel.toDto(memberLevel);
   }
 }

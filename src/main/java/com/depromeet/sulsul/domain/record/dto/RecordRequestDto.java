@@ -1,8 +1,10 @@
 package com.depromeet.sulsul.domain.record.dto;
 
 import com.depromeet.sulsul.domain.record.entity.Record;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +18,9 @@ public class RecordRequestDto {
   private Long beerId;
   private String imageUrl;
   private String content;
-  private List<Long> FlavorIds = new ArrayList<>();
+  @Size(min = 1, max = 3)
+  @ApiModelProperty(name = "flavorIds", dataType = "List", example = "[1, 2, 3]")
+  private List<Long> flavorIds = new ArrayList<>();
   private Boolean isPublic;
   private Integer feel;
 
