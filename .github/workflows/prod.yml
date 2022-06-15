@@ -8,9 +8,6 @@ on:
     paths-ignore:
       - "**.md"
 
-permissions:
-  contents: read
-
 jobs:
   ci-cd:
     runs-on: ubuntu-latest
@@ -106,7 +103,7 @@ jobs:
           uses: 8398a7/action-slack@v3
           with:
               status: ${{ job.status }}
-              author_name: GitHub-Actions CI/CD
+              author_name: Deploy prod
               fields: repo,message,commit,author,ref,job,took
           env:
               SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
