@@ -1,4 +1,4 @@
-name: CI-CD
+name: BEERAiR-PIPELINE
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  ci-cd:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -63,7 +63,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
+      
+      # monitoring
       - name: Download from S3
         run: aws s3 cp --region ap-northeast-2 s3://sulsul-config/newrelic.zip newrelic.zip
       - name: unzip zip file
@@ -83,7 +84,7 @@ jobs:
         run: echo ${{ steps.docker_meta.outputs.tags }}
 
       # Deploy to prod
-      - name: Deploy to 
+      - name: Deploy to prod
         uses: appleboy/ssh-action@master
         id: deploy-prod
         with:
@@ -95,3 +96,18 @@ jobs:
                 sudo docker rm -f $(docker ps -qa)
                 sudo docker pull ${{ steps.docker_meta.outputs.tags }}
                 docker run -d -p 8080:8080 --name prod ${{ steps.docker_meta.outputs.tags }}
+
+  # slack
+  action-slack:
+    needs: ci-cd
+    runs-on: ubuntu-latest
+    steps:
+        - name: Slack Alarm
+          uses: 8398a7/action-slack@v3
+          with:
+              status: ${{ job.status }}
+              author_name: GitHub-Actions CI/CD
+              fields: repo,message,commit,author,ref,job,took
+          env:
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
+          if: always() 
