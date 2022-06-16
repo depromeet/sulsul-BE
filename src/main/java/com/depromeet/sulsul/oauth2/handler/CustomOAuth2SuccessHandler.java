@@ -22,7 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-
   @Value("${client.url}")
   private String urlOfEnv;
 
@@ -38,11 +37,8 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     String accessToken = jwtTokenProvider.createAccessToken(authentication);
     String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
 
-    cookieUtil.addAccessTokenCookie(response, accessToken);
-    cookieUtil.addRefreshTokenCookie(response, refreshToken);
-
-    response.addHeader("accessToken", accessToken);
-    response.addHeader("refreshToken", refreshToken);
+    cookieUtil.addAccessTokenResponseCookie(response, accessToken);
+    cookieUtil.addRefreshTokenResponseCookie(response, refreshToken);
 
     CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
