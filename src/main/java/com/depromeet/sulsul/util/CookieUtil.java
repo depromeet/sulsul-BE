@@ -24,18 +24,20 @@ public class CookieUtil {
   @Value("${authentication.jwt.refreshTokenExpirationSecond}")
   private Long refreshTokenExpirationSecond;
 
+  private static final String SET_COOKIE = "Set-Cookie";
+
   public void addAccessTokenResponseCookie(HttpServletResponse response, String token) {
     if("dev".equals(domain)){
-      response.addHeader("Set-Cookie", createDevAccessTokenResponseCookie(token).toString());
+      response.addHeader(SET_COOKIE, createDevAccessTokenResponseCookie(token).toString());
     }
-    response.addHeader("Set-Cookie", createProdAccessTokenResponseCookie(token).toString());
+    response.addHeader(SET_COOKIE, createProdAccessTokenResponseCookie(token).toString());
   }
 
   public void addRefreshTokenResponseCookie(HttpServletResponse response, String token) {
     if("dev".equals(domain)){
-      response.addHeader("Set-Cookie", createDevRefreshTokenResponseCookie(token).toString());
+      response.addHeader(SET_COOKIE, createDevRefreshTokenResponseCookie(token).toString());
     }
-    response.addHeader("Set-Cookie", createProdRefreshTokenResponseCookie(token).toString());
+    response.addHeader(SET_COOKIE, createProdRefreshTokenResponseCookie(token).toString());
   }
 
   private ResponseCookie createProdRefreshTokenResponseCookie(String token) {
@@ -64,8 +66,6 @@ public class CookieUtil {
     return ResponseCookie.from(refreshTokenCookieName, token)
         .path("/")
         .httpOnly(true)
-        .secure(false)
-        .sameSite("None")
         .domain(domain)
         .maxAge(refreshTokenExpirationSecond / 1000)
         .build();
@@ -75,8 +75,6 @@ public class CookieUtil {
     return ResponseCookie.from(accessTokenCookieName, token)
         .path("/")
         .httpOnly(true)
-        .secure(false)
-        .sameSite("None")
         .domain(domain)
         .maxAge(accessTokenExpirationSecond / 1000)
         .build();
