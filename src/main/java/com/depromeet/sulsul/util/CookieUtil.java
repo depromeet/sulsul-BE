@@ -27,17 +27,19 @@ public class CookieUtil {
   private static final String SET_COOKIE = "Set-Cookie";
 
   public void addAccessTokenResponseCookie(HttpServletResponse response, String token) {
-    if("dev".equals(domain)){
+    if ("dev".equals(domain)) {
       response.addHeader(SET_COOKIE, createDevAccessTokenResponseCookie(token).toString());
+    } else {
+      response.addHeader(SET_COOKIE, createProdAccessTokenResponseCookie(token).toString());
     }
-    response.addHeader(SET_COOKIE, createProdAccessTokenResponseCookie(token).toString());
   }
 
   public void addRefreshTokenResponseCookie(HttpServletResponse response, String token) {
-    if("dev".equals(domain)){
+    if ("dev".equals(domain)) {
       response.addHeader(SET_COOKIE, createDevRefreshTokenResponseCookie(token).toString());
+    } else {
+      response.addHeader(SET_COOKIE, createProdRefreshTokenResponseCookie(token).toString());
     }
-    response.addHeader(SET_COOKIE, createProdRefreshTokenResponseCookie(token).toString());
   }
 
   private ResponseCookie createProdRefreshTokenResponseCookie(String token) {
