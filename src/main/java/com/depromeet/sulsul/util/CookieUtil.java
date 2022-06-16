@@ -64,6 +64,8 @@ public class CookieUtil {
     return ResponseCookie.from(refreshTokenCookieName, token)
         .path("/")
         .httpOnly(true)
+        .secure(false)
+        .sameSite("None")
         .domain(domain)
         .maxAge(refreshTokenExpirationSecond / 1000)
         .build();
@@ -73,6 +75,8 @@ public class CookieUtil {
     return ResponseCookie.from(accessTokenCookieName, token)
         .path("/")
         .httpOnly(true)
+        .secure(false)
+        .sameSite("None")
         .domain(domain)
         .maxAge(accessTokenExpirationSecond / 1000)
         .build();
