@@ -25,14 +25,20 @@ public class CookieUtil {
   private Long refreshTokenExpirationSecond;
 
   public void addAccessTokenResponseCookie(HttpServletResponse response, String token) {
-    response.addHeader("Set-Cookie", createAccessTokenResponseCookie(token).toString());
+    if("dev".equals(domain)){
+      response.addHeader("Set-Cookie", createDevAccessTokenResponseCookie(token).toString());
+    }
+    response.addHeader("Set-Cookie", createProdAccessTokenResponseCookie(token).toString());
   }
 
   public void addRefreshTokenResponseCookie(HttpServletResponse response, String token) {
-    response.addHeader("Set-Cookie", createRefreshTokenResponseCookie(token).toString());
+    if("dev".equals(domain)){
+      response.addHeader("Set-Cookie", createDevRefreshTokenResponseCookie(token).toString());
+    }
+    response.addHeader("Set-Cookie", createProdRefreshTokenResponseCookie(token).toString());
   }
 
-  private ResponseCookie createRefreshTokenResponseCookie(String token) {
+  private ResponseCookie createProdRefreshTokenResponseCookie(String token) {
     return ResponseCookie.from(refreshTokenCookieName, token)
         .path("/")
         .secure(true)
@@ -43,11 +49,29 @@ public class CookieUtil {
         .build();
   }
 
-  private ResponseCookie createAccessTokenResponseCookie(String token) {
+  private ResponseCookie createProdAccessTokenResponseCookie(String token) {
     return ResponseCookie.from(accessTokenCookieName, token)
         .path("/")
         .secure(true)
         .sameSite("None")
+        .httpOnly(true)
+        .domain(domain)
+        .maxAge(accessTokenExpirationSecond / 1000)
+        .build();
+  }
+
+  private ResponseCookie createDevRefreshTokenResponseCookie(String token) {
+    return ResponseCookie.from(refreshTokenCookieName, token)
+        .path("/")
+        .httpOnly(true)
+        .domain(domain)
+        .maxAge(refreshTokenExpirationSecond / 1000)
+        .build();
+  }
+
+  private ResponseCookie createDevAccessTokenResponseCookie(String token) {
+    return ResponseCookie.from(accessTokenCookieName, token)
+        .path("/")
         .httpOnly(true)
         .domain(domain)
         .maxAge(accessTokenExpirationSecond / 1000)
