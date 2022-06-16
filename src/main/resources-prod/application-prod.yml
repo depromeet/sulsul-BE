@@ -56,7 +56,7 @@ authentication:
   cookie:
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
-    domain: localhost
+    domain: .beerair.ml
 swagger:
   url: https://api.beerair.ml
   desc: for prod usage
