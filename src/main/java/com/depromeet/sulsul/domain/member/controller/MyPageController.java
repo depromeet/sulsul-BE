@@ -36,10 +36,9 @@ public class MyPageController {
   }
 
   @ApiOperation(value = "닉네임 update API")
-  @PutMapping("/{id}")
-  public ResponseDto<?> updateName(@PathVariable Long id,
-      @RequestBody MyPageRequestDto myPageRequestDto) {
-    memberService.updateName(id, myPageRequestDto);
+  @PutMapping
+  public ResponseDto<?> updateName(@RequestBody MyPageRequestDto myPageRequestDto, Authentication authentication) {
+    memberService.updateName(getMemberIdFromPrincipal(authentication), myPageRequestDto);
     return ResponseDto.OK();
   }
 }
