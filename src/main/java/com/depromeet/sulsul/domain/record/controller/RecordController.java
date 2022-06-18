@@ -83,9 +83,9 @@ public class RecordController {
 
 
   @ApiOperation(value = "유저별 기록 수 조회 API")
-  @GetMapping("/count/{id}")
-  public ResponseDto<Long> findMemberRecordCount(@PathVariable Long id) {
-    return ResponseDto.from(recordService.findRecordCountByMemberId(id));
+  @GetMapping("/count")
+  public ResponseDto<Long> findMemberRecordCount(Authentication authentication) {
+    return ResponseDto.from(recordService.findRecordCountByMemberId(getMemberIdFromPrincipal(authentication)));
   }
 
   @ApiOperation(value = "기록 작성 맥주 티켓 조회 API")
