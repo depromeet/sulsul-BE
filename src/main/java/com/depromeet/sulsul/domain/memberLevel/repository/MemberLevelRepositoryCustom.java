@@ -10,4 +10,6 @@ public interface MemberLevelRepositoryCustom {
 
   Integer findNextLevelRequire(Integer tier);
 
+  Integer findMaxLevel();
+
 }
