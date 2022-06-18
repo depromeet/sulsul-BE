@@ -7,13 +7,11 @@ import com.depromeet.sulsul.domain.member.dto.MyPageRequestDto;
 import com.depromeet.sulsul.domain.member.dto.MyPageResponseDto;
 import com.depromeet.sulsul.domain.member.facade.MemberFacade;
 import com.depromeet.sulsul.domain.member.service.MemberService;
-import com.depromeet.sulsul.oauth2.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,8 +35,8 @@ public class MyPageController {
 
   @ApiOperation(value = "닉네임 update API")
   @PutMapping
-  public ResponseDto<?> updateName(@RequestBody MyPageRequestDto myPageRequestDto, Authentication authentication) {
-    memberService.updateName(getMemberIdFromPrincipal(authentication), myPageRequestDto);
+  public ResponseDto<?> updateNickName(@RequestBody MyPageRequestDto myPageRequestDto, Authentication authentication) {
+    memberService.updateNickName(getMemberIdFromPrincipal(authentication), myPageRequestDto);
     return ResponseDto.OK();
   }
 }

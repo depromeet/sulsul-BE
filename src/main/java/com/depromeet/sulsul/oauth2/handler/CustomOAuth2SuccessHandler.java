@@ -47,7 +47,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     Member member = memberRepository.findById(oAuth2User.getMemberId()).orElseThrow(MemberNotFoundException::new);
 
     String targetUrl = UriComponentsBuilder.fromUriString(
-            Strings.isBlank(member.getName()) ? urlOfEnv + "/signup" : urlOfEnv)
+            Strings.isBlank(member.getNickName()) ? urlOfEnv + "/signup" : urlOfEnv)
         .build()
         .toUriString();
 
