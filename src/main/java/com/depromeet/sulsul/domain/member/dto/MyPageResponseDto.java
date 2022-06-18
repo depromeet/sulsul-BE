@@ -19,7 +19,7 @@ public class MyPageResponseDto  implements Serializable {
 
   private String nickname;
   private String email;
-  private Integer remainRecord;
+  private Long remainRecord;
 
   @Builder
   public MyPageResponseDto(Long beerCount, Long recordCount, Long countryCount,
@@ -27,7 +27,7 @@ public class MyPageResponseDto  implements Serializable {
       Long requestBeerCount,
       String nickname,
       String email,
-      Integer remainRecord) {
+      Long remainRecord) {
     this.beerCount = beerCount;
     this.recordCount = recordCount;
     this.countryCount = countryCount;
@@ -43,7 +43,7 @@ public class MyPageResponseDto  implements Serializable {
       Long requestBeerCount,
       String nickname,
       String email,
-      Integer remainRecord) {
+      Long remainRecord) {
     return MyPageResponseDto.builder()
         .beerCount(beerCount)
         .recordCount(recordCount)
