@@ -45,7 +45,7 @@ public class MemberFacade {
     MemberDto memberDto = memberService.findById(memberId);
     String nickName = memberDto.getName();
     String email = memberDto.getEmail();
-    Integer nextLevelRequire = memberLevelService.findNextLevelRequire(memberId);
+    Long nextLevelRequire = memberLevelService.findNextLevelRequire(memberId) - recordCount;
 
     return MyPageResponseDto.of(beerCount, recordCount, countryCount, memberBeerCount, requestBeerCount, nickName, email, nextLevelRequire);
   }

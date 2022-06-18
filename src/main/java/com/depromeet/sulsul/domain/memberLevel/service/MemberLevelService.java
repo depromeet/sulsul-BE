@@ -40,7 +40,7 @@ public class MemberLevelService {
     Integer tier = memberLevelResponseDto.getTier();
     // TODO : 마지막 레벨 하드코딩
     if(tier==5) tier--;
-    return memberLevelRepository.findNextLevelRequire(tier) - memberLevelResponseDto.getReq();
+    return memberLevelRepository.findNextLevelRequire(tier);
   }
 
 }
