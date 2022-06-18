@@ -44,7 +44,7 @@ public class Member extends BaseEntity {
   private RoleType role;
 
   private String email;
-  private String name;
+  private String nickName;
   private String profileUrl;
   private String phoneNumber;
 
@@ -62,13 +62,13 @@ public class Member extends BaseEntity {
   }
 
   @Builder
-  public Member(Long id, List<Record> records, RoleType role, String email, String name,
+  public Member(Long id, List<Record> records, RoleType role, String email, String nickName,
       String profileUrl, String phoneNumber, String socialType, String socialId) {
     this.id = id;
     this.records = records;
     this.role = role;
     this.email = email;
-    this.name = name;
+    this.nickName = nickName;
     this.profileUrl = profileUrl;
     this.phoneNumber = phoneNumber;
     this.socialType = SocialType.valueOf(socialType.toUpperCase());
@@ -76,13 +76,13 @@ public class Member extends BaseEntity {
   }
 
   public Member update(String name, String email) {
-    this.name = name;
+    this.nickName = name;
     this.email = email;
     return this;
   }
 
-  public void updateName(String name) {
-    this.name = name;
+  public void updateNickName(String name) {
+    this.nickName = name;
   }
 
   public void updateEmail(String email) {

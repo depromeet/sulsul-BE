@@ -71,7 +71,7 @@ public class JwtTokenProvider {
   public String createAccessToken(Member member) {
 
     return Jwts.builder()
-        .setSubject(member.getName())
+        .setSubject(member.getNickName())
         .setClaims(createClaims(member.getId()))
         .setIssuedAt(new Date())
         .setExpiration(parseExpiration(accessTokenExpirationSecond))
