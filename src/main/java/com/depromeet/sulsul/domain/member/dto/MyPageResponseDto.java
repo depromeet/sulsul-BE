@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MyPageRequestDto implements Serializable {
+public class MyPageResponseDto  implements Serializable {
 
   private Long beerCount;
   private Long recordCount;
@@ -20,7 +20,7 @@ public class MyPageRequestDto implements Serializable {
   private String nickname;
 
   @Builder
-  public MyPageRequestDto(Long beerCount, Long recordCount, Long countryCount,
+  public MyPageResponseDto(Long beerCount, Long recordCount, Long countryCount,
       Long memberBeerCount,
       Long requestBeerCount,
       String nickname) {
@@ -32,15 +32,17 @@ public class MyPageRequestDto implements Serializable {
     this.nickname = nickname;
   }
 
-  public static MyPageRequestDto of(Long beerCount, Long recordCount, Long countryCount,
+  public static MyPageResponseDto of(Long beerCount, Long recordCount, Long countryCount,
       Long memberBeerCount,
-      Long requestBeerCount) {
-    return MyPageRequestDto.builder()
+      Long requestBeerCount,
+      String nickname) {
+    return MyPageResponseDto.builder()
         .beerCount(beerCount)
         .recordCount(recordCount)
         .countryCount(countryCount)
         .memberBeerCount(memberBeerCount)
         .requestBeerCount(requestBeerCount)
+        .nickname(nickname)
         .build();
   }
 }
