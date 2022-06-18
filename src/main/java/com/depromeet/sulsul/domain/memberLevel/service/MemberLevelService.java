@@ -4,6 +4,7 @@ import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.depromeet.sulsul.domain.memberLevel.repository.MemberLevelRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,7 @@ public class MemberLevelService {
   public Integer findNextLevelRequire(Long memberId){
     MemberLevelResponseDto memberLevelResponseDto = find(memberId);
     Integer tier = memberLevelResponseDto.getTier();
-    // TODO : 마지막 레벨 하드코딩
-    if(tier==5) tier--;
+    if(Objects.equals(memberLevelRepository.findMaxLevel(), tier)) tier--;
     return memberLevelRepository.findNextLevelRequire(tier);
   }
 

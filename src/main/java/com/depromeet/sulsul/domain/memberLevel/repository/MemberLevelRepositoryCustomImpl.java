@@ -41,4 +41,12 @@ public class MemberLevelRepositoryCustomImpl implements MemberLevelRepositoryCus
         .where(memberLevel.tier.eq(tier+1))
         .fetchFirst();
   }
+
+  @Override
+  public Integer findMaxLevel(){
+    return queryFactory.select(memberLevel.tier)
+        .from(memberLevel)
+        .orderBy(memberLevel.tier.desc())
+        .fetchFirst();
+  }
 }
