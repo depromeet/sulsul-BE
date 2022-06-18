@@ -1,18 +1,13 @@
-name: CI-CD
+name: BEERAiR-PIPELINE
 
 on:
   push:
     branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
     paths-ignore:
       - "**.md"
 
-permissions:
-  contents: read
-
 jobs:
-  build:
+  ci-cd:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -81,4 +76,19 @@ jobs:
             script: |
                 sudo docker rm -f $(docker ps -qa)
                 sudo docker pull ${{ steps.docker_meta.outputs.tags }}
-                docker run -d -p 80:8080 --name dev ${{ steps.docker_meta.outputs.tags }}
+                docker run -d -p 8080:8080 --name dev ${{ steps.docker_meta.outputs.tags }}
+
+  # slack
+  action-slack:
+    needs: ci-cd
+    runs-on: ubuntu-latest
+    steps:
+        - name: Slack Alarm
+          uses: 8398a7/action-slack@v3
+          with:
+              status: ${{ job.status }}
+              author_name: Deploy dev
+              fields: repo,message,commit,author,ref,job,took
+          env:
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
+          if: always() 

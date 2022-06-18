@@ -1,12 +1,5 @@
 package com.depromeet.sulsul.oauth2;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.SpringSecurityCoreVersion;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.util.Assert;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.util.Assert;
 
 public class CustomOAuth2User implements OAuth2User {
 
@@ -30,8 +29,9 @@ public class CustomOAuth2User implements OAuth2User {
   private Long memberId;
 
   private String email;
+
   public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes,
-                           String nameAttributeKey, Long memberId, String email) {
+      String nameAttributeKey, Long memberId) {
     Assert.notEmpty(attributes, "attributes cannot be empty");
     Assert.hasText(nameAttributeKey, "nameAttributeKey cannot be empty");
     if (!attributes.containsKey(nameAttributeKey)) {
@@ -43,7 +43,6 @@ public class CustomOAuth2User implements OAuth2User {
     this.attributes = Collections.unmodifiableMap(new LinkedHashMap<>(attributes));
     this.nameAttributeKey = nameAttributeKey;
     this.memberId = memberId;
-    this.email = email;
   }
 
   @Override
@@ -111,7 +110,7 @@ public class CustomOAuth2User implements OAuth2User {
     return memberId;
   }
 
-  public void setMemberId(Long memberId){
+  public void setMemberId(Long memberId) {
     this.memberId = memberId;
   }
 

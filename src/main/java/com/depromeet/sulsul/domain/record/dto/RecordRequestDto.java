@@ -44,11 +44,7 @@ public class RecordRequestDto {
   private Integer feel;
 
   public Record toEntity() {
-    return Record.builder()
-        .content(this.content)
-        .feel(this.feel)
-        .imageUrl(this.imageUrl)
-        .isPublic(this.isPublic)
-        .build();
+    return Record.builder().content(this.content).feel(this.feel).imageUrl(this.imageUrl)
+        .isPublic(this.isPublic).build();
   }
 }

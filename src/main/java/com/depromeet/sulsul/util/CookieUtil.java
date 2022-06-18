@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieUtil {
 
-  @Value("${client.url}")
-  private String urlOfEnv;
+  @Value("${authentication.cookie.domain}")
+  private String domain;
 
   @Value("${authentication.cookie.accessTokenCookieName}")
   private String accessTokenCookieName;
@@ -24,38 +24,64 @@ public class CookieUtil {
   @Value("${authentication.jwt.refreshTokenExpirationSecond}")
   private Long refreshTokenExpirationSecond;
 
-  public void addAccessTokenCookie(HttpServletResponse response, String token) {
-    response.addCookie(createAccessTokenCookie(token));
-  }
+  private static final String SET_COOKIE = "Set-Cookie";
 
   public void addAccessTokenResponseCookie(HttpServletResponse response, String token) {
-    response.setHeader("Set-Cookie", createAccessTokenResponseCookie(token).toString());
+    if ("dev".equals(domain)) {
+      response.addHeader(SET_COOKIE, createDevAccessTokenResponseCookie(token).toString());
+    } else {
+      response.addHeader(SET_COOKIE, createProdAccessTokenResponseCookie(token).toString());
+    }
   }
 
-  public void addRefreshTokenCookie(HttpServletResponse response, String token) {
-    response.addCookie(createRefreshTokenCookie(token));
+  public void addRefreshTokenResponseCookie(HttpServletResponse response, String token) {
+    if ("dev".equals(domain)) {
+      response.addHeader(SET_COOKIE, createDevRefreshTokenResponseCookie(token).toString());
+    } else {
+      response.addHeader(SET_COOKIE, createProdRefreshTokenResponseCookie(token).toString());
+    }
   }
 
-  private Cookie createAccessTokenCookie(String token) {
-    Cookie cookie = new Cookie(accessTokenCookieName, token);
-    setPropertyOfCookie(cookie, accessTokenExpirationSecond / 1000);
-    return cookie;
-  }
-
-  private ResponseCookie createAccessTokenResponseCookie(String token) {
-    ResponseCookie cookie = ResponseCookie.from("accessToken", token).path("/").secure(false)
-        .sameSite("None").httpOnly(true).domain("beerair.ml").maxAge(accessTokenExpirationSecond / 1000)
+  private ResponseCookie createProdRefreshTokenResponseCookie(String token) {
+    return ResponseCookie.from(refreshTokenCookieName, token)
+        .path("/")
+        .secure(true)
+        .sameSite("None")
+        .httpOnly(true)
+        .domain(domain)
+        .maxAge(refreshTokenExpirationSecond / 1000)
         .build();
-
-    return cookie;
   }
 
-  private Cookie createRefreshTokenCookie(String token) {
+  private ResponseCookie createProdAccessTokenResponseCookie(String token) {
+    return ResponseCookie.from(accessTokenCookieName, token)
+        .path("/")
+        .secure(true)
+        .sameSite("None")
+        .httpOnly(true)
+        .domain(domain)
+        .maxAge(accessTokenExpirationSecond / 1000)
+        .build();
+  }
 
-    Cookie cookie = new Cookie(refreshTokenCookieName, token);
-    setPropertyOfCookie(cookie, refreshTokenExpirationSecond / 1000);
+  private ResponseCookie createDevRefreshTokenResponseCookie(String token) {
+    return ResponseCookie.from(refreshTokenCookieName, token)
+        .path("/")
+        .httpOnly(true)
+        .sameSite("")
+        .domain(domain)
+        .maxAge(refreshTokenExpirationSecond / 1000)
+        .build();
+  }
 
-    return cookie;
+  private ResponseCookie createDevAccessTokenResponseCookie(String token) {
+    return ResponseCookie.from(accessTokenCookieName, token)
+        .path("/")
+        .secure(false)
+        .sameSite("")
+        .domain(domain)
+        .maxAge(accessTokenExpirationSecond / 1000)
+        .build();
   }
 
   public void deleteAccessTokenCookie(HttpServletResponse response) {
@@ -69,7 +95,6 @@ public class CookieUtil {
 
     Cookie cookie = new Cookie(refreshTokenCookieName, null);
     setPropertyOfCookie(cookie, 0L);
-
     response.addCookie(cookie);
   }
 
