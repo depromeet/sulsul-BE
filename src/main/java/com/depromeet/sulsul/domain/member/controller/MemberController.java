@@ -1,5 +1,7 @@
 package com.depromeet.sulsul.domain.member.controller;
 
+import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
+
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.facade.MemberFacade;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,15 +32,9 @@ public class MemberController {
     return ResponseDto.from(memberService.findById(Long.parseLong(user.getUsername())));
   }
 
-  @ApiOperation(value = "사용자의 ID 값으로 회원정보 검색")
-  @GetMapping("/{id}")
-  public ResponseDto<MemberDto> findMemberById(@PathVariable final Long id) {
-    return ResponseDto.from(memberService.findById(id));
-  }
-
-  @GetMapping("/level/{id}")
-  public ResponseDto<?> findLevelByMemberId(@PathVariable Long id) {
-    return ResponseDto.from(memberService.findLevelByMemberId(id));
+  @GetMapping("/level")
+  public ResponseDto<?> findLevelByMemberId(Authentication authentication) {
+    return ResponseDto.from(memberService.findLevelByMemberId(getMemberIdFromPrincipal(authentication)));
   }
 
   @ApiOperation(value = "로그인되어 있는 사용자 회원 탈퇴")
