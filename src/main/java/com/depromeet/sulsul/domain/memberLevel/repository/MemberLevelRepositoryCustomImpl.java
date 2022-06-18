@@ -3,10 +3,9 @@ package com.depromeet.sulsul.domain.memberLevel.repository;
 import static com.depromeet.sulsul.domain.member.entity.QMember.member;
 import static com.depromeet.sulsul.domain.memberLevel.entity.QMemberLevel.memberLevel;
 
-import com.depromeet.sulsul.domain.member.entity.QMember;
 import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.dto.QMemberLevelResponseDto;
-import com.depromeet.sulsul.domain.memberLevel.entity.QMemberLevel;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +31,14 @@ public class MemberLevelRepositoryCustomImpl implements MemberLevelRepositoryCus
         ))
         .from(member)
         .where(member.id.eq(memberId))
+        .fetchFirst();
+  }
+
+  @Override
+  public Integer findNextLevelRequire(Integer tier){
+    return queryFactory.select(memberLevel.req)
+        .from(memberLevel)
+        .where(memberLevel.tier.eq(tier+1))
         .fetchFirst();
   }
 }

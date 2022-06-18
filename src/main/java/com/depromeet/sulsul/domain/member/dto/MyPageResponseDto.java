@@ -18,24 +18,32 @@ public class MyPageResponseDto  implements Serializable {
   private Long requestBeerCount;
 
   private String nickname;
+  private String email;
+  private Integer remainRecord;
 
   @Builder
   public MyPageResponseDto(Long beerCount, Long recordCount, Long countryCount,
       Long memberBeerCount,
       Long requestBeerCount,
-      String nickname) {
+      String nickname,
+      String email,
+      Integer remainRecord) {
     this.beerCount = beerCount;
     this.recordCount = recordCount;
     this.countryCount = countryCount;
     this.memberBeerCount = memberBeerCount;
     this.requestBeerCount = requestBeerCount;
     this.nickname = nickname;
+    this.email = email;
+    this.remainRecord = remainRecord;
   }
 
   public static MyPageResponseDto of(Long beerCount, Long recordCount, Long countryCount,
       Long memberBeerCount,
       Long requestBeerCount,
-      String nickname) {
+      String nickname,
+      String email,
+      Integer remainRecord) {
     return MyPageResponseDto.builder()
         .beerCount(beerCount)
         .recordCount(recordCount)
@@ -43,6 +51,8 @@ public class MyPageResponseDto  implements Serializable {
         .memberBeerCount(memberBeerCount)
         .requestBeerCount(requestBeerCount)
         .nickname(nickname)
+        .email(email)
+        .remainRecord(remainRecord)
         .build();
   }
 }
