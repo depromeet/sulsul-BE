@@ -38,7 +38,7 @@ public class MemberController {
   }
 
   @GetMapping("/level/{id}")
-  public ResponseDto<?> findLevelByMemberId(@PathVariable Long id) {
+  public ResponseDto<Long> findLevelByMemberId(@PathVariable Long id) {
     return ResponseDto.from(memberService.findLevelByMemberId(id));
   }
 

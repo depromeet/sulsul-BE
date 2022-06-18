@@ -4,6 +4,7 @@ import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
 
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.dto.MyPageRequestDto;
+import com.depromeet.sulsul.domain.member.dto.MyPageResponseDto;
 import com.depromeet.sulsul.domain.member.facade.MemberFacade;
 import com.depromeet.sulsul.domain.member.service.MemberService;
 import com.depromeet.sulsul.oauth2.User;
@@ -29,7 +30,7 @@ public class MyPageController {
 
   @ApiOperation(value = "count 조회 API")
   @GetMapping
-  public ResponseDto<MyPageRequestDto> findMyPageByMemberId(Authentication authentication) {
+  public ResponseDto<MyPageResponseDto> findMyPageByMemberId(Authentication authentication) {
     return ResponseDto.from(
         memberFacade.findMyPageByMemberId(getMemberIdFromPrincipal(authentication)));
   }
