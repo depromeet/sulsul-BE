@@ -6,6 +6,7 @@ import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundExceptio
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerFindDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.entity.RequestBeer;
@@ -31,9 +32,9 @@ public class RequestBeerService {
   }
 
   @Transactional(readOnly = true)
-  public DescPageableResponseDto<RequestBeerResponseDto> find(Long requestBeerId, Long memberId){
+  public DescPageableResponseDto<RequestBeerResponseDto> find(RequestBeerFindDto requestBeerFindDto, Long memberId){
     List<RequestBeerResponseDto> byMemberIdWithPageable = requestBeerRepository.findByMemberIdWithPageable(
-        requestBeerId, memberId);
+        requestBeerFindDto, memberId);
 
     Long resultCount = requestBeerCount(memberId);
     Long cursor = byMemberIdWithPageable.isEmpty() ? null : byMemberIdWithPageable.get(byMemberIdWithPageable.size()-1).getBeerId();

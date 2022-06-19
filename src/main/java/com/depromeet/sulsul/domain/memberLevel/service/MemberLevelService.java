@@ -4,6 +4,7 @@ import com.depromeet.sulsul.domain.memberLevel.dto.MemberLevelResponseDto;
 import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.depromeet.sulsul.domain.memberLevel.repository.MemberLevelRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,14 @@ public class MemberLevelService {
   @Transactional(readOnly = true)
   public MemberLevelResponseDto find(Long memberId){
     return memberLevelRepository.findMemberLevel(memberId);
+  }
+
+  @Transactional(readOnly = true)
+  public Integer findNextLevelRequire(Long memberId){
+    MemberLevelResponseDto memberLevelResponseDto = find(memberId);
+    Integer tier = memberLevelResponseDto.getTier();
+    if(Objects.equals(memberLevelRepository.findMaxLevel(), tier)) tier--;
+    return memberLevelRepository.findNextLevelRequire(tier);
   }
 
 }

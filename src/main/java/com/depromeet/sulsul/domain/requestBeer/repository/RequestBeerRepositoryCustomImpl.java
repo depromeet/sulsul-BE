@@ -1,6 +1,7 @@
 package com.depromeet.sulsul.domain.requestBeer.repository;
 
 import com.depromeet.sulsul.domain.requestBeer.dto.QRequestBeerResponseDto;
+import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerFindDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -18,7 +19,8 @@ public class RequestBeerRepositoryCustomImpl implements RequestBeerRepositoryCus
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public List<RequestBeerResponseDto> findByMemberIdWithPageable(Long requestBeerId, Long memberId) {
+  public List<RequestBeerResponseDto> findByMemberIdWithPageable(
+      RequestBeerFindDto requestBeerFindDto, Long memberId) {
     return queryFactory.select(new QRequestBeerResponseDto(
             requestBeer.requestBeerId, requestBeer.beerName, requestBeer.beerImageUrlFirst, requestBeer.beerImageUrlSecond, requestBeer.requestCompletedAt, requestBeer.requestRejectionReason
             , requestBeer.status, requestBeer.createdAt
@@ -26,10 +28,10 @@ public class RequestBeerRepositoryCustomImpl implements RequestBeerRepositoryCus
         .from(requestBeer)
         .where(
             requestBeer.member.id.eq(memberId)
-            , requestBeerResponseIdLoe(requestBeerId)
+            , requestBeerResponseIdLoe(requestBeerFindDto.getCursor())
         )
         .orderBy(requestBeer.requestBeerId.desc())
-        .limit(PaginationUtil.PAGINATION_SIZE + 1L)
+        .limit(requestBeerFindDto.getLimit())
         .fetch();
   }
 

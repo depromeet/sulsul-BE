@@ -8,4 +8,8 @@ public interface MemberLevelRepositoryCustom {
 
   MemberLevelResponseDto findMemberLevel(Long memberId);
 
+  Integer findNextLevelRequire(Integer tier);
+
+  Integer findMaxLevel();
+
 }
