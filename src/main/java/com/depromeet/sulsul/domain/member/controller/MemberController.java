@@ -33,7 +33,7 @@ public class MemberController {
   }
 
   @GetMapping("/level")
-  public ResponseDto<?> findLevelByMemberId(Authentication authentication) {
+  public ResponseDto<Long> findLevelByMemberId(Authentication authentication) {
     return ResponseDto.from(memberService.findLevelByMemberId(getMemberIdFromPrincipal(authentication)));
   }
 

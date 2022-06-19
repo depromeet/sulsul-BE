@@ -23,7 +23,7 @@ public class MemberService {
 
   public void updateName(Long id, MyPageRequestDto myPageRequestDto) {
     Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-    member.updateName(myPageRequestDto.getName());
+    member.updateName(myPageRequestDto.getNickname());
   }
 
   @Transactional(readOnly = true)
