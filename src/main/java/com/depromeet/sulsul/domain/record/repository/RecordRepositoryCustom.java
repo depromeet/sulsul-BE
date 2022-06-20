@@ -21,7 +21,7 @@ public interface RecordRepositoryCustom {
 
   Tuple findEndCountryOfRecordByMemberId(Long id);
 
-  Record findLastSavedCountryName();
+  Record findLastSavedCountryName(Long memberId);
 
   Long selectCount();
 
