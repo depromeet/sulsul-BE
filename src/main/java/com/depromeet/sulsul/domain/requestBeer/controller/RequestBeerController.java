@@ -6,6 +6,7 @@ import com.depromeet.sulsul.common.dto.ImageDto;
 import com.depromeet.sulsul.common.error.exception.custom.RequestSizeExceedException;
 import com.depromeet.sulsul.common.response.dto.DescPageableResponseDto;
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
+import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerFindDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerRequestDto;
 import com.depromeet.sulsul.domain.requestBeer.dto.RequestBeerResponseDto;
 import com.depromeet.sulsul.domain.requestBeer.facade.RequestBeerFacade;
@@ -40,10 +41,10 @@ public class RequestBeerController {
         requestBeerService.save(requestBeerRequestDto, getMemberIdFromPrincipal(authentication)));
   }
 
-  @GetMapping("/{requestBeerId}")
+  @PostMapping("/list")
   public DescPageableResponseDto<RequestBeerResponseDto> find(
-      @PathVariable(required = false) Long requestBeerId, Authentication authentication) {
-    return requestBeerService.find(requestBeerId, getMemberIdFromPrincipal(authentication));
+      @RequestBody RequestBeerFindDto requestBeerFindDto, Authentication authentication) {
+    return requestBeerService.find(requestBeerFindDto, getMemberIdFromPrincipal(authentication));
   }
 
   @Validated
