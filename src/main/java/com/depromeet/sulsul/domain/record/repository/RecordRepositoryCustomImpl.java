@@ -58,9 +58,11 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
-  public Record findLastSavedCountryName() {
+  public Record findLastSavedCountryName(Long memberId) {
     return queryFactory
-        .selectFrom(record)
+        .select(record)
+        .from(record)
+        .where(memberIdEq(memberId))
         .orderBy(record.id.desc())
         .fetchFirst();
   }
