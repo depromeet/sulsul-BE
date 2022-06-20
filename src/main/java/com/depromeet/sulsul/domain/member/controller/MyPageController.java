@@ -35,8 +35,8 @@ public class MyPageController {
 
   @ApiOperation(value = "닉네임 update API")
   @PutMapping
-  public ResponseDto<?> updateNickName(@RequestBody MyPageRequestDto myPageRequestDto, Authentication authentication) {
-    memberService.updateNickName(getMemberIdFromPrincipal(authentication), myPageRequestDto);
-    return ResponseDto.OK();
+  public ResponseDto<String> updateNickname(@RequestBody MyPageRequestDto myPageRequestDto, Authentication authentication) {
+    return ResponseDto.from(memberService.updateNickname(getMemberIdFromPrincipal(authentication), myPageRequestDto));
+
   }
 }

@@ -19,7 +19,7 @@ public class MemberDto implements Serializable {
   private Long id;
   private String role;
   private String email;
-  private String name;
+  private String nickname;
   private String profileUrl;
   private String phoneNumber;
 
@@ -28,11 +28,11 @@ public class MemberDto implements Serializable {
 
   @Builder
   @QueryProjection
-  public MemberDto(Long id, String role, String email, String name, String profileUrl, String phoneNumber, MemberLevel memberLevel) {
+  public MemberDto(Long id, String role, String email, String nickname, String profileUrl, String phoneNumber, MemberLevel memberLevel) {
     this.id = id;
     this.role = role;
     this.email = email;
-    this.name = name;
+    this.nickname = nickname;
     this.profileUrl = profileUrl;
     this.phoneNumber = phoneNumber;
     this.memberLevelResponseDto = MemberLevel.toDto(memberLevel);

@@ -166,7 +166,7 @@ public class RecordService {
             new FlavorDto(recordFlavor.getFlavor().getId(), recordFlavor.getFlavor().getContent()));
       });
       MemberRecordDto memberRecordDto = new MemberRecordDto(record.getMember().getId(),
-          record.getMember().getNickName());
+          record.getMember().getNickname());
 
       allRecordDtosWithPageableResponse.add(
           new RecordResponseDto(record, memberRecordDto, flavorDtos));

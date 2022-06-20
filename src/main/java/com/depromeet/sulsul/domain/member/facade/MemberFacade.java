@@ -43,7 +43,7 @@ public class MemberFacade {
     Long requestBeerCount = requestBeerService.requestBeerCount(memberId);
 
     MemberDto memberDto = memberService.findById(memberId);
-    String nickName = memberDto.getName();
+    String nickName = memberDto.getNickname();
     String email = memberDto.getEmail();
     Long nextLevelRequire = memberLevelService.findNextLevelRequire(memberId) - recordCount;
 
