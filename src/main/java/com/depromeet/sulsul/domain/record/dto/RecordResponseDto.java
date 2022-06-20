@@ -5,6 +5,7 @@ import com.depromeet.sulsul.domain.beer.entity.Beer;
 import com.depromeet.sulsul.domain.flavor.dto.FlavorDto;
 import com.depromeet.sulsul.domain.member.dto.MemberRecordDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
+import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,6 @@ public class RecordResponseDto {
     this.memberRecordDto = memberRecordDto;
     this.flavorDtos = flavorDtos;
   }
-
 
   @Builder
   public RecordResponseDto(Long id, String content, Integer feel, String imageUrl,
