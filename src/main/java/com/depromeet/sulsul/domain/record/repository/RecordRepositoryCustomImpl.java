@@ -17,6 +17,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -58,13 +59,13 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
-  public Record findLastSavedCountryName(Long memberId) {
-    return queryFactory
+  public Optional<Record> findLastSavedCountryName(Long memberId) {
+    return Optional.ofNullable(queryFactory
         .select(record)
         .from(record)
         .where(memberIdEq(memberId))
         .orderBy(record.id.desc())
-        .fetchFirst();
+        .fetchFirst());
   }
 
   @Override

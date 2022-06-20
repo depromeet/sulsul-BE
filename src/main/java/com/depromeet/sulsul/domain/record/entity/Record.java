@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"member", "beer", "recordFlavors"})
 @EqualsAndHashCode(exclude = {"member", "beer", "recordFlavors"})
