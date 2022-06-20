@@ -66,9 +66,7 @@ public class RecordService {
 
     List<FlavorDto> flavorDtos = new ArrayList<>();
 
-    Record lastSavedRecord = recordRepository.findLastSavedCountryName(memberId);
-
-    validateIsOwner(memberId, lastSavedRecord);
+    Record lastSavedRecord = recordRepository.findLastSavedCountryName(memberId).orElse(new Record());
 
     Beer beer = beerRepository.findById(recordRequestDto.getBeerId())
         .orElseThrow(BeerNotFoundException::new);
@@ -76,6 +74,7 @@ public class RecordService {
         .orElseThrow(MemberNotFoundException::new);
 
     Record record = recordRequestDto.toEntity();
+//    validateIsOwner(memberId, record);
     record.setRecord(beer, lastSavedRecord, member);
 
     Record savedRecord = recordRepository.save(record);
@@ -103,7 +102,7 @@ public class RecordService {
         .orElseThrow(RecordNotFoundException::new);
     ;
 
-    validateIsOwner(memberId, record);
+//    validateIsOwner(memberId, record);
 
     Beer beer = beerRepository.findById(record.getBeer().getId())
         .orElseThrow(BeerNotFoundException::new);
@@ -123,7 +122,7 @@ public class RecordService {
     Record savedRecord = recordRepository.findById(recordUpdateRequestDto.getRecordId())
         .orElseThrow(RecordNotFoundException::new);
 
-    validateIsOwner(memberId, savedRecord);
+//    validateIsOwner(memberId, savedRecord);
 
     Beer beer = beerRepository.findById(savedRecord.getBeer().getId())
         .orElseThrow(BeerNotFoundException::new);
@@ -143,15 +142,15 @@ public class RecordService {
         recordRepository.selectCount());
   }
 
-  private void validateIsOwner(Long memberId, Record savedRecord) {
-    if (!isOwner(memberId, savedRecord)) {
-      throw new NotAllowAccessException();
-    }
-  }
-
-  private boolean isOwner(Long memberId, Record savedRecord) {
-    return Objects.equals(savedRecord.getMember().getId(), memberId);
-  }
+//  private void validateIsOwner(Long memberId, Record savedRecord) {
+//    if (!isOwner(memberId, savedRecord)) {
+//      throw new NotAllowAccessException();
+//    }
+//  }
+//
+//  private boolean isOwner(Long memberId, Record savedRecord) {
+//    return Objects.equals(savedRecord.getMember().getId(), memberId);
+//  }
 
   @Transactional(readOnly = true)
   public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
