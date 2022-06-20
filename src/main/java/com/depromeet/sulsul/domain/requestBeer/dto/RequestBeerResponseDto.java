@@ -21,7 +21,7 @@ public class RequestBeerResponseDto {
   private String requestRejectionReason;
   private RequestBeerStatus status;
 
-  private LocalDateTime createAt;
+  private LocalDateTime createdAt;
 
   public RequestBeerResponseDto(RequestBeer requestBeer) {
     this.beerId = requestBeer.getRequestBeerId();
@@ -30,7 +30,7 @@ public class RequestBeerResponseDto {
     this.requestCompletedAt = requestBeer.getRequestCompletedAt();
     this.requestRejectionReason = requestBeer.getRequestRejectionReason();
     this.status = requestBeer.getStatus();
-    this.createAt = requestBeer.getCreatedAt();
+    this.createdAt = requestBeer.getCreatedAt();
   }
 
   @QueryProjection
@@ -43,7 +43,7 @@ public class RequestBeerResponseDto {
     this.requestCompletedAt = requestCompletedAt;
     this.requestRejectionReason = requestRejectionReason;
     this.status = status;
-    this.createAt = createAt;
+    this.createdAt = createAt;
   }
 
   private List<String> setBeerImageUrls(String imageUrlFirst, String imageUrlSecond){

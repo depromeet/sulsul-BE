@@ -6,6 +6,7 @@ import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
 import com.depromeet.sulsul.domain.country.dto.CountryDetail;
 import com.depromeet.sulsul.domain.country.entity.Country;
+import com.depromeet.sulsul.domain.memberBeer.entity.MemberBeer;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,9 @@ public class Beer extends BaseEntity {
 
   public static BeerResponseDto toDto(Beer beer) {
     return BeerResponseDto.builder()
+        .id(beer.getId())
+        .createdAt(beer.getCreatedAt())
+        .updatedAt(beer.getUpdatedAt())
         .country(new CountryDetail(beer.getCountry()))
         .type(new BeerTypeValue(beer.getType()))
         .nameKor(beer.getNameKor())
@@ -84,4 +88,5 @@ public class Beer extends BaseEntity {
         .volume(beer.getVolume())
         .build();
   }
+
 }
