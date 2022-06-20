@@ -77,8 +77,8 @@ public class Record extends BaseEntity {
 
   private void updateStartCountry(Record record) {
     if (record != null) {
-      this.startCountryKor = record.getStartCountryKor();
-      this.startCountryEng = record.getStartCountryEng();
+      this.startCountryKor = record.getEndCountryKor();
+      this.startCountryEng = record.getEndCountryEng();
       return;
     }
     this.startCountryKor = "한국";
