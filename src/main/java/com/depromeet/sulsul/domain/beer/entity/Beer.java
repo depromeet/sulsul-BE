@@ -3,6 +3,8 @@ package com.depromeet.sulsul.domain.beer.entity;
 import com.depromeet.sulsul.common.entity.BaseEntity;
 import com.depromeet.sulsul.domain.beer.dto.BeerRequestDto;
 import com.depromeet.sulsul.domain.beer.dto.BeerResponseDto;
+import com.depromeet.sulsul.domain.beer.dto.BeerTypeValue;
+import com.depromeet.sulsul.domain.country.dto.CountryDetail;
 import com.depromeet.sulsul.domain.country.entity.Country;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import java.util.ArrayList;
@@ -71,6 +73,8 @@ public class Beer extends BaseEntity {
 
   public static BeerResponseDto toDto(Beer beer) {
     return BeerResponseDto.builder()
+        .country(new CountryDetail(beer.getCountry()))
+        .type(new BeerTypeValue(beer.getType()))
         .nameKor(beer.getNameKor())
         .nameEng(beer.getNameEng())
         .imageUrl(beer.getImageUrl())
