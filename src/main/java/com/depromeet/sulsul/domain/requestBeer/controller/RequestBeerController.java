@@ -44,6 +44,7 @@ public class RequestBeerController {
   @PostMapping("/list")
   public DescPageableResponseDto<RequestBeerResponseDto> find(
       @RequestBody RequestBeerFindDto requestBeerFindDto, Authentication authentication) {
+    if(requestBeerFindDto.getCursor()==0) requestBeerFindDto.setCursor(null);
     return requestBeerService.find(requestBeerFindDto, getMemberIdFromPrincipal(authentication));
   }
 

@@ -80,4 +80,5 @@ public class BeerResponseDto {
       this.isLiked = true;
     }
   }
+
 }
