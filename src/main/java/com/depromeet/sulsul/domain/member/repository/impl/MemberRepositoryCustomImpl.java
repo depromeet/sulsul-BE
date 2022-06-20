@@ -20,7 +20,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
   @Override
   public Optional<MemberDto> selectById(long id) {
     return Optional.ofNullable(queryFactory
-        .select(new QMemberDto(member.id, member.role.stringValue(), member.email, member.name, member.profileUrl,
+        .select(new QMemberDto(member.id, member.role.stringValue(), member.email, member.nickname, member.profileUrl,
             member.phoneNumber, member.memberLevel))
         .from(member)
         .where(member.id.eq(id))
