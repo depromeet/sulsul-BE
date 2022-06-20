@@ -352,26 +352,26 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
   public Integer countWithFilter(ReadRequest readRequest) {
 
-    BooleanBuilder builder = new BooleanBuilder();
+    BooleanBuilder byFilterTypeInAndCountryIdInAndQueryLike = new BooleanBuilder();
 
     Filter filter = readRequest.getFilter();
     String query = readRequest.getQuery();
 
     if (filter != null && !CollectionUtils.isEmpty(filter.getBeerTypes())) {
-      builder.and(beer.type.in(filter.getBeerTypes()));
+      byFilterTypeInAndCountryIdInAndQueryLike.and(beer.type.in(filter.getBeerTypes()));
     }
 
     if (filter != null && !CollectionUtils.isEmpty(filter.getCountryIds())) {
-      builder.and(beer.country.id.in(filter.getCountryIds()));
+      byFilterTypeInAndCountryIdInAndQueryLike.and(beer.country.id.in(filter.getCountryIds()));
     }
 
     if (!PropertyUtil.isEmpty(query)) {
-      builder.and(searchBooleanExpression(query));
+      byFilterTypeInAndCountryIdInAndQueryLike.and(searchBooleanExpression(query));
     }
 
     return queryFactory.select(beer)
         .from(beer)
-        .where(builder)
+        .where(byFilterTypeInAndCountryIdInAndQueryLike, beer.deletedAt.isNull())
         .fetch()
         .size();
   }
