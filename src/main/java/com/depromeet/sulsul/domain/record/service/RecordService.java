@@ -34,6 +34,7 @@ import com.depromeet.sulsul.domain.recordFlavor.repository.RecordFlavorRepositor
 import com.depromeet.sulsul.util.ImageUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class RecordService {
 
     List<FlavorDto> flavorDtos = new ArrayList<>();
 
-    Record lastSavedRecord = recordRepository.findLastSavedCountryName();
+    Record lastSavedRecord = recordRepository.findLastSavedCountryName(memberId);
 
     validateIsOwner(memberId, lastSavedRecord);
 
@@ -149,7 +150,7 @@ public class RecordService {
   }
 
   private boolean isOwner(Long memberId, Record savedRecord) {
-    return savedRecord.getMember().getId() == memberId;
+    return Objects.equals(savedRecord.getMember().getId(), memberId);
   }
 
   @Transactional(readOnly = true)
@@ -166,7 +167,7 @@ public class RecordService {
             new FlavorDto(recordFlavor.getFlavor().getId(), recordFlavor.getFlavor().getContent()));
       });
       MemberRecordDto memberRecordDto = new MemberRecordDto(record.getMember().getId(),
-          record.getMember().getName());
+          record.getMember().getNickname());
 
       allRecordDtosWithPageableResponse.add(
           new RecordResponseDto(record, memberRecordDto, flavorDtos));

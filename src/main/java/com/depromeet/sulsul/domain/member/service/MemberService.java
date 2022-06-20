@@ -21,9 +21,10 @@ public class MemberService {
     return memberRepository.selectById(id).orElseThrow(MemberNotFoundException::new);
   }
 
-  public void updateName(Long id, MyPageRequestDto myPageRequestDto) {
+  public String updateNickname(Long id, MyPageRequestDto myPageRequestDto) {
     Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-    member.updateName(myPageRequestDto.getNickname());
+    member.updateNickname(myPageRequestDto.getNickname());
+    return member.getNickname();
   }
 
   @Transactional(readOnly = true)
