@@ -45,10 +45,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     Map<String, Object> memberMap = saveOrUpdate(attributes, socialId, registrationId);
 
     Long memberId = (Long) memberMap.get("memberId");
-    Boolean isNewMember = (Boolean) memberMap.get("isNewMember");
 
     CustomOAuth2User customOAuth2User = new CustomOAuth2User(
-        Collections.singleton(new SimpleGrantedAuthority(USER.getAuthority())),
+        Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
         attributes.getAttributes(), attributes.getNameAttributeKey(), memberId);
 
     customOAuth2User.setMemberId(memberId);
