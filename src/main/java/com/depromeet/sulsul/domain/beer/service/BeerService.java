@@ -209,7 +209,7 @@ public class BeerService {
   }
 
   public ResponseDto<BeerTotalCountResponseDto> countAllBeers() {
-    Long totalCount = beerRepository.count();
+    Long totalCount = beerRepository.countByDeletedAtNull();
     return ResponseDto.from(new BeerTotalCountResponseDto(totalCount));
   }
 

@@ -149,11 +149,12 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     List<SortCondition> sortBy = readRequest.getSortBy();
 
     JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
-            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
+            new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin()
-        .where(beer.deletedAt.isNull());
+        .where(beer.deletedAt.isNull())
+        .groupBy(country, beer, memberBeer);
 
     jpaQuery = addBeerTypesFilter(jpaQuery, filter);
 
