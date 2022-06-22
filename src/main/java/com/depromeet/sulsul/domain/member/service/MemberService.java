@@ -28,8 +28,8 @@ public class MemberService {
   }
 
   @Transactional(readOnly = true)
-  public Long findLevelByMemberId(Long id) {
-    return memberRepository.findLevelById(id);
+  public Integer findTierByMemberId(Long id) {
+    return memberRepository.selectByTierById(id);
   }
 
   public void updateDeletedAtById(Long id) {
