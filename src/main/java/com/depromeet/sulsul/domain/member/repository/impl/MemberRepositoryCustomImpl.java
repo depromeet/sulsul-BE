@@ -45,14 +45,4 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
         .where(member.id.eq(id))
         .execute();
   }
-
-  @Override
-  public Integer selectByTierById(Long id) {
-    return queryFactory
-        .select(member.memberLevel.tier)
-        .from(member)
-        .leftJoin(member.memberLevel, memberLevel)
-        .where(member.id.eq(id))
-        .fetchOne();
-  }
 }
