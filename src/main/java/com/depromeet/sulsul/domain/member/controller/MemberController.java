@@ -29,6 +29,7 @@ public class MemberController {
   @GetMapping
   public ResponseDto<MemberDto> findMember(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
+    System.out.println("user.getUsername() = " + user.getUsername());
     return ResponseDto.from(memberService.findById(Long.parseLong(user.getUsername())));
   }
 
