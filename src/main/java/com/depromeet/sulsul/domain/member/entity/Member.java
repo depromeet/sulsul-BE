@@ -63,7 +63,7 @@ public class Member extends BaseEntity {
 
   @Builder
   public Member(Long id, List<Record> records, RoleType role, String email, String nickname,
-      String profileUrl, String phoneNumber, String socialType, String socialId) {
+      String profileUrl, String phoneNumber, String socialType, String socialId, MemberLevel memberLevel) {
     this.id = id;
     this.records = records;
     this.role = role;
@@ -73,6 +73,7 @@ public class Member extends BaseEntity {
     this.phoneNumber = phoneNumber;
     this.socialType = SocialType.valueOf(socialType.toUpperCase());
     this.socialId = socialId;
+    this.memberLevel = memberLevel;
   }
 
   public Member update(String name, String email) {
