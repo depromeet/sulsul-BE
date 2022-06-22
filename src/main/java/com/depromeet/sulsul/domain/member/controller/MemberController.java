@@ -1,7 +1,5 @@
 package com.depromeet.sulsul.domain.member.controller;
 
-import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
-
 import com.depromeet.sulsul.common.response.dto.ResponseDto;
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.facade.MemberFacade;
@@ -30,11 +28,6 @@ public class MemberController {
   public ResponseDto<MemberDto> findMember(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
     return ResponseDto.from(memberService.findById(Long.parseLong(user.getUsername())));
-  }
-
-  @GetMapping("/level")
-  public ResponseDto<Long> findLevelByMemberId(Authentication authentication) {
-    return ResponseDto.from(memberService.findLevelByMemberId(getMemberIdFromPrincipal(authentication)));
   }
 
   @ApiOperation(value = "로그인되어 있는 사용자 회원 탈퇴")
