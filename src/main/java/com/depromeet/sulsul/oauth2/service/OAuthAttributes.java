@@ -2,6 +2,7 @@ package com.depromeet.sulsul.oauth2.service;
 
 import com.depromeet.sulsul.domain.member.dto.RoleType;
 import com.depromeet.sulsul.domain.member.entity.Member;
+import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,12 +66,13 @@ public class OAuthAttributes {
         .build();
   }
 
-  public Member toEntity(String socialId, String registrationId) {
+  public Member toEntity(String socialId, String registrationId, MemberLevel memberLevel) {
     return Member.builder()
         .email(email)
         .role(RoleType.USER)
         .socialId(socialId)
         .socialType(registrationId)
+        .memberLevel(memberLevel)
         .build();
   }
 }
