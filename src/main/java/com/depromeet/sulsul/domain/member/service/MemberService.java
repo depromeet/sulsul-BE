@@ -27,11 +27,6 @@ public class MemberService {
     return member.getNickname();
   }
 
-  @Transactional(readOnly = true)
-  public Integer findTierByMemberId(Long id) {
-    return memberRepository.selectByTierById(id);
-  }
-
   public void updateDeletedAtById(Long id) {
     memberRepository.updateDeletedAtById(id);
   }
