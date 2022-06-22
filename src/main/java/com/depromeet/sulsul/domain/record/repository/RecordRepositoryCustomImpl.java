@@ -32,6 +32,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
         .where(beerIdEq(recordFindRequestDto.getBeerId())
             , recordIdLoe(recordFindRequestDto.getRecordId())
             , record.deletedAt.isNull()
+            , record.isPublic.isTrue()
         )
         .orderBy(record.id.desc())
         .limit(PaginationUtil.PAGINATION_SIZE + 1)
@@ -72,7 +73,9 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   public Long selectCount() {
     return queryFactory
         .selectFrom(record)
-        .where(record.deletedAt.isNull())
+        .where(record.deletedAt.isNull()
+              , record.isPublic.isTrue()
+        )
         .stream()
         .count();
   }

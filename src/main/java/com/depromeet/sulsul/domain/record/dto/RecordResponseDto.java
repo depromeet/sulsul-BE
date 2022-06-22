@@ -34,6 +34,7 @@ public class RecordResponseDto {
   private List<FlavorDto> flavorDtos = new ArrayList<>();
   private BeerResponseDto beerResponseDto;
   private Long recordCount;
+  private Boolean isPublic;
 
   public RecordResponseDto(Long id, String content, MemberRecordDto memberRecordDto, Integer feel,
       List<FlavorDto> flavorDtos,
@@ -58,6 +59,7 @@ public class RecordResponseDto {
     this.startCountryEng = record.getStartCountryEng();
     this.endCountryKor = record.getStartCountryKor();
     this.endCountryEng = record.getEndCountryEng();
+    this.isPublic = record.getIsPublic();
     this.memberRecordDto = memberRecordDto;
     this.flavorDtos = flavorDtos;
   }
