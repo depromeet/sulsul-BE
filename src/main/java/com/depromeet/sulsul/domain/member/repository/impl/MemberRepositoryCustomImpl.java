@@ -1,6 +1,7 @@
 package com.depromeet.sulsul.domain.member.repository.impl;
 
 import static com.depromeet.sulsul.domain.member.entity.QMember.member;
+import static com.depromeet.sulsul.domain.memberLevel.entity.QMemberLevel.memberLevel;
 
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.dto.QMemberDto;
@@ -23,6 +24,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
         .select(new QMemberDto(member.id, member.role.stringValue(), member.email, member.nickname, member.profileUrl,
             member.phoneNumber, member.memberLevel))
         .from(member)
+        .leftJoin(member.memberLevel, memberLevel)
         .where(member.id.eq(id))
         .fetchOne());
   }
@@ -42,5 +44,15 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
         .set(member.deletedAt, LocalDateTime.now())
         .where(member.id.eq(id))
         .execute();
+  }
+
+  @Override
+  public Integer selectByTierById(Long id) {
+    return queryFactory
+        .select(member.memberLevel.tier)
+        .from(member)
+        .leftJoin(member.memberLevel, memberLevel)
+        .where(member.id.eq(id))
+        .fetchOne();
   }
 }
