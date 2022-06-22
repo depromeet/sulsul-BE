@@ -32,9 +32,10 @@ public class MemberController {
     return ResponseDto.from(memberService.findById(Long.parseLong(user.getUsername())));
   }
 
+  @ApiOperation(value = "로그인되어 있는 사용자 레벨 조회")
   @GetMapping("/level")
-  public ResponseDto<Long> findLevelByMemberId(Authentication authentication) {
-    return ResponseDto.from(memberService.findLevelByMemberId(getMemberIdFromPrincipal(authentication)));
+  public ResponseDto<Integer> findLevelByMemberId(Authentication authentication) {
+    return ResponseDto.from(memberService.findTierByMemberId(getMemberIdFromPrincipal(authentication)));
   }
 
   @ApiOperation(value = "로그인되어 있는 사용자 회원 탈퇴")

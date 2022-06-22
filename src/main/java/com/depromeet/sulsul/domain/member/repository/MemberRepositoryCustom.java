@@ -11,4 +11,6 @@ public interface MemberRepositoryCustom {
   Optional<Member> selectBySocial(String id, String type);
 
   void updateDeletedAtById(Long id);
+
+  Integer selectByTierById(Long id);
 }
