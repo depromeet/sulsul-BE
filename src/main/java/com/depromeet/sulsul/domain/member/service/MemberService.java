@@ -27,11 +27,6 @@ public class MemberService {
     return member.getNickname();
   }
 
-  @Transactional(readOnly = true)
-  public Long findLevelByMemberId(Long id) {
-    return memberRepository.findLevelById(id);
-  }
-
   public void updateDeletedAtById(Long id) {
     memberRepository.updateDeletedAtById(id);
   }

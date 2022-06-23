@@ -4,6 +4,8 @@ import static com.depromeet.sulsul.domain.member.dto.RoleType.USER;
 
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
+import com.depromeet.sulsul.domain.memberLevel.repository.MemberLevelRepository;
 import com.depromeet.sulsul.oauth2.CustomOAuth2User;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   private final MemberRepository memberRepository;
+  private final MemberLevelRepository memberLevelRepository;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -42,10 +45,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     Map<String, Object> memberMap = saveOrUpdate(attributes, socialId, registrationId);
 
     Long memberId = (Long) memberMap.get("memberId");
-    Boolean isNewMember = (Boolean) memberMap.get("isNewMember");
 
     CustomOAuth2User customOAuth2User = new CustomOAuth2User(
-        Collections.singleton(new SimpleGrantedAuthority(USER.getAuthority())),
+        Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
         attributes.getAttributes(), attributes.getNameAttributeKey(), memberId);
 
     customOAuth2User.setMemberId(memberId);
@@ -65,8 +67,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       memberMap.put("email", member.get().getEmail());
       return memberMap;
     }
-
-    Member signUpMember = memberRepository.save(oAuthAttributes.toEntity(socialId, registrationId));
+    MemberLevel memberLevel = memberLevelRepository.findMemberLevelByCount(0L).toEntity();
+    Member signUpMember = memberRepository.save(oAuthAttributes.toEntity(socialId, registrationId, memberLevel));
     memberMap.put("memberId", signUpMember.getId());
     memberMap.put("email", signUpMember.getEmail());
 

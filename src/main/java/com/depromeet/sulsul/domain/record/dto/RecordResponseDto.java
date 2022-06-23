@@ -34,19 +34,8 @@ public class RecordResponseDto {
   private List<FlavorDto> flavorDtos = new ArrayList<>();
   private BeerResponseDto beerResponseDto;
   private Long recordCount;
+  private Boolean isPublic;
 
-  public RecordResponseDto(Long id, String content, MemberRecordDto memberRecordDto, Integer feel,
-      List<FlavorDto> flavorDtos,
-      LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.content = content;
-    this.feel = feel;
-    this.flavorDtos = flavorDtos;
-    this.memberRecordDto = memberRecordDto;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
-
-  // TODO : 변경
   public RecordResponseDto(Record record, MemberRecordDto memberRecordDto, List<FlavorDto> flavorDtos) {
     this.id = record.getId();
     this.content = record.getContent();
@@ -58,41 +47,28 @@ public class RecordResponseDto {
     this.startCountryEng = record.getStartCountryEng();
     this.endCountryKor = record.getStartCountryKor();
     this.endCountryEng = record.getEndCountryEng();
+    this.isPublic = record.getIsPublic();
     this.memberRecordDto = memberRecordDto;
     this.flavorDtos = flavorDtos;
   }
 
-  @Builder
-  public RecordResponseDto(Long id, String content, Integer feel, String imageUrl,
-      LocalDateTime createdAt,
-      String startCountryKor, String startCountryEng, String endCountryKor, String endCountryEng) {
-    this.id = id;
-    this.content = content;
-    this.feel = feel;
-    this.imageUrl = imageUrl;
-    this.createdAt = createdAt;
-    this.startCountryKor = startCountryKor;
-    this.startCountryEng = startCountryEng;
-    this.endCountryKor = endCountryKor;
-    this.endCountryEng = endCountryEng;
-  }
-
-  public static RecordResponseDto toDto(Record record) {
-    return RecordResponseDto.builder()
-        .id(record.getId())
-        .content(record.getContent())
-        .feel(record.getFeel())
-        .imageUrl(record.getImageUrl())
-        .createdAt(record.getCreatedAt())
-        .startCountryKor(record.getStartCountryKor())
-        .startCountryEng(record.getStartCountryEng())
-        .endCountryKor(record.getEndCountryKor())
-        .endCountryEng(record.getEndCountryEng())
-        .build();
+  public RecordResponseDto(Record record, List<FlavorDto> flavorDtos) {
+    this.id = record.getId();
+    this.content = record.getContent();
+    this.feel = record.getFeel();
+    this.imageUrl = record.getImageUrl();
+    this.createdAt = record.getCreatedAt();
+    this.updatedAt = record.getUpdatedAt();
+    this.startCountryKor = record.getStartCountryKor();
+    this.startCountryEng = record.getStartCountryEng();
+    this.endCountryKor = record.getStartCountryKor();
+    this.endCountryEng = record.getEndCountryEng();
+    this.isPublic = record.getIsPublic();
+    this.flavorDtos = flavorDtos;
   }
 
   public static RecordResponseDto createRecordResponseDto(Record record, Beer beer, List<FlavorDto> flavorDtos, Long recordCount){
-    RecordResponseDto recordResponseDto = RecordResponseDto.toDto(record);
+    RecordResponseDto recordResponseDto = new RecordResponseDto(record, flavorDtos);
     recordResponseDto.updateBeerResponseDto(Beer.toDto(beer));
     recordResponseDto.updateFlavors(flavorDtos);
     recordResponseDto.updateRecordCount(recordCount);
