@@ -29,8 +29,8 @@ spring:
             authorization-grant-type: authorization_code
             client-name: kakao
           naver:
-            client-id: GcVDuQpzijLxjpihXQTL
-            client-secret: JTM3XYwtTc
+            client-id: 3Zm_Tm1e_KYsJvlLsRoc
+            client-secret: K1pbPupg5M
             redirect-uri: "https://api.beerair.ml/login/oauth2/code/naver"
             authorization-grant-type: authorization_code
             scope:
