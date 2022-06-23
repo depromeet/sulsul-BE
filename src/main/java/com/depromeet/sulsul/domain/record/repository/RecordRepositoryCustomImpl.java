@@ -98,7 +98,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     return queryFactory.select(new QRecordCountryAndCountResponseDto(record.endCountryKor, record.endCountryEng, record.count()))
         .from(record)
         .where(
-            record.endCountryEng.eq(
+            record.endCountryEng.in(
                 queryFactory.select(record.endCountryEng)
                     .from(record)
                     .where(
@@ -106,13 +106,13 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
                           , memberIdEq(memberId)
                     )
                     .orderBy(record.id.desc())
-                    .fetchFirst()
+                    .fetch()
             )
             , record.deletedAt.isNull()
             , memberIdEq(memberId)
         )
         .groupBy(record.endCountryEng, record.endCountryKor)
-        .fetchOne();
+        .fetchFirst();
   }
 
   @Override
