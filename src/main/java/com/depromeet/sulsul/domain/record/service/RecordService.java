@@ -74,7 +74,6 @@ public class RecordService {
         .orElseThrow(MemberNotFoundException::new);
 
     Record record = recordRequestDto.toEntity();
-//    validateIsOwner(memberId, record);
     record.setRecord(beer, lastSavedRecord, member);
 
     Record savedRecord = recordRepository.save(record);
@@ -101,7 +100,7 @@ public class RecordService {
     Record record = recordRepository.findById(recordId)
         .orElseThrow(RecordNotFoundException::new);
 
-//    validateIsOwner(memberId, record);
+    validateIsOwner(memberId, record);
 
     Beer beer = beerRepository.findById(record.getBeer().getId())
         .orElseThrow(BeerNotFoundException::new);
@@ -117,11 +116,10 @@ public class RecordService {
 
   public RecordResponseDto update(RecordUpdateRequestDto recordUpdateRequestDto, Long memberId) {
 
-    // update가 이루어질 record 찾아오기
     Record savedRecord = recordRepository.findById(recordUpdateRequestDto.getRecordId())
         .orElseThrow(RecordNotFoundException::new);
 
-//    validateIsOwner(memberId, savedRecord);
+    validateIsOwner(memberId, savedRecord);
 
     Beer beer = beerRepository.findById(savedRecord.getBeer().getId())
         .orElseThrow(BeerNotFoundException::new);
@@ -141,15 +139,15 @@ public class RecordService {
         recordRepository.selectCount());
   }
 
-//  private void validateIsOwner(Long memberId, Record savedRecord) {
-//    if (!isOwner(memberId, savedRecord)) {
-//      throw new NotAllowAccessException();
-//    }
-//  }
-//
-//  private boolean isOwner(Long memberId, Record savedRecord) {
-//    return Objects.equals(savedRecord.getMember().getId(), memberId);
-//  }
+  private void validateIsOwner(Long memberId, Record savedRecord) {
+    if (!isOwner(memberId, savedRecord)) {
+      throw new NotAllowAccessException();
+    }
+  }
+
+  private boolean isOwner(Long memberId, Record savedRecord) {
+    return Objects.equals(savedRecord.getMember().getId(), memberId);
+  }
 
   @Transactional(readOnly = true)
   public DescPageableResponseDto<RecordResponseDto> findAllRecordsWithPageable(
@@ -184,11 +182,10 @@ public class RecordService {
     return recordRepository.findRecordCountByBeerId(beerId);
   }
 
-  // Todo : 로그인 구현 이후 유저 validation 로직 추가 예정
   public Long delete(Long recordId, Long memberId) {
     Record targetRecord = recordRepository.getById(recordId);
     targetRecord.delete();
-//    validateIsOwner(memberId, savedRecord);
+    validateIsOwner(memberId, targetRecord);
     return recordId;
   }
 
@@ -203,7 +200,6 @@ public class RecordService {
     List<RecordTicketResponseDto> allRecordsTicketWithPageable = recordRepository.findAllRecordsTicketWithPageable(
         recordId, memberId);
 
-    // TODO : count적용
     Long resultCount = findRecordCountByMemberId(memberId);
 
     Long cursor = allRecordsTicketWithPageable.isEmpty() ? null
