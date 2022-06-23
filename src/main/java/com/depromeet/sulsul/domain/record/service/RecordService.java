@@ -100,7 +100,6 @@ public class RecordService {
 
     Record record = recordRepository.findById(recordId)
         .orElseThrow(RecordNotFoundException::new);
-    ;
 
 //    validateIsOwner(memberId, record);
 
@@ -189,6 +188,7 @@ public class RecordService {
   public Long delete(Long recordId, Long memberId) {
     Record targetRecord = recordRepository.getById(recordId);
     targetRecord.delete();
+//    validateIsOwner(memberId, savedRecord);
     return recordId;
   }
 

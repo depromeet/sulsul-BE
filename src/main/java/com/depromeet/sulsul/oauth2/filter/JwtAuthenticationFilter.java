@@ -1,5 +1,6 @@
 package com.depromeet.sulsul.oauth2.filter;
 
+import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -19,7 +20,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
   private final JwtTokenProvider jwtTokenProvider;
+  private final MemberRepository memberRepository;
 
   @Value("${client.url}")
   private String urlOfEnv;
@@ -45,10 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       return;
     }
 
-    // TODO
-//    String jwtToken = request.getHeader(accessTokenCookieName);
     String jwtToken = jwtTokenProvider.getJwtToken(request);
-
 
     if (jwtTokenProvider.validateToken(jwtToken)) {
       UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(jwtToken);
