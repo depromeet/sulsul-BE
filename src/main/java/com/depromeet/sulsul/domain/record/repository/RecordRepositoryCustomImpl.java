@@ -123,6 +123,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     return queryFactory.selectFrom(record)
         .where(beerIdEq(beerId)
               , record.deletedAt.isNull()
+              , record.isPublic.isTrue()
         ).stream().count();
   }
 
