@@ -31,7 +31,7 @@ public class RequestBeerRepositoryCustomImpl implements RequestBeerRepositoryCus
             , requestBeerResponseIdLoe(requestBeerFindDto.getCursor())
         )
         .orderBy(requestBeer.requestBeerId.desc())
-        .limit(requestBeerFindDto.getLimit())
+        .limit(requestBeerFindDto.getLimit()+1)
         .fetch();
   }
 
