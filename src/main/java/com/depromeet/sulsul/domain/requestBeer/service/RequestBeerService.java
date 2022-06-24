@@ -40,7 +40,7 @@ public class RequestBeerService {
     Long cursor = byMemberIdWithPageable.isEmpty() ? null : byMemberIdWithPageable.get(byMemberIdWithPageable.size()-1).getBeerId();
 
     return DescPageableResponseDto.of(
-        resultCount, byMemberIdWithPageable, cursor, PAGINATION_SIZE
+        resultCount, byMemberIdWithPageable, cursor, requestBeerFindDto.getLimit()
     );
   }
 
