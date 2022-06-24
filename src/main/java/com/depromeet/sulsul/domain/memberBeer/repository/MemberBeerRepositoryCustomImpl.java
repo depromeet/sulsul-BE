@@ -16,7 +16,8 @@ public class MemberBeerRepositoryCustomImpl implements MemberBeerRepositoryCusto
     return queryFactory
         .selectFrom(memberBeer)
         .where(memberBeer.member.id.eq(memberId)
-              ,memberBeer.beer.deletedAt.isNull()
+              , memberBeer.beer.deletedAt.isNull()
+              , memberBeer.deletedAt.isNull()
         )
         .stream()
         .count();
