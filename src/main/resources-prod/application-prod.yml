@@ -7,14 +7,6 @@ spring:
     url: jdbc:mysql://sulsul-real-db.cmygx0mjyxpw.ap-northeast-2.rds.amazonaws.com:3306/sulsulDB?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowMultiQueries=true&autoReconnection=true&characterEncoding=UTF-8
     username: root
     password: admin1234
-  jpa:
-    properties:
-      hibernate:
-        default_batch_fetch_size: 100
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate:
-      ddl-auto: update
   security:
     oauth2:
       client:
