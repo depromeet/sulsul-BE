@@ -74,17 +74,19 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
     return queryFactory
         .selectFrom(record)
         .where(record.deletedAt.isNull()
-              , record.isPublic.isTrue()
+            , record.isPublic.isTrue()
         )
         .stream()
         .count();
   }
 
   @Override
-  public List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId) {
+  public List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId,
+      Long memberId) {
     return queryFactory.select(new QRecordTicketResponseDto(
             record.id, record.beer, record.createdAt, record.feel
-            , record.startCountryEng, record.endCountryEng, record.startCountryKor, record.endCountryKor, record.imageUrl
+            , record.startCountryEng, record.endCountryEng, record.startCountryKor,
+            record.endCountryKor, record.imageUrl
         )).from(record)
         .where(
             memberIdEq(memberId)
@@ -97,33 +99,35 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
-  public RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId){
-    return queryFactory.select(new QRecordCountryAndCountResponseDto(record.endCountryKor, record.endCountryEng, record.count()))
+  public RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId) {
+    return queryFactory.select(
+            new QRecordCountryAndCountResponseDto(record.endCountryKor, record.endCountryEng,
+                record.count()))
         .from(record)
         .where(
-            record.endCountryEng.in(
-                queryFactory.select(record.endCountryEng)
+            record.id.in(
+                queryFactory.select(record.id)
                     .from(record)
                     .where(
-                          record.deletedAt.isNull()
-                          , memberIdEq(memberId)
+                        record.deletedAt.isNull()
+                        , memberIdEq(memberId)
                     )
-                    .orderBy(record.id.desc())
                     .fetch()
             )
             , record.deletedAt.isNull()
             , memberIdEq(memberId)
         )
         .groupBy(record.endCountryEng, record.endCountryKor)
+        .orderBy(record.id.desc())
         .fetchFirst();
   }
 
   @Override
-  public Long findRecordCountByBeerId(Long beerId){
+  public Long findRecordCountByBeerId(Long beerId) {
     return queryFactory.selectFrom(record)
         .where(beerIdEq(beerId)
-              , record.deletedAt.isNull()
-              , record.isPublic.isTrue()
+            , record.deletedAt.isNull()
+            , record.isPublic.isTrue()
         ).stream().count();
   }
 
