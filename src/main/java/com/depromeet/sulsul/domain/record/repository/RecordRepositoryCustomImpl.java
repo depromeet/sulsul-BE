@@ -109,13 +109,13 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
                           , memberIdEq(memberId)
                     )
                     .orderBy(record.id.desc())
-                    .fetchFirst()
+                    .fetch()
             )
             , record.deletedAt.isNull()
             , memberIdEq(memberId)
         )
         .groupBy(record.endCountryEng, record.endCountryKor)
-        .fetchOne();
+        .fetchFirst();
   }
 
   @Override
