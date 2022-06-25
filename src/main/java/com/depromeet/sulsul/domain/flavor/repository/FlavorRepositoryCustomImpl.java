@@ -32,7 +32,7 @@ public class FlavorRepositoryCustomImpl implements FlavorRepositoryCustom {
     return queryFactory.select(new QFlavorResponseDto(flavor.content, flavor.count()))
         .from(flavor)
         .innerJoin(recordFlavor).on(flavor.eq(recordFlavor.flavor))
-        .innerJoin(record).on(record.eq(recordFlavor.record))
+        .innerJoin(record).on(record.eq(recordFlavor.record).and(record.deletedAt.isNull()))
         .innerJoin(beer).on(beer.eq(record.beer))
         .fetchJoin()
         .where(

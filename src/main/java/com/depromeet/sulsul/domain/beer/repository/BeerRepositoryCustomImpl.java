@@ -66,8 +66,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
     if (!PropertyUtil.isEmpty(beerSearchConditionRequest.getSearchKeyword())) {
       String searchKeyword = beerSearchConditionRequest.getSearchKeyword();
-      jpaQuery = jpaQuery.where(
-          searchBooleanExpression(searchKeyword));
+      jpaQuery = jpaQuery.where(searchBooleanExpression(searchKeyword));
     }
 
     if (beerSearchConditionRequest.getSortType() == null) {
@@ -99,8 +98,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
             new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
         .on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin()
-        .where(beer.deletedAt.isNull())
+        .on(beer.country.eq(country)).fetchJoin().where(beer.deletedAt.isNull())
         .limit(readRequest.getLimit() + 1L);
 
     jpaQuery = addOffset(jpaQuery, readRequest.getCursor());
@@ -109,8 +107,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
     jpaQuery = addCountryIdsFilter(jpaQuery, filter);
 
-    jpaQuery = jpaQuery.where(
-        searchBooleanExpression(readRequest.getQuery()));
+    jpaQuery = jpaQuery.where(searchBooleanExpression(readRequest.getQuery()));
 
     jpaQuery = addOrderByWith(jpaQuery, sortBy);
 
@@ -123,23 +120,20 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     Filter filter = readRequest.getFilter();
     List<SortCondition> sortBy = readRequest.getSortBy();
 
-    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
-            new QBeerResponseDto(country, beer)).from(beer).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin()
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(new QBeerResponseDto(country, beer))
+        .from(beer).innerJoin(country).on(beer.country.eq(country)).fetchJoin()
         .where(beer.deletedAt.isNull());
 
     jpaQuery = addBeerTypesFilter(jpaQuery, filter);
 
     jpaQuery = addCountryIdsFilter(jpaQuery, filter);
 
-    jpaQuery = jpaQuery.where(
-        searchBooleanExpression(readRequest.getQuery()));
+    jpaQuery = jpaQuery.where(searchBooleanExpression(readRequest.getQuery()));
 
     jpaQuery = addOrderByWith(jpaQuery, sortBy);
 
     return new BeerResponseWithCountDto(jpaQuery.fetch().size(),
-        addOffset(jpaQuery, readRequest.getCursor()).limit(readRequest.getLimit() + 1L)
-            .fetch());
+        addOffset(jpaQuery, readRequest.getCursor()).limit(readRequest.getLimit() + 1L).fetch());
   }
 
   @Override
@@ -149,25 +143,24 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     List<SortCondition> sortBy = readRequest.getSortBy();
 
     JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
-            new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer).leftJoin(record)
-        .on(beer.eq(record.beer)).leftJoin(memberBeer)
-        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin()
-        .where(beer.deletedAt.isNull())
-        .groupBy(country, beer, memberBeer);
+            new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer)
+        .leftJoin(record)
+        .on(beer.eq(record.beer).and(record.member.id.eq(memberId)).and(record.deletedAt.isNull()))
+        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+        .innerJoin(country).on(beer.country.eq(country)).where(
+            beer.deletedAt.isNull().and(memberBeer.isNotNull().and(memberBeer.deletedAt.isNull())))
+        .groupBy(country, beer, memberBeer).fetchJoin();
 
     jpaQuery = addBeerTypesFilter(jpaQuery, filter);
 
     jpaQuery = addCountryIdsFilter(jpaQuery, filter);
 
-    jpaQuery = jpaQuery.where(
-        searchBooleanExpression(readRequest.getQuery()));
+    jpaQuery = jpaQuery.where(searchBooleanExpression(readRequest.getQuery()));
 
     jpaQuery = addOrderByWith(jpaQuery, sortBy);
 
     return new BeerResponseWithCountDto(jpaQuery.fetch().size(),
-        addOffset(jpaQuery, readRequest.getCursor()).limit(readRequest.getLimit() + 1L)
-            .fetch());
+        addOffset(jpaQuery, readRequest.getCursor()).limit(readRequest.getLimit() + 1L).fetch());
   }
 
   private JPAQuery<BeerResponseDto> addOffset(JPAQuery<BeerResponseDto> jpaQuery, Long cursor) {
@@ -218,9 +211,8 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   @Override
   public List<BeerResponseDto> findPageWith(Long memberId) {
 
-    return queryFactory.select(
-            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
-        .on(beer.eq(record.beer)).leftJoin(memberBeer)
+    return queryFactory.select(new QBeerResponseDto(country, beer, record.feel, memberBeer))
+        .from(beer).leftJoin(record).on(beer.eq(record.beer)).leftJoin(memberBeer)
         .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
         .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1L)
         .fetch();
@@ -229,60 +221,53 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
   @Override
   public List<BeerResponseDto> findPageWith() {
 
-    return queryFactory.select(
-            new QBeerResponseDto(country, beer, null, null)).from(beer).innerJoin(country)
-        .on(beer.country.eq(country)).fetchJoin().limit(PaginationUtil.PAGINATION_SIZE + 1L)
-        .fetch();
+    return queryFactory.select(new QBeerResponseDto(country, beer, null, null)).from(beer)
+        .innerJoin(country).on(beer.country.eq(country)).fetchJoin()
+        .limit(PaginationUtil.PAGINATION_SIZE + 1L).fetch();
   }
 
   @Override
   public List<BeerResponseDto> findBeers() {
-    return queryFactory.select(
-            new QBeerResponseDto(country, beer)).from(beer)
-        .innerJoin(country).on(beer.country.eq(country)).where(beer.deletedAt.isNull()).fetch();
+    return queryFactory.select(new QBeerResponseDto(country, beer)).from(beer).innerJoin(country)
+        .on(beer.country.eq(country)).where(beer.deletedAt.isNull()).fetch();
   }
 
   @Override
   public List<BeerResponseDto> findBeerNotExistsRecord(Long memberId) {
 
-    return queryFactory.select(
-            new QBeerResponseDto(country, beer, record.feel, memberBeer)).from(beer).leftJoin(record)
-        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
-        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(record.isNull()))
-        .fetchJoin().fetch();
+    return queryFactory.select(new QBeerResponseDto(country, beer, record.feel, memberBeer))
+        .from(beer).leftJoin(record).on(beer.eq(record.beer).and(record.member.id.eq(memberId)))
+        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+        .innerJoin(country).on(beer.country.eq(country))
+        .where(beer.deletedAt.isNull().and(record.isNull())).fetchJoin().fetch();
   }
 
   @Override
   public List<BeerResponseDto> findBeerLikedByMemberId(Long memberId) {
-    return queryFactory
-        .select(new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer)
-        .leftJoin(record)
-        .on(beer.eq(record.beer).and(record.member.id.eq(memberId))).leftJoin(memberBeer)
-        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(memberBeer.isNotNull()))
-        .groupBy(country, beer, memberBeer)
-        .fetchJoin().fetch();
+    return queryFactory.select(new QBeerResponseDto(country, beer, record.feel.max(), memberBeer))
+        .from(beer).leftJoin(record).on(beer.eq(record.beer).and(record.member.id.eq(memberId)))
+        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+        .innerJoin(country).on(beer.country.eq(country))
+        .where(beer.deletedAt.isNull().and(memberBeer.isNotNull()))
+        .groupBy(country, beer, memberBeer).fetchJoin().fetch();
   }
 
   @Override
   public BeerResponseWithCountDto findBeerLikedByMemberIdV2(Long memberId, ReadRequest request) {
     List<SortCondition> sortBy = request.getSortBy();
 
-    JPAQuery<BeerResponseDto> jpaQuery = queryFactory
-        .select(new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer)
-        .leftJoin(record)
-        .on(beer.eq(record.beer).and(record.member.id.eq(memberId)).and(record.deletedAt.isNull())).leftJoin(memberBeer)
-        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
-        .on(beer.country.eq(country)).where(beer.deletedAt.isNull().and(memberBeer.isNotNull().and(memberBeer.deletedAt.isNull())))
-        .groupBy(country, beer, memberBeer)
-        .fetchJoin();
+    JPAQuery<BeerResponseDto> jpaQuery = queryFactory.select(
+            new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer)
+        .leftJoin(record).on(beer.eq(record.beer).and(record.member.id.eq(memberId)))
+        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+        .innerJoin(country).on(beer.country.eq(country))
+        .where(beer.deletedAt.isNull().and(memberBeer.isNotNull()))
+        .groupBy(country, beer, memberBeer).fetchJoin();
 
     jpaQuery = addOrderByWith(jpaQuery, sortBy);
 
     return new BeerResponseWithCountDto(jpaQuery.fetch().size(),
-        addOffset(jpaQuery, request.getCursor()).limit(request.getLimit() + 1L)
-            .fetch());
+        addOffset(jpaQuery, request.getCursor()).limit(request.getLimit() + 1L).fetch());
   }
 
   private JPAQuery<BeerResponseDto> appendDynamicBuilderWith(JPAQuery<BeerResponseDto> jpaQuery,
@@ -328,29 +313,24 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
 
   @Override
   public Tuple findById(Long beerId) {
-    return queryFactory.select(country, beer).from(beer)
-        .innerJoin(country).on(beer.country.eq(country))
-        .where(beer.id.eq(beerId).and(beer.deletedAt.isNull())).fetchFirst();
+    return queryFactory.select(country, beer).from(beer).innerJoin(country)
+        .on(beer.country.eq(country)).where(beer.id.eq(beerId).and(beer.deletedAt.isNull()))
+        .fetchFirst();
   }
 
   @Override
   public Tuple findById(Long memberId, Long beerId) {
-    return queryFactory.select(country, beer, memberBeer).from(beer)
-        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
-        .innerJoin(country).on(beer.country.eq(country))
-        .where(beer.id.eq(beerId).and(beer.deletedAt.isNull())).fetchFirst();
+    return queryFactory.select(country, beer, memberBeer).from(beer).leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId))).innerJoin(country)
+        .on(beer.country.eq(country)).where(beer.id.eq(beerId).and(beer.deletedAt.isNull()))
+        .fetchFirst();
   }
 
   @Override
   public Long findBeerCountByMemberId(Long id) {
-    return queryFactory
-        .select(record.beer.id)
-        .from(record)
-        .leftJoin(record.beer, beer)
-        .where(record.member.id.eq(id), beer.deletedAt.isNull(), record.deletedAt.isNull())
-        .stream()
-        .distinct()
-        .count();
+    return queryFactory.select(record.beer.id).from(record).leftJoin(record.beer, beer)
+        .where(record.member.id.eq(id), beer.deletedAt.isNull(), record.deletedAt.isNull()).stream()
+        .distinct().count();
   }
 
   public Integer countWithFilter(ReadRequest readRequest) {
@@ -372,10 +352,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
       byFilterTypeInAndCountryIdInAndQueryLike.and(searchBooleanExpression(query));
     }
 
-    return queryFactory.select(beer)
-        .from(beer)
-        .where(byFilterTypeInAndCountryIdInAndQueryLike, beer.deletedAt.isNull())
-        .fetch()
-        .size();
+    return queryFactory.select(beer).from(beer)
+        .where(byFilterTypeInAndCountryIdInAndQueryLike, beer.deletedAt.isNull()).fetch().size();
   }
 }
