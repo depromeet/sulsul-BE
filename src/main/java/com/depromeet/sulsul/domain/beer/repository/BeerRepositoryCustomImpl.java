@@ -146,9 +146,11 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
             new QBeerResponseDto(country, beer, record.feel.max(), memberBeer)).from(beer)
         .leftJoin(record)
         .on(beer.eq(record.beer).and(record.member.id.eq(memberId)).and(record.deletedAt.isNull()))
-        .leftJoin(memberBeer).on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)))
+        .leftJoin(memberBeer)
+        .on(beer.eq(memberBeer.beer).and(memberBeer.member.id.eq(memberId)).and(
+            memberBeer.deletedAt.isNull()))
         .innerJoin(country).on(beer.country.eq(country)).where(
-            beer.deletedAt.isNull().and(memberBeer.isNotNull().and(memberBeer.deletedAt.isNull())))
+            beer.deletedAt.isNull())
         .groupBy(country, beer, memberBeer).fetchJoin();
 
     jpaQuery = addBeerTypesFilter(jpaQuery, filter);
