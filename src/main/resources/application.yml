@@ -42,6 +42,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        time_zone: Asia/Seoul
     open-in-view: false
   servlet:
     multipart:
