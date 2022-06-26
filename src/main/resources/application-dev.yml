@@ -16,14 +16,14 @@ spring:
             scope:
               - profile_nickname
               - account_email
-            redirect-uri: "https://api-dev.beerair.ml/login/oauth2/code/kakao"
+            redirect-uri: "https://api-dev.beerair.kr/login/oauth2/code/kakao"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: kakao
           naver:
             client-id: 3Zm_Tm1e_KYsJvlLsRoc
             client-secret: K1pbPupg5M
-            redirect-uri: "https://api-dev.beerair.ml/login/oauth2/code/naver"
+            redirect-uri: "https://api-dev.beerair.kr/login/oauth2/code/naver"
             authorization-grant-type: authorization_code
             scope:
               - name
