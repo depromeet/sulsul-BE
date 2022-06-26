@@ -50,7 +50,7 @@ authentication:
     refreshTokenCookieName: refreshToken
     domain: localhost
 swagger:
-  url: https://api-dev.beerair.ml
+  url: https://api-dev.beerair.kr
   desc: for dev usage
 client:
   url: http://localhost:3000
