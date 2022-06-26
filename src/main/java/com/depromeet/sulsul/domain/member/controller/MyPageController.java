@@ -9,6 +9,7 @@ import com.depromeet.sulsul.domain.member.facade.MemberFacade;
 import com.depromeet.sulsul.domain.member.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,7 @@ public class MyPageController {
 
   @ApiOperation(value = "닉네임 update API")
   @PutMapping
-  public ResponseDto<String> updateNickname(@RequestBody MyPageRequestDto myPageRequestDto, Authentication authentication) {
+  public ResponseDto<String> updateNickname(@RequestBody @Valid MyPageRequestDto myPageRequestDto, Authentication authentication) {
     return ResponseDto.from(memberService.updateNickname(getMemberIdFromPrincipal(authentication), myPageRequestDto));
 
   }
