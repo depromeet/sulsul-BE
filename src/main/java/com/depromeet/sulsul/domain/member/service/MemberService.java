@@ -3,6 +3,7 @@ package com.depromeet.sulsul.domain.member.service;
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
 import com.depromeet.sulsul.domain.member.dto.MemberDto;
 import com.depromeet.sulsul.domain.member.dto.MyPageRequestDto;
+import com.depromeet.sulsul.domain.member.dto.NicknameRequestDto;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,9 @@ public class MemberService {
     return memberRepository.selectById(id).orElseThrow(MemberNotFoundException::new);
   }
 
-  public String updateNickname(Long id, MyPageRequestDto myPageRequestDto) {
+  public String updateNickname(Long id, NicknameRequestDto nicknameRequestDto) {
     Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-    member.updateNickname(myPageRequestDto.getNickname());
+    member.updateNickname(nicknameRequestDto.getNickname());
     return member.getNickname();
   }
 

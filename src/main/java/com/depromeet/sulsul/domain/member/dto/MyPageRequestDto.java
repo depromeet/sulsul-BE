@@ -1,7 +1,6 @@
 package com.depromeet.sulsul.domain.member.dto;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ public class MyPageRequestDto implements Serializable {
   private Long memberBeerCount;
   private Long requestBeerCount;
 
-  @NotEmpty
   private String nickname;
 
   @Builder
