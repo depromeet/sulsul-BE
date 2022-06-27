@@ -5,8 +5,8 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
+      default_batch_fetch_size: 100
       hibernate:
-        default_batch_fetch_size: 100
         show_sql: true
         format_sql: true
         time_zone: Asia/Seoul
