@@ -3,10 +3,10 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      default_batch_fetch_size: 100
       ddl-auto: update
     properties:
       hibernate:
+        default_batch_fetch_size: 100
         show_sql: true
         format_sql: true
         time_zone: Asia/Seoul
