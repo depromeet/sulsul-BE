@@ -32,3 +32,4 @@ cloud:
       bucket: sulsul-media-bucket
     stack:
       auto: false
+      
