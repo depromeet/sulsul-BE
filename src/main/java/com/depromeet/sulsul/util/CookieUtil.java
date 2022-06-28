@@ -85,22 +85,14 @@ public class CookieUtil {
   }
 
   public void deleteAccessTokenCookie(HttpServletResponse response) {
-
     Cookie cookie = new Cookie(accessTokenCookieName, null);
-    setPropertyOfCookie(cookie, 0L);
+    cookie.setMaxAge(0);
     response.addCookie(cookie);
   }
 
   public void deleteRefreshTokenCookie(HttpServletResponse response) {
-
     Cookie cookie = new Cookie(refreshTokenCookieName, null);
-    setPropertyOfCookie(cookie, 0L);
+    cookie.setMaxAge(0);
     response.addCookie(cookie);
-  }
-
-  private void setPropertyOfCookie(Cookie cookie, long maxAge) {
-    cookie.setMaxAge((int) maxAge);
-    cookie.setHttpOnly(true);
-    cookie.setPath("/");
   }
 }
