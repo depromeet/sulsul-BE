@@ -88,7 +88,13 @@ jobs:
             key: ${{ secrets.PRIVATE_KEY_PROD }}
             envs: GITHUB_SHA
             script: |
-                sudo docker rm -f $(docker ps -qa)
+                CONTAINERS=$(docker ps -qa)
+                if [ -z "$CONTAINERS" ];
+                then
+                  echo "container not exist"
+                else
+                  docker rm -f $(docker ps -qa)
+                fi
                 sudo docker pull ${{ steps.docker_meta.outputs.tags }}
                 docker run -d -p 8080:8080 --name prod ${{ steps.docker_meta.outputs.tags }}
 
