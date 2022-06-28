@@ -4,7 +4,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -29,8 +28,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+  public static final String JWT_PARSE_RESULT = "jwt-parse-result";
   private final JwtTokenProvider jwtTokenProvider;
-  private final MemberRepository memberRepository;
 
   @Value("${client.url}")
   private String urlOfEnv;
@@ -65,13 +64,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     try {
       Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build().parseClaimsJws(jwtToken);
     } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-      setResponseJsonType(response);
-      response.setStatus(BAD_REQUEST.value());
+      response.setIntHeader(JWT_PARSE_RESULT, BAD_REQUEST.value());
       filterChain.doFilter(request, response);
       return;
     } catch (ExpiredJwtException e) {
-      setResponseJsonType(response);
-      response.setStatus(UNAUTHORIZED.value());
+      response.setIntHeader(JWT_PARSE_RESULT, UNAUTHORIZED.value());
       filterChain.doFilter(request, response);
       return;
     }
@@ -82,10 +79,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     filterChain.doFilter(request, response);
-  }
-
-  private void setResponseJsonType(HttpServletResponse response) {
-    response.setContentType("application/json");
-    response.setCharacterEncoding("utf-8");
   }
 }
