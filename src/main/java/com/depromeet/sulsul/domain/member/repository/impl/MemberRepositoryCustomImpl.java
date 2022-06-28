@@ -9,8 +9,10 @@ import com.depromeet.sulsul.domain.member.dto.SocialType;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
             member.phoneNumber, member.memberLevel))
         .from(member)
         .leftJoin(member.memberLevel, memberLevel)
-        .where(member.id.eq(id))
+        .where(member.id.eq(id), member.deletedAt.isNull())
         .fetchOne());
   }
 
@@ -33,7 +35,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
   public Optional<Member> selectBySocial(String id, String type) {
     return Optional.ofNullable(queryFactory
         .selectFrom(member)
-        .where(member.socialId.eq(id), member.socialType.eq(SocialType.valueOf(type)))
+        .where(member.socialId.eq(id), member.socialType.eq(SocialType.valueOf(type)), member.deletedAt.isNull())
         .fetchOne());
   }
 
@@ -42,7 +44,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
     queryFactory
         .update(member)
         .set(member.deletedAt, LocalDateTime.now())
-        .where(member.id.eq(id))
+        .where(member.id.eq(id), member.deletedAt.isNull())
         .execute();
   }
 }
