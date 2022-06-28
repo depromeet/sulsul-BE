@@ -26,7 +26,7 @@ public class JwtTokenService {
     jwtTokenRepository.save(Token.of(refreshToken, memberId));
   }
 
-  public void publishAccessToken(HttpServletResponse response, String refreshToken) {
+  public String publishAccessToken(HttpServletResponse response, String refreshToken) {
     boolean isTokenValid = jwtTokenProvider.validateToken(refreshToken);
     if (!isTokenValid) {
       throw new AuthenticationEntryPointException();
@@ -42,5 +42,6 @@ public class JwtTokenService {
     //TODO
 //    cookieUtil.addAccessTokenCookie(response, newAccessToken);
     cookieUtil.addAccessTokenResponseCookie(response, newAccessToken);
+    return newAccessToken;
   }
 }
