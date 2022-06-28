@@ -64,6 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .successHandler(customOAuth2SuccessHandler)
         .userInfoEndpoint()
         .userService(customOAuth2UserService);
-    http.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
   }
 }
