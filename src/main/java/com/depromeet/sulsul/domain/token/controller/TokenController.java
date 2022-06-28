@@ -24,8 +24,7 @@ public class TokenController {
   @GetMapping("/refresh")
   public ResponseDto<?> updateRefreshToken(HttpServletResponse response,
                                            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
-        jwtTokenService.publishAccessToken(response, refreshToken);
-        return ResponseDto.OK();
+    return ResponseDto.from(jwtTokenService.publishAccessToken(response, refreshToken));
   }
 
   @ApiOperation(value = "토큰 갱신(Request Header)", notes = "refresh 토큰으로 accessToken 갱신 (Request Header)")
@@ -33,6 +32,6 @@ public class TokenController {
   public ResponseDto<?> updateRefreshTokenUseHeader(HttpServletResponse response,
       @RequestHeader(name = "refreshToken", required = false) String refreshToken) {
     jwtTokenService.publishAccessToken(response, refreshToken);
-    return ResponseDto.OK();
+    return ResponseDto.from(jwtTokenService.publishAccessToken(response, refreshToken));
   }
 }
