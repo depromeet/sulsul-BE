@@ -72,7 +72,7 @@ public class JwtTokenProvider {
         .setSubject(oAuth2User.getName())
         .setClaims(createClaims(oAuth2User.getMemberId()))
         .setIssuedAt(new Date())
-        .setExpiration(parseExpiration(accessTokenExpirationSecond))
+        .setExpiration(parseExpiration(10L))
         .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
         .compact();
   }
