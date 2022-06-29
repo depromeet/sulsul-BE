@@ -1,6 +1,7 @@
 package com.depromeet.sulsul.util;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
@@ -49,7 +50,7 @@ public class CookieUtil {
         .sameSite("None")
         .httpOnly(true)
         .domain(domain)
-        .maxAge(refreshTokenExpirationSecond / 1000)
+        .maxAge(10)
         .build();
   }
 
@@ -60,7 +61,7 @@ public class CookieUtil {
         .sameSite("None")
         .httpOnly(true)
         .domain(domain)
-        .maxAge(accessTokenExpirationSecond / 1000)
+        .maxAge(10)
         .build();
   }
 
@@ -70,7 +71,7 @@ public class CookieUtil {
         .httpOnly(true)
         .sameSite("")
         .domain(domain)
-        .maxAge(refreshTokenExpirationSecond / 1000)
+        .maxAge(10)
         .build();
   }
 
@@ -80,7 +81,7 @@ public class CookieUtil {
         .secure(false)
         .sameSite("")
         .domain(domain)
-        .maxAge(accessTokenExpirationSecond / 1000)
+        .maxAge(10)
         .build();
   }
 
@@ -94,5 +95,15 @@ public class CookieUtil {
     Cookie cookie = new Cookie(refreshTokenCookieName, null);
     cookie.setMaxAge(0);
     response.addCookie(cookie);
+  }
+
+  public void deleteAllCookies(HttpServletRequest request, HttpServletResponse response) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (int i = 0; i < cookies.length; i++) {
+        cookies[i].setMaxAge(0);
+        response.addCookie(cookies[i]);
+      }
+    }
   }
 }
