@@ -50,7 +50,7 @@ public class CookieUtil {
         .sameSite("None")
         .httpOnly(true)
         .domain(domain)
-        .maxAge(10)
+        .maxAge(refreshTokenExpirationSecond / 1000)
         .build();
   }
 
@@ -71,7 +71,7 @@ public class CookieUtil {
         .httpOnly(true)
         .sameSite("")
         .domain(domain)
-        .maxAge(10)
+        .maxAge(refreshTokenExpirationSecond / 1000)
         .build();
   }
 
