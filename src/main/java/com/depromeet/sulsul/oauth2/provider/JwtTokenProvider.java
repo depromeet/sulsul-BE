@@ -53,6 +53,17 @@ public class JwtTokenProvider {
         .compact();
   }
 
+  public String createRefreshToken(Member member) {
+
+    return Jwts.builder()
+        .setSubject(member.getNickname())
+        .setClaims(createClaims(member.getId()))
+        .setIssuedAt(new Date())
+        .setExpiration(parseExpiration(refreshTokenExpirationSecond))
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
+        .compact();
+  }
+
   public String createAccessToken(Authentication authentication) {
 
     CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
@@ -61,7 +72,7 @@ public class JwtTokenProvider {
         .setSubject(oAuth2User.getName())
         .setClaims(createClaims(oAuth2User.getMemberId()))
         .setIssuedAt(new Date())
-        .setExpiration(parseExpiration(accessTokenExpirationSecond))
+        .setExpiration(parseExpiration(10L))
         .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
         .compact();
   }
