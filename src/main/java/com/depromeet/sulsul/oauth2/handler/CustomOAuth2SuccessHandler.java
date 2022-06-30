@@ -44,10 +44,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     jwtTokenService.saveRefreshToken(accessToken, oAuth2User.getMemberId());
 
-    Member member = memberRepository.findById(oAuth2User.getMemberId()).orElseThrow(MemberNotFoundException::new);
-
-    String targetUrl = UriComponentsBuilder.fromUriString(
-            Strings.isBlank(member.getNickname()) ? urlOfEnv + "/signup" : urlOfEnv)
+    String targetUrl = UriComponentsBuilder.fromUriString(urlOfEnv)
         .build()
         .toUriString();
 
