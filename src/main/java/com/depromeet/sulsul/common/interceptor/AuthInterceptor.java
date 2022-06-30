@@ -31,7 +31,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     long memberIdFromPrincipal = getMemberIdFromPrincipal(
         SecurityContextHolder.getContext().getAuthentication());
 
-    Optional<Member> memberOptional = memberRepository.findByIdAndDeletedAtIsNotNull(
+    Optional<Member> memberOptional = memberRepository.findByIdAndDeletedAtIsNull(
         memberIdFromPrincipal);
 
     if (memberOptional.isEmpty()) {

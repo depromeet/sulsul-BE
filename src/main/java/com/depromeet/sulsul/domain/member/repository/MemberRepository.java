@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
   Long findLevelById(Long id);
-  Optional<Member> findByIdAndDeletedAtIsNotNull(Long id);
+  Optional<Member> findByIdAndDeletedAtIsNull(Long id);
 }
