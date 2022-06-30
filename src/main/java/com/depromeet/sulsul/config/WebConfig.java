@@ -24,7 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
     registry.addInterceptor(authInterceptor())
         .order(1)
         .addPathPatterns("/api/**")
-        .excludePathPatterns("/oauth2/authorization/**", "/guest/**");
+        .excludePathPatterns("/oauth2/authorization/**", "/guest/**", "/api/v1/token/**");
   }
 
   @Bean
@@ -46,7 +46,8 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**") // CORS 를 적용할 URL 패턴
-        .allowedOrigins("http://localhost:3000", "http://localhost", "https://beerair.kr") // 자원 공유를 허락할 Origin 지정; 모든 Origin 허락
+        .allowedOrigins("http://localhost:3000", "http://localhost",
+            "https://beerair.kr") // 자원 공유를 허락할 Origin 지정; 모든 Origin 허락
         .allowedMethods( // 허용할 HTTP method 지정
             HttpMethod.GET.name(),
             HttpMethod.HEAD.name(),

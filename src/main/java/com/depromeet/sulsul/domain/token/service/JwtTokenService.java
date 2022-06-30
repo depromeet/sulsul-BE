@@ -4,6 +4,7 @@ import com.depromeet.sulsul.common.error.exception.custom.AuthenticationEntryPoi
 import com.depromeet.sulsul.common.error.exception.custom.MemberNotFoundException;
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.token.dto.TokenDto;
 import com.depromeet.sulsul.domain.token.entity.Token;
 import com.depromeet.sulsul.domain.token.repository.JwtTokenRepository;
 import com.depromeet.sulsul.oauth2.provider.JwtTokenProvider;
@@ -26,7 +27,7 @@ public class JwtTokenService {
     jwtTokenRepository.save(Token.of(refreshToken, memberId));
   }
 
-  public void publishAccessToken(HttpServletResponse response, String refreshToken) {
+  public TokenDto publishAccessToken(HttpServletResponse response, String refreshToken) {
     boolean isTokenValid = jwtTokenProvider.validateToken(refreshToken);
     if (!isTokenValid) {
       throw new AuthenticationEntryPointException();
@@ -38,9 +39,11 @@ public class JwtTokenService {
     Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
     String newAccessToken = jwtTokenProvider.createAccessToken(member);
+    String newRefreshToken = jwtTokenProvider.createRefreshToken(member);
 
-    //TODO
-//    cookieUtil.addAccessTokenCookie(response, newAccessToken);
     cookieUtil.addAccessTokenResponseCookie(response, newAccessToken);
+    cookieUtil.addRefreshTokenResponseCookie(response, newRefreshToken);
+
+    return TokenDto.of(newAccessToken, newRefreshToken);
   }
 }
