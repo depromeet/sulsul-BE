@@ -66,13 +66,14 @@ public class OAuthAttributes {
         .build();
   }
 
-  public Member toEntity(String socialId, String registrationId, MemberLevel memberLevel) {
+  public Member toEntity(String socialId, String registrationId, MemberLevel memberLevel, String nickname) {
     return Member.builder()
         .email(email)
         .role(RoleType.USER)
         .socialId(socialId)
         .socialType(registrationId)
         .memberLevel(memberLevel)
+        .nickname(nickname)
         .build();
   }
 }
