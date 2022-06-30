@@ -15,8 +15,8 @@ import org.springframework.security.core.Authentication;
 public class PropertyUtil {
 
   public static final String EMPTY_STRING = "";
-  public static final String DEFAULT_START_COUNTRY_KOR = "한국";
-  public static final String DEFAULT_START_COUNTRY_ENG = "korea";
+  public static final String DEFAULT_START_COUNTRY_KOR = "대한민국";
+  public static final String DEFAULT_START_COUNTRY_ENG = "KOR";
   public static final int ZERO = 0;
   public static final int ONE = 1;
   public static final int TWO = 2;

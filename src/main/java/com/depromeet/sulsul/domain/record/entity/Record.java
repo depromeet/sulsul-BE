@@ -81,8 +81,8 @@ public class Record extends BaseEntity {
       this.startCountryEng = record.getEndCountryEng();
       return;
     }
-    this.startCountryKor = "한국";
-    this.startCountryEng = "Korea";
+    this.startCountryKor = "대한민국";
+    this.startCountryEng = "KOR";
   }
 
   private void updateEndCountry(Beer beer) {
@@ -91,8 +91,8 @@ public class Record extends BaseEntity {
       this.endCountryEng = beer.getCountry().getNameEng();
       return;
     }
-    this.endCountryKor = "한국";
-    this.endCountryEng = "Korea";
+    this.endCountryKor = "대한민국";
+    this.endCountryEng = "KOR";
   }
 
   private void updateBeer(Beer beer) {
