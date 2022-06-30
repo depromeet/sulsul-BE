@@ -76,23 +76,23 @@ public class Record extends BaseEntity {
   }
 
   private void updateStartCountry(Record record) {
-    if (record != null) {
-      this.startCountryKor = record.getEndCountryKor();
-      this.startCountryEng = record.getEndCountryEng();
+    if (record.getEndCountryEng().isBlank() || record.getEndCountryKor().isBlank()) {
+      this.startCountryKor = "대한민국";
+      this.startCountryEng = "KOR";
       return;
     }
-    this.startCountryKor = "대한민국";
-    this.startCountryEng = "KOR";
+    this.startCountryKor = record.getEndCountryKor();
+    this.startCountryEng = record.getEndCountryEng();
   }
 
   private void updateEndCountry(Beer beer) {
-    if (beer != null) {
-      this.endCountryKor = beer.getCountry().getNameKor();
-      this.endCountryEng = beer.getCountry().getNameEng();
+    if (beer.getCountry().getNameKor().isBlank() || beer.getCountry().getNameEng().isBlank()) {
+      this.endCountryKor = "대한민국";
+      this.endCountryEng = "KOR";
       return;
     }
-    this.endCountryKor = "대한민국";
-    this.endCountryEng = "KOR";
+    this.endCountryKor = beer.getCountry().getNameKor();
+    this.endCountryEng = beer.getCountry().getNameEng();
   }
 
   private void updateBeer(Beer beer) {
