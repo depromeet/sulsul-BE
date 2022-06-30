@@ -43,8 +43,17 @@ public class RecordResponseDto {
     this.imageUrl = record.getImageUrl();
     this.createdAt = record.getCreatedAt();
     this.updatedAt = record.getUpdatedAt();
-    this.startCountryKor = record.getStartCountryKor();
-    this.startCountryEng = record.getStartCountryEng();
+    if(record.getStartCountryKor().isBlank()){
+      this.startCountryKor = "대한민국";
+    }else{
+      this.startCountryKor = record.getStartCountryKor();
+    }
+
+    if(record.getStartCountryEng().isBlank()){
+      this.startCountryEng = "KOR";
+    }else{
+      this.startCountryEng = record.getStartCountryEng();
+    }
     this.endCountryKor = record.getStartCountryKor();
     this.endCountryEng = record.getEndCountryEng();
     this.isPublic = record.getIsPublic();
