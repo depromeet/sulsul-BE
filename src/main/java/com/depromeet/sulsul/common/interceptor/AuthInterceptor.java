@@ -2,7 +2,7 @@ package com.depromeet.sulsul.common.interceptor;
 
 import static com.depromeet.sulsul.util.HttpResponseUtil.processWithErrorResponseDto;
 import static com.depromeet.sulsul.util.PropertyUtil.getMemberIdFromPrincipal;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
@@ -31,11 +31,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     long memberIdFromPrincipal = getMemberIdFromPrincipal(
         SecurityContextHolder.getContext().getAuthentication());
 
-    Optional<Member> memberOptional = memberRepository.findByIdAndDeletedAtIsNotNull(memberIdFromPrincipal);
+    Optional<Member> memberOptional = memberRepository.findByIdAndDeletedAtIsNotNull(
+        memberIdFromPrincipal);
 
     if (memberOptional.isEmpty()) {
       log.debug("There is no member corresponding to the id that exists in the token.");
-      processWithErrorResponseDto("[ERROR] 존재하지 않는 사용자입니다.", UNAUTHORIZED, response);
+      processWithErrorResponseDto("[ERROR] 존재하지 않는 사용자입니다.", BAD_REQUEST, response);
       return false;
     }
 
