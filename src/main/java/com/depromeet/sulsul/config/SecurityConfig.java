@@ -33,9 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/h2-console/**",
-        "/v3/api-docs",  "/configuration/ui",
+        "/v3/api-docs", "/configuration/ui",
         "/swagger-resources", "/configuration/security",
-        "/swagger-ui.html", "/webjars/**","/swagger/**");
+        "/swagger-ui.html", "/webjars/**", "/swagger/**");
   }
 
   @Override
@@ -47,9 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(STATELESS)
         .and()
         .authorizeHttpRequests()
-        .antMatchers("/swagger-resources/**","/swagger-ui/**").permitAll()
-        .antMatchers( "/login/oauth2/code/**","/token/**").permitAll()
-        .antMatchers( "/oauth2/**").permitAll()
+        .antMatchers("/swagger-resources/**", "/swagger-ui/**").permitAll()
+        .antMatchers("/api/v1/token/**", "/login/oauth2/code/**").permitAll()
+        .antMatchers("/oauth2/**").permitAll()
         .antMatchers("/guest/**").permitAll()
         .anyRequest().authenticated()
         .and()

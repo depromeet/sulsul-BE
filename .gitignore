@@ -38,6 +38,8 @@ out/
 
 ### application-secrets ###
 **/application-secrets.yml
+application-prod.yml
+application-dev.yml
 
 id_rsa
 id_rsa.pub
@@ -45,3 +47,4 @@ id_rsa.pub
 
 ### .sql ###
 *.sql
+
