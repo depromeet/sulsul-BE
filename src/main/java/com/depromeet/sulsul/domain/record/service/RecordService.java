@@ -30,6 +30,7 @@ import com.depromeet.sulsul.util.ImageUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -61,20 +62,22 @@ public class RecordService {
 
     List<FlavorDto> flavorDtos = new ArrayList<>();
 
-    Record lastSavedRecord = recordRepository.findLastSavedCountryName(memberId).orElse(new Record());
-
     Beer beer = beerRepository.findById(recordRequestDto.getBeerId())
         .orElseThrow(BeerNotFoundException::new);
     Member member = memberRepository.findById(memberId)
         .orElseThrow(MemberNotFoundException::new);
 
     Record record = recordRequestDto.toEntity();
-    record.setRecord(beer, lastSavedRecord, member);
+
+    Optional<Record> lastSavedRecord = recordRepository.findLastSavedCountryName(memberId);
+
+    initializeRecord(record, beer, lastSavedRecord, member);
 
     Record savedRecord = recordRepository.save(record);
 
     for (Long flavorId : recordRequestDto.getFlavorIds()) {
-      Flavor flavor = flavorRepository.findById(flavorId).orElseThrow(FlavorNotFoundException::new);
+      Flavor flavor = flavorRepository.findById(flavorId)
+          .orElseThrow(FlavorNotFoundException::new);
       RecordFlavor recordFlavor = RecordFlavor.of(savedRecord, flavor);
       recordFlavorRepository.save(recordFlavor);
       flavorDtos.add(flavor.toDto());
@@ -87,6 +90,15 @@ public class RecordService {
 
     return RecordResponseDto.createRecordResponseDto(record, beer, flavorDtos,
         recordRepository.selectCount());
+  }
+
+  private void initializeRecord(Record record, Beer beer,
+      Optional<Record> lastSavedRecord, Member member) {
+    if (lastSavedRecord.isPresent()) {
+      record.initializeRecord(beer, lastSavedRecord.get(), member);
+      return;
+    }
+    record.initializeRecordWithoutLastRecord(beer, member);
   }
 
   @Transactional(readOnly = true)
