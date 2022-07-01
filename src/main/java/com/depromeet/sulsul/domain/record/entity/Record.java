@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -75,7 +74,7 @@ public class Record extends BaseEntity {
     this.feel = recordRequestDto.getFeel();
   }
 
-  private void updateStartCountry(Record record) {
+  private void updateStartCountryName(Record record) {
     if (record.getEndCountryEng().isBlank() || record.getEndCountryKor().isBlank()) {
       this.startCountryKor = "대한민국";
       this.startCountryEng = "KOR";
@@ -83,6 +82,11 @@ public class Record extends BaseEntity {
     }
     this.startCountryKor = record.getEndCountryKor();
     this.startCountryEng = record.getEndCountryEng();
+  }
+
+  private void initializeStartCountryName() {
+    this.startCountryKor = "대한민국";
+    this.startCountryEng = "KOR";
   }
 
   private void updateEndCountry(Beer beer) {
@@ -101,10 +105,17 @@ public class Record extends BaseEntity {
 
   private void updateMember(Member member) { this.member = member; }
 
-  public void setRecord(Beer beer, Record lastSavedRecord, Member member){
+  public void initializeRecordWithoutLastRecord(Beer beer, Member member){
     this.updateBeer(beer);
     this.updateEndCountry(beer);
-    this.updateStartCountry(lastSavedRecord);
+    this.initializeStartCountryName();
+    this.updateMember(member);
+  }
+
+  public void initializeRecord(Beer beer, Record lastSavedRecord, Member member){
+    this.updateBeer(beer);
+    this.updateEndCountry(beer);
+    this.updateStartCountryName(lastSavedRecord);
     this.updateMember(member);
   }
 

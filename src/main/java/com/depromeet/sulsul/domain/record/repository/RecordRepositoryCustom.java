@@ -2,6 +2,7 @@ package com.depromeet.sulsul.domain.record.repository;
 
 import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
 import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
+import com.depromeet.sulsul.domain.record.dto.RecordRecentCountryDto;
 import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.querydsl.core.Tuple;
@@ -17,7 +18,9 @@ public interface RecordRepositoryCustom {
 
   List<RecordTicketResponseDto> findAllRecordsTicketWithPageable(Long recordId, Long memberId);
 
-  RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId);
+  RecordRecentCountryDto findRecordRecentCountryByMemberId(Long memberId);
+
+  Long findRecordCountByRecentCountry(RecordRecentCountryDto recordRecentCountryDto, Long memberId);
 
   Tuple findEndCountryOfRecordByMemberId(Long id);
 

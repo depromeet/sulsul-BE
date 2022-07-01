@@ -4,11 +4,7 @@ package com.depromeet.sulsul.domain.record.repository;
 import static com.depromeet.sulsul.domain.member.entity.QMember.member;
 import static com.depromeet.sulsul.domain.record.entity.QRecord.record;
 
-import com.depromeet.sulsul.domain.record.dto.QRecordCountryAndCountResponseDto;
-import com.depromeet.sulsul.domain.record.dto.QRecordTicketResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
-import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
+import com.depromeet.sulsul.domain.record.dto.*;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.util.PaginationUtil;
 import com.querydsl.core.Tuple;
@@ -99,27 +95,25 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom {
   }
 
   @Override
-  public RecordCountryAndCountResponseDto findRecordCountryAndCountResponseDto(Long memberId) {
+  public RecordRecentCountryDto findRecordRecentCountryByMemberId(Long memberId) {
     return queryFactory.select(
-            new QRecordCountryAndCountResponseDto(record.endCountryKor, record.endCountryEng,
-                record.count()))
-        .from(record)
-        .where(
-            record.id.in(
-                queryFactory.select(record.id)
-                    .from(record)
-                    .where(
-                        record.deletedAt.isNull()
-                        , memberIdEq(memberId)
-                    )
-                    .fetch()
+      new QRecordRecentCountryDto(record.endCountryKor, record.endCountryEng))
+            .from(record)
+            .where(
+                    record.deletedAt.isNull()
+                    , memberIdEq(memberId)
             )
-            , record.deletedAt.isNull()
-            , memberIdEq(memberId)
-        )
-        .groupBy(record.endCountryEng, record.endCountryKor)
-        .orderBy(record.id.desc())
-        .fetchFirst();
+            .orderBy(record.id.desc())
+            .fetchFirst();
+  }
+
+  @Override
+  public Long findRecordCountByRecentCountry(RecordRecentCountryDto recordRecentCountryDto, Long memberId){
+    return queryFactory.selectFrom(record)
+            .where(record.endCountryEng.eq(recordRecentCountryDto.getNameEng())
+                 , record.endCountryKor.eq(recordRecentCountryDto.getNameKor())
+                 , memberIdEq(memberId)
+            ).stream().count();
   }
 
   @Override
