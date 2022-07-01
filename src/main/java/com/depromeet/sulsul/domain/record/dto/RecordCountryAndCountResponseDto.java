@@ -13,10 +13,9 @@ public class RecordCountryAndCountResponseDto {
   private String nameEng;
   private Long count;
 
-  @QueryProjection
-  public RecordCountryAndCountResponseDto(String nameKor, String nameEng, Long count) {
-    this.nameKor = nameKor;
-    this.nameEng = nameEng;
-    this.count = count;
+  public RecordCountryAndCountResponseDto(RecordRecentCountryDto recordRecentCountryDto, Long recordCountByRecentCountry) {
+    this.nameKor = recordRecentCountryDto.getNameKor();
+    this.nameEng = recordRecentCountryDto.getNameEng();
+    this.count = recordCountByRecentCountry;
   }
 }

@@ -21,12 +21,7 @@ import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
 import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.depromeet.sulsul.domain.memberLevel.service.MemberLevelService;
-import com.depromeet.sulsul.domain.record.dto.RecordCountryAndCountResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordFindRequestDto;
-import com.depromeet.sulsul.domain.record.dto.RecordRequestDto;
-import com.depromeet.sulsul.domain.record.dto.RecordResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordTicketResponseDto;
-import com.depromeet.sulsul.domain.record.dto.RecordUpdateRequestDto;
+import com.depromeet.sulsul.domain.record.dto.*;
 import com.depromeet.sulsul.domain.record.entity.Record;
 import com.depromeet.sulsul.domain.record.repository.RecordRepository;
 import com.depromeet.sulsul.domain.recordFlavor.entity.RecordFlavor;
@@ -210,7 +205,10 @@ public class RecordService {
 
   @Transactional(readOnly = true)
   public RecordCountryAndCountResponseDto findCountryAndCountByMemberId(Long memberId) {
-    return recordRepository.findRecordCountryAndCountResponseDto(memberId);
+    RecordRecentCountryDto recordRecentCountryDto = recordRepository.findRecordRecentCountryByMemberId(memberId);
+    Long recordCountByRecentCountry = recordRepository.findRecordCountByRecentCountry(recordRecentCountryDto, memberId);
+
+    return new RecordCountryAndCountResponseDto(recordRecentCountryDto, recordCountByRecentCountry);
   }
 
 
