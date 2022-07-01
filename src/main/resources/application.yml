@@ -32,3 +32,9 @@ cloud:
       bucket: sulsul-media-bucket
     stack:
       auto: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace

@@ -36,7 +36,8 @@ public class JwtTokenService {
     Claims claims = jwtTokenProvider.getAllClaimsFromToken(refreshToken);
 
     Long memberId = Long.parseLong(claims.getSubject());
-    Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(MemberNotFoundException::new);
 
     String newAccessToken = jwtTokenProvider.createAccessToken(member);
     String newRefreshToken = jwtTokenProvider.createRefreshToken(member);

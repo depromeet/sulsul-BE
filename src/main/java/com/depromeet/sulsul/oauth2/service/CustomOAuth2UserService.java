@@ -1,9 +1,8 @@
 package com.depromeet.sulsul.oauth2.service;
 
-import static com.depromeet.sulsul.domain.member.dto.RoleType.USER;
-
 import com.depromeet.sulsul.domain.member.entity.Member;
 import com.depromeet.sulsul.domain.member.repository.MemberRepository;
+import com.depromeet.sulsul.domain.member.service.MemberService;
 import com.depromeet.sulsul.domain.memberLevel.entity.MemberLevel;
 import com.depromeet.sulsul.domain.memberLevel.repository.MemberLevelRepository;
 import com.depromeet.sulsul.oauth2.CustomOAuth2User;
@@ -27,6 +26,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
   private final MemberRepository memberRepository;
   private final MemberLevelRepository memberLevelRepository;
+  private final MemberService memberService;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -68,7 +68,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       return memberMap;
     }
     MemberLevel memberLevel = memberLevelRepository.findMemberLevelByCount(0L).toEntity();
-    Member signUpMember = memberRepository.save(oAuthAttributes.toEntity(socialId, registrationId, memberLevel));
+    String nickname = memberService.findByRandomNickname();
+    Member signUpMember = memberRepository.save(
+        oAuthAttributes.toEntity(socialId, registrationId, memberLevel, nickname));
     memberMap.put("memberId", signUpMember.getId());
     memberMap.put("email", signUpMember.getEmail());
 

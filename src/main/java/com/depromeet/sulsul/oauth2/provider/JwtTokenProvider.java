@@ -49,7 +49,8 @@ public class JwtTokenProvider {
         .setClaims(createClaims(oAuth2User.getMemberId()))
         .setIssuedAt(new Date())
         .setExpiration(parseExpiration(refreshTokenExpirationSecond))
-        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
+            SignatureAlgorithm.HS512)
         .compact();
   }
 
@@ -60,7 +61,8 @@ public class JwtTokenProvider {
         .setClaims(createClaims(member.getId()))
         .setIssuedAt(new Date())
         .setExpiration(parseExpiration(refreshTokenExpirationSecond))
-        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
+            SignatureAlgorithm.HS512)
         .compact();
   }
 
@@ -72,8 +74,9 @@ public class JwtTokenProvider {
         .setSubject(oAuth2User.getName())
         .setClaims(createClaims(oAuth2User.getMemberId()))
         .setIssuedAt(new Date())
-        .setExpiration(parseExpiration(10L))
-        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
+        .setExpiration(parseExpiration(accessTokenExpirationSecond))
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
+            SignatureAlgorithm.HS512)
         .compact();
   }
 
@@ -84,7 +87,8 @@ public class JwtTokenProvider {
         .setClaims(createClaims(member.getId()))
         .setIssuedAt(new Date())
         .setExpiration(parseExpiration(accessTokenExpirationSecond))
-        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS512)
+        .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
+            SignatureAlgorithm.HS512)
         .compact();
   }
 
@@ -145,7 +149,9 @@ public class JwtTokenProvider {
   public UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
 
     Claims claims = getAllClaimsFromToken(jwtToken);
-    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("USER"));
-    return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), authorities), "", authorities);
+    Set<SimpleGrantedAuthority> authorities = Collections.singleton(
+        new SimpleGrantedAuthority("USER"));
+    return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), authorities), "",
+        authorities);
   }
 }
