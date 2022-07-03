@@ -118,4 +118,6 @@ feature 브랜치가 merge되어 prod(운영서버), dev(개발서버) 브랜치
 # 📸 8조
 ![image](https://user-images.githubusercontent.com/44468282/176905905-bd24882e-36ad-4410-b9cd-8379bda0f89a.png)
 
+![image](https://user-images.githubusercontent.com/53744363/177044609-dcd2fda6-e6bc-4c11-ba94-6be90893cff4.png)
+
 8조를 빛내준 팀원분들과 디프만 분들께 감사의 인사를 드립니다☺️
